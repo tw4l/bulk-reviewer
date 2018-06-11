@@ -31,7 +31,7 @@ class BEConfig(models.Model):
     # TODO: scanners, alert list, stop list, ssn_mode, regex
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.name)
 
 
 class BESession(models.Model):
@@ -40,6 +40,7 @@ class BESession(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    name = models.CharField(max_length=100)
     transfer = models.ForeignKey(
         Transfer,
         related_name="sessions",
