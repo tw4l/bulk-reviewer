@@ -51,8 +51,14 @@ class BESession(models.Model):
         related_name="sessions",
         on_delete=models.CASCADE
     )
-    be_started = models.DateTimeField(null=True, blank=True)
-    be_finished = models.DateTimeField(null=True, blank=True)
+    be_started = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+    be_finished = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return str(self.uuid)
@@ -66,11 +72,20 @@ class File(models.Model):
     )
     filename = models.TextField(blank=True)
     filepath = models.TextField(blank=True)
-    date_modified = models.CharField(max_length=50, blank=True)
-    date_created = models.CharField(max_length=50, blank=True)
+    date_modified = models.CharField(
+        max_length=50,
+        blank=True
+    )
+    date_created = models.CharField(
+        max_length=50,
+        blank=True
+    )
     redacted = models.BooleanField(default=False)
     note = models.TextField(blank=True)
-    file_type = models.CharField(max_length=200, blank=True)
+    file_type = models.CharField(
+        max_length=200,
+        blank=True
+    )
     allocated = models.BooleanField(default=True)
     be_session = models.ForeignKey(
         BESession,
