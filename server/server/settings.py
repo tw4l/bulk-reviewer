@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Celery settings
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 
 # Application definition
 

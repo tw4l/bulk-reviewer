@@ -20,6 +20,6 @@ docker-compose exec server ./manage.py createsuperuser
 
 Follow the instructions to create a user with full admin rights.
 
-### Admin interface
+### Django admin interface
 
 Visit [localhost:8000/admin](http://localhost:8000/admin) in browser.

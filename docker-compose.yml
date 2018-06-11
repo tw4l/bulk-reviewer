@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  
+  rabbitmq:
+    image: rabbitmq:3.7.5
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - '5672:5672'
+    networks:
+      - magic
+  
   server:
     build:
       context: ./server
@@ -14,3 +25,22 @@ services:
       bash -c '
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000'
+    depends_on:
+      - rabbitmq
+    networks:
+      - magic
+  
+  worker:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - ./server:/src
+    command: celery -A server worker -l info
+    depends_on:
+      - rabbitmq
+    networks:
+      - magic
+
+networks:
+  magic:
