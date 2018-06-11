@@ -71,6 +71,7 @@ class File(models.Model):
     redacted = models.BooleanField(default=False)
     note = models.TextField(blank=True)
     file_type = models.CharField(max_length=200, blank=True)
+    allocated = models.BooleanField(default=True)
     be_session = models.ForeignKey(
         BESession,
         related_name="files",
