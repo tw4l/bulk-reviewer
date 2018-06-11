@@ -67,6 +67,7 @@ class BESession(models.Model):
         null=True,
         blank=True
     )
+    processing_complete = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.uuid)
