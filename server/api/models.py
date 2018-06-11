@@ -51,6 +51,14 @@ class BESession(models.Model):
         related_name="sessions",
         on_delete=models.CASCADE
     )
+    be_feature_files = models.TextField(
+        null=True,
+        blank=True
+    )
+    annotated_be_feature_files = models.TextField(
+        null=True,
+        blank=True
+    )
     be_started = models.DateTimeField(
         null=True,
         blank=True
