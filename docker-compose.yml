@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    hostname: server
+    volumes:
+      - ./server:/src
+    ports:
+      - '8000:8000'
+    command: >
+      bash -c '
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000'
