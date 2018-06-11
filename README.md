@@ -1,6 +1,6 @@
 # Bulk Redactor
 
-This respository is a work in progress.
+This repository is a work in progress.
 
 ## Development installation
 
