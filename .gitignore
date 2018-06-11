@@ -1,0 +1,17 @@
+# python
+__pycache__/
+*.py[cod]
+.env
+venv/
+
+# mac
+.DS_Store
+
+# tox
+.tox/
+
+# database
+server/*.sqlite3
+
+# media
+server/media/
