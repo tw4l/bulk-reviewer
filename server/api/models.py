@@ -69,8 +69,8 @@ class File(models.Model):
     date_created = models.CharField(max_length=50, blank=True)
     redacted = models.BooleanField(default=False)
     note = models.TextField(blank=True)
-    transfer = models.ForeignKey(
-        Transfer,
+    be_session = models.ForeignKey(
+        BESession,
         related_name="files",
         on_delete=models.CASCADE
     )
