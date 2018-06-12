@@ -18,7 +18,7 @@ class Transfer(models.Model):
     uploaded = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.source_path)
 
 
 class BEConfig(models.Model):
@@ -67,7 +67,7 @@ class BESession(models.Model):
     processing_complete = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.name)
 
 
 class File(models.Model):
