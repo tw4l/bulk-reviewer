@@ -147,3 +147,8 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Bulk Extractor feature file outputs
+
+BE_FEATURE_FILES = os.path.join(MEDIA_ROOT, 'feature_files')
+ANNOTATED_FEATURE_FILES = os.path.join(MEDIA_ROOT, 'annotated_feature_files')
