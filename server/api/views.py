@@ -1,9 +1,10 @@
 from rest_framework import generics
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from . import models
 from . import serializers
-from .tasks import test_that_it_works
+from .tasks import run_bulk_extractor
+
 
 
 class ListTransfer(generics.ListCreateAPIView):
@@ -56,7 +57,13 @@ class DetailBESession(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.BESessionSerializer
 
 
-def celery_test(request):
-    output = test_that_it_works.delay()
+def bulk_extractor(request, pk):
+    be_session = get_object_or_404(models.BESession, pk=pk)
+    transfer_uuid = str(be_session.transfer.uuid)
+    transfer_source = be_session.transfer.source_path.path
+    disk_image = be_session.transfer.disk_image
+    be_config = be_session.be_config
+
+    output = run_bulk_extractor.delay(transfer_uuid, transfer_source, disk_image)
     res = output.get()
-    return render(request, 'celery_test.html', {'output': res})
+    return render(request, 'bulk_extractor_test.html', {'output': res})
