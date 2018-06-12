@@ -10,8 +10,6 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
-    networks:
-      - magic
   
   server:
     build:
@@ -28,8 +26,6 @@ services:
       python manage.py runserver 0.0.0.0:8000'
     depends_on:
       - rabbitmq
-    networks:
-      - magic
   
   worker:
     build:
@@ -40,8 +36,3 @@ services:
     command: celery -A server worker -l info
     depends_on:
       - rabbitmq
-    networks:
-      - magic
-
-networks:
-  magic:
