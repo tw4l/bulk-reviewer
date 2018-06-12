@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_cleanup',  # deletes FileFields
 
-    'api',
+    'api'
 ]
 
 REST_FRAMEWORK = {

@@ -22,8 +22,8 @@ services:
       - '8000:8000'
     command: >
       bash -c '
-      python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000'
+      python3 manage.py migrate &&
+      python3 manage.py runserver 0.0.0.0:8000'
     depends_on:
       - rabbitmq
   
