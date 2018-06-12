@@ -59,10 +59,7 @@ class BESession(models.Model):
         null=True,
         blank=True
     )
-    be_started = models.DateTimeField(
-        null=True,
-        blank=True
-    )
+    be_started = models.DateTimeField(auto_now_add=True)
     be_finished = models.DateTimeField(
         null=True,
         blank=True
