@@ -51,19 +51,26 @@ class BESession(models.Model):
         related_name="sessions",
         on_delete=models.CASCADE
     )
-    be_feature_files = models.TextField(
+    extracted_transfer = models.TextField(
         null=True,
         blank=True
     )
-    annotated_be_feature_files = models.TextField(
+    feature_files_path = models.TextField(
         null=True,
         blank=True
     )
-    be_started = models.DateTimeField(auto_now_add=True)
-    be_finished = models.DateTimeField(
+    annotated_feature_files_path = models.TextField(
         null=True,
         blank=True
     )
+    dfxml_path = models.TextField(
+        null=True,
+        blank=True
+    )
+    in_process = models.BooleanField(default=False)
+    be_complete = models.BooleanField(default=False)
+    features_annotated = models.BooleanField(default=False)
+    dfxml = models.BooleanField(default=False)
     processing_complete = models.BooleanField(default=False)
 
     def __str__(self):
@@ -100,7 +107,7 @@ class File(models.Model):
     )
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.filepath)
 
 
 class Feature(models.Model):

@@ -1,5 +1,19 @@
 #!/usr/bin/env python
+
+# This software was developed in whole or in part by employees of the
+# Federal Government in the course of their official duties, and with
+# other Federal assistance. Pursuant to title 17 Section 105 of the
+# United States Code portions of this software authored by Federal
+# employees are not subject to copyright protection within the United
+# States. For portions not authored by Federal employees, the Federal
+# Government has been granted unlimited rights, and no claim to
+# copyright is made. The Federal Government assumes no responsibility
+# whatsoever for its use by other parties, and makes no guarantees,
+# expressed or implied, about its quality, reliability, or any other
+# characteristic.
 #
+# We would appreciate acknowledgement if the software is used.
+
 # dfxml.py
 # Digital Forensics XML classes
 
@@ -28,16 +42,27 @@ Each object has the attributes:
 where encoding, if present, is 0 for raw, 1 for NTFS compressed.
 
 """
+
+__version__ = "1.0.2"
+
+import sys
+import re
 from sys import stderr
 from subprocess import Popen,PIPE
 import base64
 import hashlib
+import os
 
 import datetime
 
-__version__ = "1.0.1"
+import logging
+_logger = logging.getLogger(os.path.basename(__file__))
 
 tsk_virtual_filenames = set(['$FAT1','$FAT2'])
+
+XMLNS_DC = "http://purl.org/dc/elements/1.1/"
+XMLNS_DFXML = "http://www.forensicswiki.org/wiki/Category:Digital_Forensics_XML"
+XMLNS_DELTA = "http://www.forensicswiki.org/wiki/Forensic_Disk_Differencing"
 
 def isone(x):
     """Return true if something is one (number or string)"""
@@ -81,11 +106,10 @@ def parse_iso8601(ts):
     raise RuntimeError("parse_iso8601: ISO8601 format {} not recognized".format(ts))
 
 
-import re
-tz_offset = re.compile("(\d\d\d\d)-(\d\d)-(\d\d)[T ](\d\d):(\d\d):(\d\d)(\.\d+)?(Z|[-+]\d+)?$")
+rx_iso8601 = re.compile("(\d\d\d\d)-(\d\d)-(\d\d)[T ](\d\d):(\d\d):(\d\d)(\.\d+)?(Z|[-+]\d\d:?\d\d)?")
 def iso8601Tdatetime(s):
     """SLG's conversion of ISO8601 to datetime"""
-    m = tz_offset.search(s)
+    m = rx_iso8601.search(s)
     if not m:
         raise ValueError("Cannot parse: "+s)
     # Get the microseconds
@@ -96,10 +120,11 @@ def iso8601Tdatetime(s):
     # Figure tz offset
     offset = None
     minoffset = None
-    if m.group(8)=="Z":
-        minoffset = 0
-    elif m.group(8)[0:1] in ["-+"]:
-        minoffset = int(m.group(8)[0:-2]) * 60 + int(m.group(8)[-2:])
+    if m.group(8):
+        if m.group(8)=="Z":
+            minoffset = 0
+        elif m.group(8)[0:1] in "-+":
+            minoffset = int(m.group(8)[0:3]) * 60 + int(m.group(8)[-2:])
     z = s.find("Z")
     if z>=0:
         offset = 0
@@ -108,10 +133,72 @@ def iso8601Tdatetime(s):
         return datetime.datetime(int(m.group(1)),int(m.group(2)),int(m.group(3)),
                                  int(m.group(4)),int(m.group(5)),int(m.group(6)),
                                  microseconds,GMTMIN(minoffset))
+    elif offset:
+        return datetime.datetime(int(m.group(1)),int(m.group(2)),int(m.group(3)),
+                                 int(m.group(4)),int(m.group(5)),int(m.group(6)),
+                                 microseconds,GMTMIN(offset))
     else:
         return datetime.datetime(int(m.group(1)),int(m.group(2)),int(m.group(3)),
                                  int(m.group(4)),int(m.group(5)),int(m.group(6)),
                                  microseconds)
+
+#This format is as specified in RFC 822, section 5.1, and matches the adjustments in RFC 1123, section 5.2.14.  It appears in email and HTTP headers.
+rx_rfc822datetime = re.compile("(?P<day>\d{1,2}) (?P<month>Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?P<year>\d{4}) (?P<hours>\d\d):(?P<minutes>\d\d):(?P<seconds>\d\d) (?P<timezone>Z|[-+]\d\d:?\d\d)")
+three_letter_month_dict = {
+  "Jan": 1,
+  "Feb": 2,
+  "Mar": 3,
+  "Apr": 4,
+  "May": 5,
+  "Jun": 6,
+  "Jul": 7,
+  "Aug": 8,
+  "Sep": 9,
+  "Oct": 10,
+  "Nov": 11,
+  "Dec": 12
+}
+def rfc822Tdatetime(s):
+    """
+    AJN's conversion of times occurring in RFC 822 data to datetime.
+    Follows SLG's pattern.
+    """
+    m = rx_rfc822datetime.search(s)
+    if not m:
+        raise ValueError("Cannot parse as an RFC 822 timestamp: %r." % s)
+    mgd = m.groupdict()
+    # Figure tz offset
+    offset = None
+    minoffset = None
+    match_timezone = mgd.get("timezone")
+    if match_timezone:
+        if match_timezone == "Z":
+            minoffset = 0
+        elif match_timezone[0] in "-+":
+            minoffset = int(match_timezone[0:-2]) * 60 + int(match_timezone[-2:])
+    #TODO Find a reason to use the 'offset' variable? (Hour offset, vs. minute offset?)
+    if minoffset:
+        return datetime.datetime(
+          int(mgd["year"]),
+          three_letter_month_dict[mgd["month"]],
+          int(mgd["day"]),
+          int(mgd["hours"]),
+          int(mgd["minutes"]),
+          int(mgd["seconds"]),
+          0,
+          GMTMIN(minoffset)
+        )
+    else:
+        return datetime.datetime(
+          int(mgd["year"]),
+          three_letter_month_dict[mgd["month"]],
+          int(mgd["day"]),
+          int(mgd["hours"]),
+          int(mgd["minutes"]),
+          int(mgd["seconds"]),
+          0
+        )
+
 ################################################################
 ###
 ###  byte_run class
@@ -128,7 +215,9 @@ class byte_run:
     Originally this was an array,
     which is faster than an attributed object. But this approach is more expandable,
     and it's only 70% the speed of an array under Python3.0.
-    
+        
+    Note that Python 3 removed the __cmp__ class method:
+        <http://docs.python.org/release/3.0.1/whatsnew/3.0.html#ordering-comparisons>
     """
     # declaring slots prevents other attributes from appearing,
     # but that prevents the code from working with new XML that has new fields.
@@ -140,11 +229,21 @@ class byte_run:
         self.sector_size = 512          # default
         self.hashdigest  = dict()       # 
 
-    def __cmp__(self,other):
-        if self.img_offset != None and other.img_offset != None:
-            return cmp(self.img_offset,other.img_offset)
-        elif self.file_offset != None and other.file_offset != None:
-            return cmp(self.file_offset,other.file_offset)
+    def __lt__(self,other):
+        if self.img_offset is not None and other.img_offset is not None:
+            return self.img_offset < other.img_offset
+        elif self.file_offset is not None and other.file_offset is not None:
+            return self.file_offset < other.file_offset
+        else:
+            raise ValueError("Byte run objects are incomparable")
+    
+    def __eq__(self,other):
+        if self.img_offset is not None and other.img_offset is not None:
+            return self.img_offset == other.img_offset
+        elif self.file_offset is not None and other.file_offset is not None:
+            return self.file_offset == other.file_offset
+        else:
+            raise ValueError("Byte run objects are incomparable")
 
     def __str__(self):
         try:
@@ -173,6 +272,9 @@ class byte_run:
     def has_sector(self,s):
         if self.sector_size==0:
             raise ValueError("%s: sector_size cannot be 0" % (self))
+        if self.img_offset is None or self.len is None:
+            # Sparse files don't have data allocated on disk
+            return False
         try:
             return self.img_offset <= s * self.sector_size < self.img_offset+self.len
         except AttributeError:
@@ -233,7 +335,6 @@ class ComparableMixin(object):
     def __ne__(self, other):
         return self._compare(other, lambda s, o: s != o)
 
-import sys
 class dftime(ComparableMixin):
     """Represents a DFXML time. Automatically converts between representations and caches the
     results as necessary.."""
@@ -251,15 +352,22 @@ class dftime(ComparableMixin):
             _basestring = basestring
         if isinstance(val, str) or isinstance(val,_basestring):
             #
-            #Test for ISO format - "YYYY-MM-DD" should have hyphen at val[4]
+            #Test for ISO 8601 format - "YYYY-MM-DD" should have hyphen at val[4]
             if len(val)>5 and val[4]=="-":
                 self.iso8601_ = val
+            elif len(val) > 15 and ":" in val[13:15]:
+                #Maybe the data are instead the timestamp format found in email headers?
+                #(The check for 13:15 gets the 14th and 15th characters, since the day can be single- or double-digit.)
+                self.datetime_ = rfc822Tdatetime(val)
             else:
-                #Maybe the data is a string-wrapped int?
-                #If this fails, data is completely unexpected, so just raise error.
-                self.timestamp_ = int(val)
+                #Maybe the data are a string-wrapped int or float?
+                #If this fails, the string format is completely unexpected, so just raise an error.
+                self.timestamp_ = float(val)
         elif type(val)==int or type(val)==float:
             self.timestamp_ = val
+        elif isinstance(val, datetime.datetime):
+            self.datetime_ = val
+            #TODO Unit-test this with a timezone-less datetime
         elif val==None:
             self.timestamp_ = None
             self.iso8601_   = None
@@ -271,7 +379,7 @@ class dftime(ComparableMixin):
     def __str__(self):
         return self.iso8601() or ""
     def __repr__(self):
-        return self.iso8601() or "None"
+        return repr(self.iso8601()) or "None"
     def __le__(self,b):
         if b is None: return None
         return self.iso8601().__le__(b.iso8601())
@@ -298,7 +406,7 @@ class dftime(ComparableMixin):
         
         # Do we have a datetime representation?
         try:
-            self.iso8601_ = self.datetime.isoformat()
+            self.iso8601_ = self.datetime_.isoformat()
             return self.iso8601_
         except AttributeError:
             # We better have a Unix timestamp representation?
@@ -356,7 +464,7 @@ class registry_cell_object:
         self._full_path   = None
 
         """Keys have two types:  "root" (0x2c,0xac) and not-root.  Values have several more types."""
-        self.type        = None
+        self._type        = None
 
         """Keep handy a handle on the registry object"""
         self.registry_handle = None
@@ -378,6 +486,13 @@ class registry_cell_object:
         Unlike DFXML, registry paths are delimited with a backslash due to the forward slash being a legal and commonly observed character in cell names.
         """
         return self._full_path
+
+    def type(self):
+        """
+        This is the data type of the cell.  Keys can be root or not-root; values have several types, like UTF-8, binary, etc.
+        Presently, this exports as a string representation of the type, not the numeric type code.
+        """
+        return self._type
 
     def _myname(self):
         """This function is called by repr and str, due to (vague memories of) the possibility of an infinite loop if __repr__ calls __self__."""
@@ -407,6 +522,12 @@ class registry_cell_object:
         """
         return None
 
+    def md5(self):
+        """
+        Return None. Meant to be overwritten.
+        """
+        return None
+
 class registry_key_object(registry_cell_object):
     def __init__(self):
         registry_cell_object.__init__(self)
@@ -417,9 +538,9 @@ class registry_key_object(registry_cell_object):
     def mtime(self):
         return self._mtime
     def root(self):
-        if self.type == None:
+        if self.type() is None:
             return None
-        return self.type == "root"
+        return self.type() == "root"
 
 class registry_value_object(registry_cell_object):
     def __init__(self):
@@ -428,6 +549,9 @@ class registry_value_object(registry_cell_object):
 
         self._cell_type = "registry_value_object"
         
+        #TODO Replace to be in line with fileobjects: fileobject.hashdigest is a dictionary
+        self._hashcache = dict()
+
         """List for the string-list type of value."""
         self.strings = None
 
@@ -439,23 +563,44 @@ class registry_value_object(registry_cell_object):
     #    else:
     #        return None
 
-    def sha1(self):
+    def _hash(self, hashfunc):
         """
         Return cached hash, populating cache if necessary.
-        If self.value_data is None, this should return None.
+        hashfunc expected values: The functions hashlib.sha1, hashlib.sha256, hashlib.md5.
+        If self.value_data is None, or there are no strings in a "string-list" type, this should return None.
+        Interpretation: Registry values of type "string-list" are hashed by feeding each element of the list into the hash .update() function. All other Registry values are fed in the same way, as a 1-element list.
+        For example, a string type value cell with data "a" fed into this function returns md5("a") (if hashlib.md5 were requested).  A string-list type value cell with data ["a","b"] returns md5("ab").
+        This is a simplification to deal with Registry string encodings, and may change in the future.
         """
-        if self._sha1 is None:
-            if self.value_data != None:
-                h = hashlib.sha1()
-                if type(self.value_data) == type(""):
+        if self._hashcache.get(repr(hashfunc)) is None:
+            feed_list = []
+            if self.type() == "string-list":
+                feed_list = self.strings
+            elif not self.value_data is None:
+                feed_list.append(self.value_data)
+            #Normalize to hash .update() required type
+            for (elemindex, elem) in enumerate(feed_list):
+                if type(elem) == type(""):
                     #String data take a little extra care:
                     #"The bytes in your ... file are being automatically decoded to Unicode by Python 3 as you read from the file"
                     #http://stackoverflow.com/a/7778340/1207160
-                    h.update(self.value_data.encode("utf-8"))
-                else:
-                    h.update(self.value_data)
-                self._sha1 = h.hexdigest()
-        return self._sha1
+                    feed_list[elemindex] = elem.encode("utf-8")
+            #Hash if there's data to hash
+            if len(feed_list) > 0:
+                h = hashfunc()
+                for elem in feed_list:
+                    h.update(elem)
+                self._hashcache[repr(hashfunc)] = h.hexdigest()
+        return self._hashcache.get(repr(hashfunc))
+
+    def sha1(self):
+        return self._hash(hashlib.sha1)
+
+    def sha256(self):
+        return self._hash(hashlib.sha256)
+
+    def md5(self):
+        return self._hash(hashlib.md5)
 
 class fileobject:
     """The base class for file objects created either through XML DOM or EXPAT"""
@@ -482,7 +627,7 @@ class fileobject:
 
     def ext(self):
         """Extension, as a lowercase string without the leading '.'"""
-        import os, string
+        import string
         (base,ext) = os.path.splitext(self.filename())
         if ext == '':
             return None
@@ -555,6 +700,10 @@ class fileobject:
         """Returns the SHA1 in hex"""
         return self.tag("sha1")
 
+    def sha256(self):
+        """Returns the SHA256 in hex"""
+        return self.tag("sha256")
+
     def md5(self):
         """Returns the MD5 in hex"""
         return self.tag("md5")
@@ -580,16 +729,28 @@ class fileobject:
         return self.name_type()=='r' or self.name_type()==None
 
     def inode(self):
-        """Inode; may be a number or SleuthKit x-y-z formatr"""
+        """Inode; may be a number or SleuthKit x-y-z format"""
         return self.tag("inode")
+
+    def allocated_inode(self):
+        """Returns True if the file's inode data structure is allocated, False otherwise.  (Does not return None.)"""
+        return isone(self.tag("alloc_inode"))
+
+    def allocated_name(self):
+        """Returns True if the file's name data structure is allocated, False otherwise.  (Does not return None.)"""
+        return isone(self.tag("alloc_name"))
 
     def allocated(self):
         """Returns True if the file is allocated, False if it was not
         (that is, if it was deleted or is an orphan).
         Note that we need to be tolerant of mixed case, as it was changed.
+        We also need to tolerate the case of the unalloc tag being used.
         """
         if self.filename()=="$OrphanFiles": return False
-        return isone(self.tag("alloc")) or isone(self.tag("ALLOC"))
+        if self.allocated_inode() and self.allocated_name():
+            return True
+        else:
+            return isone(self.tag("alloc")) or isone(self.tag("ALLOC")) or not isone(self.tag("unalloc"))
 
     def compressed(self):
         if not self.has_tag("compressed") and not self.has_tag("compressed") : return False
@@ -605,7 +766,7 @@ class fileobject:
             return False               # empty files are never present
         if imagefile==None:
             imagefile=self.imagefile # use this one
-        for hashname in ['md5','sha1']:
+        for hashname in ['md5','sha1','sha256']:
             oldhash = self.tag(hashname)
             if oldhash:
                 newhash = hashlib.new(hashname,self.contents(imagefile=imagefile)).hexdigest()
@@ -630,8 +791,10 @@ class fileobject:
     def content_for_run(self,run=None,imagefile=None):
         """ Returns the content for a specific run. This is a convenience feature
         which does not touch the file object if an imagefile is provided."""
-        if imagefile==None: imagefile=self.imagefile
-        if run.len== -1:
+        if imagefile is None: imagefile=self.imagefile
+        if run is None: raise ValueError("content_for_run called without a 'run' argument.")
+
+        if run.len == -1:
             return chr(0) * run.len
         elif hasattr(run,'fill'):
             return chr(run.fill) * run.len
@@ -660,13 +823,14 @@ class fileobject:
                     fstype = self.volume.ftype_str()
                     if fstype != None:
                         fstype_flag = '-f' + fstype
-                        cmd = ['icat',fstype_flag,'-b',str(block_size),'-o',str(offset/block_size),imagefile.name,str(inode)]
+                        cmd = ['icat',fstype_flag,'-b',str(block_size),'-o',str(offset//block_size),imagefile.name,str(inode)]
                     else:
-                        cmd = ['icat','-b',str(block_size),'-o',str(offset/block_size),imagefile.name,str(inode)]
+                        cmd = ['icat','-b',str(block_size),'-o',str(offset//block_size),imagefile.name,str(inode)]
                     (data,err) = Popen(cmd, stdout=PIPE,stderr=PIPE).communicate()
                     # Check for an error
                     if len(err) > 0 :
-                        raise ValueError("icat error (" + err.strip() + "): "+" ".join(cmd))
+                        #sys.stderr.write("Debug: type(err) = %r.\n" % type(err))
+                        raise ValueError("icat error (" + str(err).strip() + "): "+" ".join(cmd))
                     return data
                 else :
                     raise ValueError("Inode missing from file in compressed format.")
@@ -676,14 +840,16 @@ class fileobject:
             res.append(self.content_for_run(run=run,imagefile=imagefile))
         return "".join(res)
 
-    def tempfile(self,calcMD5=False,calcSHA1=False):
+    def tempfile(self,calcMD5=False,calcSHA1=False,calcSHA256=False):
         """Return the contents of imagefile in a named temporary file. If
-        calcMD5 or calcSHA1 are set TRUE, then the object returned has a
-        haslib object as self.md5 or self.sha1 with the requested hash."""
+        calcMD5, calcSHA1, or calcSHA256 are set TRUE, then the object
+        returned has a hashlib object as self.md5 or self.sha1 with the
+        requested hash."""
         import tempfile
         tf = tempfile.NamedTemporaryFile()
         if calcMD5: tf.md5 = hashlib.md5()
         if calcSHA1: tf.sha1 = hashlib.sha1()
+        if calcSHA256: tf.sha256 = hashlib.sha256()
         for run in self.byte_runs():
             self.imagefile.seek(run.img_offset)
             count = run.len
@@ -694,6 +860,7 @@ class fileobject:
                 tf.write(buf)
                 if calcMD5: tf.md5.update(buf)
                 if calcSHA1: tf.sha1.update(buf)
+                if calcSHA256: tf.sha256.update(buf)
                 count -= xfer_len
         tf.flush()
         return tf
@@ -810,12 +977,6 @@ class volumeobject_sax(saxobject):
         except KeyError:
             return self.tag('Partition_Offset')
 
-    def sector_size(self):
-        try:
-            return self.tag('sector_size')
-        except KeyError:
-            return self.tag('sector_size')
-
 register_sax_tag(volumeobject_sax,'ftype')
 register_sax_tag(volumeobject_sax,'ftype_str')
 register_sax_tag(volumeobject_sax,'block_count')
@@ -827,6 +988,11 @@ class imageobject_sax(saxobject):
 register_sax_tag(imageobject_sax,'imagesize')
 register_sax_tag(imageobject_sax,'image_filename')
 
+
+class creatorobject_sax(saxobject):
+    """A class that represents the <creator> section of a DFXML file"""
+for tag in ['creator','program','version']:
+    register_sax_tag(creatorobject_sax,tag)
 
 ################################################################
 
@@ -863,9 +1029,11 @@ class xml_reader:
         if self.cdata != None:
             self.cdata += data
 
-    def process_xml_stream(self,xml_stream,callback):
+    def process_xml_stream(self,xml_stream,callback,preserve_fis=False):
         "Run the reader on a given XML input stream"
         self.callback = callback
+        self.preserve_fis = preserve_fis
+        self.fi_history = []
         import xml.parsers.expat
         p = xml.parsers.expat.ParserCreate()
         p.StartElementHandler  = self._start_element
@@ -899,19 +1067,19 @@ class regxml_reader(xml_reader):
             
             #Note these two tests for root and parent _are_ supposed to be independent tests.
             if attrs.get("root",None) == "1":
-                new_object.type = "root"
+                new_object._type = "root"
             else:
-                new_object.type = ""
+                new_object._type = ""
 
             if len(self.objectstack) > 1:
                 new_object.parent_key = self.objectstack[-1]
 
             #Sanity check:  root key implies no parent
-            if new_object.type == "root":
+            if new_object.type() == "root":
                 assert new_object.parent_key == None
             #Sanity check:  no parent implies root key --OR-- recovered key
             if new_object.parent_key == None:
-                assert new_object.used == False or new_object.type == "root"
+                assert new_object.used == False or new_object.type() == "root"
 
             #Define new_object.name
             #Force a name for keys. If the key has no recorded name, apply artificial name prefix to nonce.
@@ -935,9 +1103,9 @@ class regxml_reader(xml_reader):
         elif name in ["value"]:
             new_object = registry_value_object()
             new_object.parent_key = self.objectstack[-1]
-            new_object.type = attrs.get("type",None)
+            new_object._type = attrs.get("type",None)
 
-            if new_object.type == "string-list":
+            if new_object.type() == "string-list":
                 new_object.strings = []
             
             #Store decoded name
@@ -983,7 +1151,6 @@ class regxml_reader(xml_reader):
             # TODO adjust hivexml to not use a plain "encoding" attribute
             value_encoding = attrs.get("encoding", attrs.get("value_encoding")) 
             if value_encoding == "base64":
-                import sys
                 if sys.version_info.major>2:
                     value_data = bytes(value_data,encoding='ascii')
                 return base64.b64decode(value_data)
@@ -996,7 +1163,7 @@ class regxml_reader(xml_reader):
         """
         The callback is invoked for each stack-popping operation, except the root.
         """
-        #TODO sanity-check the objectstack
+        # TODO sanity-check the objectstack
         if name in ["msregistry","hive"]:
             pass
         elif name in ["key","node"]:
@@ -1019,7 +1186,7 @@ class regxml_reader(xml_reader):
         elif name in ["string"]:
             value_object = self.objectstack[-1]
             if value_object.strings == None:
-                raise ValueError("regxml_reader._end_element:  parsing error, string found but parent's type can't support a string list.")
+                raise ValueError("regxml_reader._end_element:  parsing error, string element found, but parent's type can't support a string list.")
             value_object.strings.append(self.cdata)
             self.cdata = None
         elif name in ["byte_runs","byte_run"]:
@@ -1039,10 +1206,28 @@ class fileobject_reader(xml_reader):
         self.imageobject  = imageobject_sax()
         self.imagefile    = imagefile
         self.flags        = flags
+        self._sax_fi_pointer = None
         xml_reader.__init__(self)
+
+    @property
+    def _sax_fi_pointer(self):
+        """
+        This internal field of a fileobject_reader is a simple state machine.  A DFXML stream can contain fileobjects which contain original_fileobjects, which require the same parsing mechanisms.  This pointer saves on duplicating code with the SAX parser.
+
+        Type: None, or dfxml.fileobject.  Type enforced by the setter method.
+        """
+        return self._sax_fi_pointer_ 
+    @_sax_fi_pointer.setter
+    def _sax_fi_pointer(self, val):
+        if val is None:
+            self._sax_fi_pointer_ = None
+        else:
+            assert isinstance(val, fileobject)
+            self._sax_fi_pointer_ = val
         
     def _start_element(self, name, attrs):
         """ Handles the start of an element for the XPAT scanner"""
+        _logger.debug("fileobject_reader._start_element: name = %r" % name)
         self.tagstack.append(name)
         self.cdata = ""          # new element, so reset the data
         if name=="volume":
@@ -1057,6 +1242,12 @@ class fileobject_reader(xml_reader):
         if name=="fileobject":
             self.fileobject = fileobject_sax(imagefile=self.imagefile)
             self.fileobject.volume = self.volumeobject
+            self._sax_fi_pointer = self.fileobject
+            return
+        if name=="original_fileobject":
+            self.fileobject.original_fileobject = fileobject_sax(imagefile=self.imagefile)
+            #self.original_fileobject.volume = self.volumeobject #TODO
+            self._sax_fi_pointer = self.fileobject.original_fileobject
             return
         if name=='hashdigest':
             self.hashdigest_type = attrs['type'] 
@@ -1068,7 +1259,7 @@ class fileobject_reader(xml_reader):
 
 
     def _end_element(self, name):
-        """Handles the end of an eleement for the XPAT scanner"""
+        """Handles the end of an element for the XPAT scanner"""
         assert(self.tagstack.pop()==name) # make sure that the stack matches
         if name=="volume":
             self.volumeobject = None
@@ -1080,20 +1271,26 @@ class fileobject_reader(xml_reader):
             return
         if name=="fileobject":
             self.callback(self.fileobject)
+            if self.preserve_fis:
+                self.fi_history.append(self.fileobject)
             self.fileobject = None
+            return
+        if name=="original_fileobject":
+            self._sax_fi_pointer = self.fileobject
             return
         if name=='hashdigest' and len(self.tagstack)>0:
             top = self.tagstack[-1]            # what the hash was for
             alg = self.hashdigest_type.lower() # name of the hash algorithm used
             if top=='byte_run':
-                self.fileobject._byte_runs[-1].hashdigest[alg] = self.cdata
-            if top=="fileobject":
-                self.fileobject._tags[alg] = self.cdata # legacy
-                self.fileobject.hashdigest[alg] = self.cdata
+                self._sax_fi_pointer._byte_runs[-1].hashdigest[alg] = self.cdata
+            if top in ["fileobject", "original_fileobject"]:
+                self._sax_fi_pointer._tags[alg] = self.cdata # legacy
+                self._sax_fi_pointer.hashdigest[alg] = self.cdata
             self.cdata = None
             return
-        if self.fileobject:             # in a file object, all tags are remembered
-            self.fileobject._tags[name] = self.cdata
+
+        if self._sax_fi_pointer:             # in file objects, all tags are remembered
+            self._sax_fi_pointer._tags[name] = self.cdata
             self.cdata = None
             return
         # Special case: <source><image_filename>fn</image_filename></source>
@@ -1102,6 +1299,7 @@ class fileobject_reader(xml_reader):
             self.imageobject._tags['image_filename'] = self.cdata
 
 class volumeobject_reader(xml_reader):
+    """Reads just the <volume> section of a DFXML file"""
     def __init__(self):
         self.volumeobject = False
         xml_reader.__init__(self)
@@ -1138,6 +1336,37 @@ class volumeobject_reader(xml_reader):
         if name in ['image_filename','imagefile'] and self.tagstack[-1]=='source':
             self.imageobject._tags['image_filename'] = self.cdata
         return
+
+
+class FinishedReadingCreator(Exception):
+    """Class to indicate that creator object has been read"""
+
+class creatorobject_reader(xml_reader):
+    """Reads the <creator> section of a DFXML file"""
+    def __init__(self):
+        self.creatorobject = False
+        xml_reader.__init__(self)
+
+    def _start_element(self, name, attrs):
+        """ Handles the start of an element for the XPAT scanner"""
+        self.tagstack.append(name)
+        if name=="creator":
+            self.creatorobject = creatorobject_sax()
+            return
+        if self.creatorobject:
+            self.cdata = ""     # capture cdata for creatorobject
+
+    def _end_element(self, name):
+        """Handles the end of an eleement for the XPAT scanner"""
+        assert(self.tagstack.pop()==name)
+        if name=="creator":
+            self.callback(self.creatorobject)
+            self.creatorobject = None
+            raise FinishedReadingCreator("Done")
+        if self.tagstack[-1]=='creator' and self.creatorobject: # in the creator
+            self.creatorobject._tags[name] = self.cdata
+            self.cdata = None
+            return
 
 
 def combine_runs(runs):
@@ -1242,14 +1471,94 @@ class extentdb:
         return filter(lambda x:not self.intersects_sector(x),self.sectors_for_run(run))
 
 
-def read_dfxml(xmlfile=None,imagefile=None,flags=0,callback=None):
+def read_dfxml(xmlfile=None,imagefile=None,flags=0,callback=None,preserve_fis=False):
     """Processes an image using expat, calling a callback for every file object encountered.
     If xmlfile is provided, use that as the xmlfile, otherwise runs fiwalk."""
     if not callback:
         raise ValueError("callback must be specified")
     r = fileobject_reader(imagefile=imagefile,flags=flags)
-    r.process_xml_stream(xmlfile,callback)
+    if xmlfile and hasattr(xmlfile, "name") and xmlfile.name.endswith(".gz"):
+        buf = xmlfile.read(3)
+        if buf== b'\x1f\x8b\x08':
+            import gzip
+            xmlfile = gzip.open(xmlfile.name,'rb')
+        else:
+            xmlfile.seek(0,0)   # go back to beginning
+    r.process_xml_stream(xmlfile,callback,preserve_fis)
     return r
+
+def iter_dfxml(xmlfile, preserve_elements=False, imagefile=None):
+    """Returns an interator that yields fileobjects from a DFXML file.
+    
+    @param preserve_elements
+    Yielded fileobjects can also retain the xml.etree.ElementTree.Element,
+    the fileobject's source XML as a manipulable object.
+    Pass preserve_elements=True to get fi.xml_element.
+    NOTE: Retaining Elements is quite memory-intensive.  Creating a MAC
+    timeline from DFXML of the "CFREDS Hacking" image (a 34MB XML file)
+    using demo_mac_timeline_iter.py maxed at 65MB of RAM without
+    preserve_elements, and about 650MB with.  
+    
+    This function might be extended in the future to call Fiwalk (and
+    thus become what fileobjects_iter was supposed to be).
+
+    Note that to serialize the fileobjects to strings, you may wish to
+    use the ET_tostring wrapper function in this module.  The
+    ET.tostring function will print XML namespaces if the input XML has
+    an affiliated namespace.  This is presently necessary from the
+    repeated use of the DFXML sax code, but might not be necessary in
+    the future.
+    ElementTree-and-namespace references:
+      Reading with XML namespaces:
+        http://effbot.org/zone/element-namespaces.htm
+        http://stackoverflow.com/a/13475333/1207160
+        http://stackoverflow.com/a/1319417/1207160
+        http://stackoverflow.com/a/14853417/1207160
+      Writing with XML namespaces:
+        http://stackoverflow.com/a/3895958/1207160
+"""
+    import io
+    import xml.etree.ElementTree as ET
+
+    ET.register_namespace("", XMLNS_DFXML)
+
+    if not xmlfile:
+        raise ValueError("xmlfile must be specified")
+    qtagname = "{%s}fileobject" % XMLNS_DFXML
+    for event, elem in ET.iterparse(xmlfile, ("start","end")):
+        if event == "end":
+            #Note that ElementTree qualifies tag names if possible.  Thus, the paired check.
+            if elem.tag in ["fileobject", qtagname]:
+                xmlstring = ET.tostring(elem)
+                pseudof = io.BytesIO()
+                pseudof.write(xmlstring)
+                pseudof.seek(0)
+                def temp_callback(fi):
+                    #TODO The volumeobject isn't populated this way; need to catch with iterparse.
+                    if preserve_elements:
+                        fi.xml_element = elem
+                reader = read_dfxml(xmlfile=pseudof, imagefile=imagefile, callback=temp_callback, preserve_fis=True)
+                yield reader.fi_history[0]
+                if not preserve_elements:
+                    elem.clear()
+
+
+#This regular expression removes xmlns declarations from elements.
+#Note it will fail if the namespace includes a quote character.
+rx_xmlns = r"""\sxmlns(:\S+)?=['"][^'"]+['"]"""
+
+def ET_tostring(*pargs, **kwargs):
+    """
+    The ElementTree XML interface produces redundant namespace
+    declarations if you print an element at a time.  This method simply
+    removes all xmlns delcarations from the string.
+    """
+    global rx_xmlns
+    import xml.etree.ElementTree as ET
+    tempstring = ET.tostring(*pargs, **kwargs)
+    retval = re.sub(rx_xmlns, "", tempstring)
+    return retval
+
 
 def read_regxml(xmlfile=None,flags=0,callback=None):
     """Processes an image using expat, calling a callback for node encountered."""
@@ -1261,12 +1570,12 @@ def read_regxml(xmlfile=None,flags=0,callback=None):
     r = regxml_reader(flags=flags)
     try:
         r.process_xml_stream(xmlfile,callback)
-    except xml.parsers.expat.ExpatError:
+    except xml.parsers.expat.ExpatError as e:
         stderr.write("XML parsing error for file \"" + xmlfile.name + "\".  Object stack:\n")
         for x in r.objectstack:
             stderr.write(str(x) + "\n")
         stderr.write("(Done.)\n")
-        raise
+        raise e
     return r
 
 def fileobjects_sax(xmlfile=None,imagefile=None,flags=0):
@@ -1305,11 +1614,17 @@ def fileobjects_dom(xmlfile=None,imagefile=None,flags=0):
 def volumeobjects_sax(xmlfile=None,imagefile=None,flags=0):
     ret = []
     r = volumeobject_reader()
-    ##r.process_xml_stream(xmlfile,imagefile=None,callback=lambda vo:ret.append(vo))
-    r.process_xml_stream(xmlfile,callback=lambda vo:ret.append(vo))
+    r.process_xml_stream(xmlfile,imagefile=None,callback=lambda vo:ret.append(vo))
     return ret
     
-        
+def creatorobjects_sax(xmlfile=None,flags=0):
+    r = creatorobject_reader()
+    ret = []
+    try:
+        r.process_xml_stream(xmlfile,callback=lambda vo:ret.append(vo))
+    except FinishedReadingCreator as e:
+        pass
+    return ret
         
 ################################################################
 if __name__=="__main__":
@@ -1356,8 +1671,14 @@ if __name__=="__main__":
         assert test_unicode_string == safe_b64decode(test_base64_bytes)
         assert test_unicode_string == safe_b64decode(test_base64_string)
         print("Unicode value parsing good!")
+        print("Testing time string parsing")
+        test_rfc822tdatetime = rfc822Tdatetime("26 Jun 2012 22:34:58 -0700")
+        assert test_rfc822tdatetime.tzinfo is not None
+        print("Time string parsing good!")
         print("Testing dftime values")
         #check_equal("1900-01-02T02:03:04Z",-2208895016,True) #AJN time.mktime doesn't seem to support old times any more
+        a_pacific_dftime = dftime("26 Jun 2012 22:34:58 -0700")
+        assert 0.0 == dftime(a_pacific_dftime.iso8601()).timestamp() - a_pacific_dftime.timestamp()
         check_equal("2000-01-02T02:03:04Z","2000-01-02T03:03:04-0100",False)
         check_equal("2000-01-02T02:03:04-0100","2000-01-02T02:03:04-0100",True)
         check_equal("2000-01-02T02:03:04-0100","2000-01-02T02:03:04-0200",False)
@@ -1367,6 +1688,9 @@ if __name__=="__main__":
         check_greater("2009-11-17T00:33:30.9375Z","2009-11-17T00:33:30Z",True)
         check_equal("2009-11-17T00:33:30.9375Z","2009-11-17T00:33:30Z",False)
         check_equal("2009-11-17T00:33:30.0000Z","2009-11-17T00:33:30Z",True)
+        check_equal("27 Jun 2012 06:02:00 -0000","27 Jun 2012 05:02:00 -0100",True)
+        check_equal("27 Jun 2012 06:02:00 -0000","2012-06-27T06:02:00Z",True)
+        check_equal("26 Jun 2012 22:34:58 -0700","2012-06-27T05:34:58Z", True)
         print("dftime values passed.")
         print("Testing byte_run overlap engine:")
         db = extentdb()
@@ -1374,7 +1698,13 @@ if __name__=="__main__":
         db.add(a)
         b = byte_run(5,5)
         db.add(b)
-        assert db.intersects(byte_run(0,5))==byte_run(0,5)
+        try:
+            assert db.intersects(byte_run(0,5))==byte_run(0,5)
+        except:
+            print(type(cmp))
+            print(db.intersects(byte_run(0,5)))
+            print(byte_run(0,5))
+            raise
         assert db.intersects(byte_run(0,1))
         assert db.intersects(byte_run(2,3))
         assert db.intersects(byte_run(4,1))
@@ -1387,3 +1717,8 @@ if __name__=="__main__":
         assert db.intersects(byte_run(-1,1))==None
         assert db.intersects(byte_run(10,1))==None
         print("Overlap engine good!")
+        assert re.sub(rx_xmlns, "", """<fileobject xmlns="http://www.forensicswiki.org/wiki/Category:Digital_Forensics_XML">""") == "<fileobject>"
+        assert re.sub(rx_xmlns, "", """<fileobject xmlns:dfxml="http://www.forensicswiki.org/wiki/Category:Digital_Forensics_XML">""") == "<fileobject>"
+        assert re.sub(rx_xmlns, "", """<fileobject delta:new_file="1">""") == """<fileobject delta:new_file="1">"""
+        assert re.sub(rx_xmlns, "", """<fileobject xmlns="http://www.forensicswiki.org/wiki/Category:Digital_Forensics_XML" attr="1">""") == """<fileobject attr="1">"""
+        print("XML namespace regex good!")
