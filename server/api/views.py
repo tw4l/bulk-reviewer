@@ -6,7 +6,6 @@ from . import serializers
 from .tasks import run_bulk_extractor
 
 
-
 class ListTransfer(generics.ListCreateAPIView):
     queryset = models.Transfer.objects.all()
     serializer_class = serializers.TransferSerializer
@@ -62,8 +61,12 @@ def bulk_extractor(request, pk):
     transfer_uuid = str(be_session.transfer.uuid)
     transfer_source = be_session.transfer.source_path.path
     disk_image = be_session.transfer.disk_image
-    be_config = be_session.be_config
+    be_config = str(be_session.be_config.uuid)
 
-    output = run_bulk_extractor.delay(transfer_uuid, transfer_source, disk_image)
+    output = run_bulk_extractor.delay(pk,
+                                      transfer_uuid,
+                                      transfer_source,
+                                      disk_image,
+                                      be_config)
     res = output.get()
     return render(request, 'bulk_extractor_test.html', {'output': res})
