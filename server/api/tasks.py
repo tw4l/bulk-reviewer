@@ -46,8 +46,8 @@ def run_bulk_extractor(be_session_uuid):
 
         # Run identify_filenames to annotate feature files for disk images
         annotated_feature_file_dir = os.path.join(settings.MEDIA_ROOT,
-                                    'annotated_feature_files',
-                                    be_session_uuid)
+                                                  'annotated_feature_files',
+                                                  be_session_uuid)
         if not os.path.exists(annotated_feature_file_dir):
             os.makedirs(annotated_feature_file_dir)
         if disk_image:
