@@ -1,5 +1,5 @@
 from rest_framework import generics
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
 from . import models
 from . import serializers
@@ -57,16 +57,6 @@ class DetailBESession(generics.RetrieveUpdateDestroyAPIView):
 
 
 def bulk_extractor(request, pk):
-    be_session = get_object_or_404(models.BESession, pk=pk)
-    transfer_uuid = str(be_session.transfer.uuid)
-    transfer_source = be_session.transfer.source_path.path
-    disk_image = be_session.transfer.disk_image
-    be_config = str(be_session.be_config.uuid)
-
-    output = run_bulk_extractor.delay(pk,
-                                      transfer_uuid,
-                                      transfer_source,
-                                      disk_image,
-                                      be_config)
+    output = run_bulk_extractor.delay(pk)
     res = output.get()
     return render(request, 'bulk_extractor_test.html', {'output': res})
