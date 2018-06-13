@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
   libboost-dev \
   libicu-dev \
   libtool \
+  sleuthkit \
 && rm -rf /var/lib/apt/lists/*
 
 # Get bulk_extractor and non-packaged dependencies
