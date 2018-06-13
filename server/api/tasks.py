@@ -13,7 +13,6 @@ def run_bulk_extractor(be_session_uuid):
 
     # Get necessary information
     be_session = get_object_or_404(BESession, pk=be_session_uuid)
-    transfer_uuid = str(be_session.transfer.uuid)
     transfer_source = be_session.transfer.source_path.path
     disk_image = be_session.transfer.disk_image
     # be_config = str(be_session.be_config.uuid)
@@ -21,7 +20,7 @@ def run_bulk_extractor(be_session_uuid):
     # Create feature file output directory
     feature_file_dir = os.path.join(settings.MEDIA_ROOT,
                                     'feature_files',
-                                    transfer_uuid)
+                                    be_session_uuid)
     if not os.path.exists(feature_file_dir):
         os.makedirs(feature_file_dir)
 
