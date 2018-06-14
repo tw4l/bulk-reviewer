@@ -55,13 +55,14 @@ def parse_dfxml_to_db(be_session_uuid):
         new_file.__dict__.update(file_info)
         new_file.save()
 
+
 def parse_feature_file(feature_file, be_session_uuid):
     with open(feature_file, 'r', encoding='utf-8') as f:
         for line in f:
             # Ignore commented lines
             if line.startswith(('#')):
                 continue
-            
+
             # Parse and clean up tab-separated lines
             DELIM = '\U0010001c'
             forensic_path = ''
@@ -69,7 +70,7 @@ def parse_feature_file(feature_file, be_session_uuid):
             feature = ''
             context = ''
             try:
-                (forensic_path,feature,context) = line.split('\t')
+                (forensic_path, feature, context) = line.split('\t')
                 if DELIM in forensic_path:
                     filepath = forensic_path.split(DELIM)[0]
                 context = context.rstrip()  # strip trailing newline
@@ -91,7 +92,7 @@ def parse_feature_file(feature_file, be_session_uuid):
                     continue
 
                 # Update db
-                new_feature = Feature.objects.create(
+                Feature.objects.create(
                     feature_file=os.path.basename(feature_file),
                     forensic_path=forensic_path,
                     feature=feature,
@@ -100,6 +101,7 @@ def parse_feature_file(feature_file, be_session_uuid):
                 )
             except:
                 print("Error processing line in feature file", feature_file)
+
 
 def parse_annotated_feature_file(feature_file, be_session_uuid):
     with open(feature_file, 'r', encoding='utf-8') as f:
@@ -125,7 +127,7 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                     continue
 
                 # Update db
-                new_feature = Feature.objects.create(
+                Feature.objects.create(
                     feature_file=os.path.basename(feature_file),
                     offset=int(offset),
                     feature=feature,
@@ -134,6 +136,3 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                 )
             except:
                 print("Error reading line in feature file", feature_file)
-
-
-
