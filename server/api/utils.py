@@ -11,10 +11,8 @@ import Objects
 
 def unzip_transfer(zip_file, new_path):
     with open(zip_file, 'rb') as f:
-        print("Unzipping file", zip_file)
         z = zipfile.ZipFile(f)
         for name in z.namelist():
-            print("    Extracting file", name)
             z.extract(name, new_path)
 
 
