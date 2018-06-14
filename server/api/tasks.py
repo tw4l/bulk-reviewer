@@ -54,6 +54,16 @@ def run_bulk_extractor(be_session_uuid):
     cmd = ['bulk_extractor',
            '-o',
            feature_file_dir,
+           '-E',
+           'accts',
+           '-e',
+           'email',
+           '-S',
+           'jpeg_carve_mode=0',
+           '-S',
+           'unzip_carve_mode=0',
+           '-S',
+           'unrar_carve_mode=0',
            transfer_source]
     if not disk_image:
         cmd.insert(3, '-R')
