@@ -59,7 +59,7 @@ def run_bulk_extractor(be_session_uuid):
            '-e',
            'email',
            '-e',
-           'pdf'
+           'pdf',
            '-S',
            'jpeg_carve_mode=0',
            '-S',
