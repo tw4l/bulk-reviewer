@@ -2,7 +2,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from celery import shared_task
 from .models import BESession
-from .utils import unzip_transfer, parse_dfxml_to_db
+from .utils import unzip_transfer, parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
 
 import os
 import subprocess
@@ -18,10 +18,10 @@ def run_bulk_extractor(be_session_uuid):
     # be_config = str(be_session.be_config.uuid)
 
     # Sanity check
-    if be_session.in_process:
-        return('Bulk Extractor already in process for this session.')
     if be_session.processing_complete:
         return('Bulk Extractor has already completed for this session.')
+    if be_session.in_process:
+        return('Bulk Extractor already in process for this session.')
 
     # Mark session as in process
     be_session.in_process = True
@@ -133,6 +133,34 @@ def run_bulk_extractor(be_session_uuid):
 
         # Read files into db from dfxml
         parse_dfxml_to_db(be_session_uuid)
+
+        # Read feature files into db
+        if disk_image:
+            for feature_file in os.listdir(annotated_feature_file_dir):
+                # Absolute path for file
+                ff_abspath = os.path.join(annotated_feature_file_dir, feature_file)
+                # Skip empty files
+                if not os.path.getsize(ff_abspath) > 0:
+                    continue
+                # Parse file and write features into db
+                parse_annotated_feature_file(ff_abspath, be_session_uuid)
+        else:
+            for feature_file in os.listdir(feature_file_dir):
+                # Absolute path for file
+                ff_abspath = os.path.join(feature_file_dir, feature_file)
+                # Skip empty files
+                if not os.path.getsize(ff_abspath) > 0:
+                    continue
+                # Skip non-txt files
+                if not feature_file.endswith(".txt"):
+                    continue
+                # Skip histograms
+                if "histogram" in feature_file:
+                    continue
+                if "url_" in feature_file:
+                    continue
+                # Parse file and write features into db
+                parse_feature_file(ff_abspath, be_session_uuid)
 
         # Mark processing as complete in db
         be_session.processing_complete = True

@@ -18,7 +18,7 @@ class Transfer(models.Model):
     uploaded = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.source_path)
+        return('{0}: {1}'.format(str(self.uuid), self.source_path))
 
 
 class BEConfig(models.Model):
@@ -31,7 +31,7 @@ class BEConfig(models.Model):
     # TODO: scanners, alert list, stop list, ssn_mode, regex
 
     def __str__(self):
-        return str(self.name)
+        return('{0}: {1}'.format(str(self.uuid), self.name))
 
 
 class BESession(models.Model):
@@ -74,7 +74,7 @@ class BESession(models.Model):
     processing_complete = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.name)
+        return('{0}: {1}'.format(str(self.uuid), self.name))
 
 
 class File(models.Model):
@@ -107,7 +107,7 @@ class File(models.Model):
     )
 
     def __str__(self):
-        return str(self.filepath)
+        return('{0}: {1}'.format(str(self.uuid), self.filename))
 
 
 class Feature(models.Model):
@@ -117,10 +117,10 @@ class Feature(models.Model):
         editable=False
     )
     feature_file = models.CharField(max_length=50)
-    forensic_path = models.CharField(max_length=100)
-    offset = models.IntegerField()
-    feature = models.TextField()
-    context = models.TextField()
+    forensic_path = models.CharField(max_length=100, null=True)
+    offset = models.IntegerField(null=True)
+    feature = models.TextField(null=True)
+    context = models.TextField(null=True)
     source_file = models.ForeignKey(
         File,
         related_name="features",
@@ -128,4 +128,4 @@ class Feature(models.Model):
     )
 
     def __str__(self):
-        return str(self.uuid)
+        return('{0}: {1}'.format(str(self.uuid), self.feature))
