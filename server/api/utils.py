@@ -64,7 +64,7 @@ def parse_feature_file(feature_file, be_session_uuid):
                 continue
 
             # Parse and clean up tab-separated lines
-            DELIM = '\U0010001c'
+            DELIM = '\U0010001c'  # Forensic path delimiter used by bulk_extractor
             forensic_path = ''
             filepath = ''
             feature = ''
@@ -86,7 +86,6 @@ def parse_feature_file(feature_file, be_session_uuid):
                         File,
                         filepath=filepath,
                         be_session=be_session)
-                    print("Matching file:", str(matching_file.filename))
                 except:
                     print("Matching file not found for", filepath)
                     continue

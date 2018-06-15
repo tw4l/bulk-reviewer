@@ -68,7 +68,8 @@ def run_bulk_extractor(be_session_uuid):
            'unrar_carve_mode=0',
            transfer_source]
     if not disk_image:
-        cmd.insert(3, '-R')
+        cmd.insert(15, '-R')
+        print(cmd)  # for debugging
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
