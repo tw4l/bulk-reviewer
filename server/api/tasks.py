@@ -69,7 +69,6 @@ def run_bulk_extractor(be_session_uuid):
            transfer_source]
     if not disk_image:
         cmd.insert(15, '-R')
-        print(cmd)  # for debugging
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
@@ -101,7 +100,7 @@ def run_bulk_extractor(be_session_uuid):
                 print('fiwalk failure', e)
 
         else:
-            cmd = 'cd "{0}" && python3 /src/bulkext_scripts/walk_to_dfxml.py > {1}'.format(transfer_source, dfxml_path)
+            cmd = 'cd "{0}" && python3 /src/bulkext_scripts/walk_to_dfxml.py > "{1}"'.format(transfer_source, dfxml_path)
             try:
                 subprocess.call(cmd, shell=True)
                 be_session.dfxml_path = dfxml_path
