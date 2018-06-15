@@ -64,15 +64,15 @@ def parse_feature_file(feature_file, be_session_uuid):
                 continue
 
             # Parse and clean up tab-separated lines
-            DELIM = '\U0010001c'  # Forensic path delimiter used by bulk_extractor
+            DELIMITER = '\U0010001c'
             forensic_path = ''
             filepath = ''
             feature = ''
             context = ''
             try:
                 (forensic_path, feature, context) = line.split('\t')
-                if DELIM in forensic_path:
-                    filepath = forensic_path.split(DELIM)[0]
+                if DELIMITER in forensic_path:
+                    filepath = forensic_path.split(DELIMITER)[0]
                 context = context.rstrip()  # strip trailing newline
 
                 # Make filepath relative to match DFXML filename
