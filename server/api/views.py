@@ -17,7 +17,7 @@ class DetailTransfer(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListFile(generics.ListCreateAPIView):
-    queryset = models.File.objects.all()
+    queryset = models.File.objects.filter(be_session=session)
     serializer_class = serializers.FileSerializer
 
 
