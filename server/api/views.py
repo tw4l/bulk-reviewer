@@ -17,8 +17,15 @@ class DetailTransfer(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListFile(generics.ListAPIView):
-    queryset = models.File.objects.filter(be_session=pk)
     serializer_class = serializers.FileSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the files for
+        the session as determined by the UUID portion of the URL.
+        """
+        session = self.kwargs['pk']
+        return models.File.objects.filter(be_session=session)
 
 
 class DetailFile(generics.RetrieveUpdateDestroyAPIView):
@@ -27,8 +34,15 @@ class DetailFile(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListFeature(generics.ListAPIView):
-    queryset = models.Feature.objects.filter(source_file=pk)
     serializer_class = serializers.FeatureSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the features for
+        the file as determined by the UUID portion of the URL.
+        """
+        source_file = self.kwargs['pk']
+        return models.Feature.objects.filter(source_file=source_file)
 
 
 class DetailFeature(generics.RetrieveUpdateDestroyAPIView):
