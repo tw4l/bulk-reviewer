@@ -6,7 +6,7 @@ from . import serializers
 from .tasks import run_bulk_extractor
 
 
-class ListTransfer(generics.ListCreateAPIView):
+class ListTransfer(generics.ListAPIView):
     queryset = models.Transfer.objects.all()
     serializer_class = serializers.TransferSerializer
 
@@ -16,7 +16,7 @@ class DetailTransfer(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.TransferSerializer
 
 
-class ListFile(generics.ListCreateAPIView):
+class ListFile(generics.ListAPIView):
     queryset = models.File.objects.filter(be_session=session)
     serializer_class = serializers.FileSerializer
 
@@ -26,7 +26,7 @@ class DetailFile(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.FileSerializer
 
 
-class ListFeature(generics.ListCreateAPIView):
+class ListFeature(generics.ListAPIView):
     queryset = models.Feature.objects.filter(source_file=file)
     serializer_class = serializers.FeatureSerializer
 
@@ -36,7 +36,7 @@ class DetailFeature(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.FeatureSerializer
 
 
-class ListBEConfig(generics.ListCreateAPIView):
+class ListBEConfig(generics.ListAPIView):
     queryset = models.BEConfig.objects.all()
     serializer_class = serializers.BEConfigSerializer
 
@@ -46,7 +46,7 @@ class DetailBEConfig(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.BEConfigSerializer
 
 
-class ListBESession(generics.ListCreateAPIView):
+class ListBESession(generics.ListAPIView):
     queryset = models.BESession.objects.all()
     serializer_class = serializers.BESessionSerializer
 
