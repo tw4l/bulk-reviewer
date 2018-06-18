@@ -44,6 +44,17 @@ class ListFeature(generics.ListAPIView):
         source_file = self.kwargs['pk']
         return models.Feature.objects.filter(source_file=source_file)
 
+class ListFeatureBySession(generics.ListAPIView):
+    serializer_class = serializers.FeatureSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the features for
+        the session as determined by the UUID portion of the URL.
+        """
+        session = self.kwargs['pk']
+        return models.Feature.objects.filter(source_file__be_session=session)
+
 
 class DetailFeature(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Feature.objects.all()
