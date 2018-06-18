@@ -27,7 +27,7 @@ class DetailFile(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListFeature(generics.ListCreateAPIView):
-    queryset = models.Feature.objects.all()
+    queryset = models.Feature.objects.filter(source_file=file)
     serializer_class = serializers.FeatureSerializer
 
 

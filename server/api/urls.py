@@ -8,7 +8,7 @@ urlpatterns = [
     path('transfer/<uuid:pk>/', views.DetailTransfer.as_view()),
     path('files/<uuid:session>/', views.ListFile.as_view()),
     path('file/<uuid:pk>/', views.DetailFile.as_view()),
-    path('feature/', views.ListFeature.as_view()),
+    path('features/<uuid:file>/', views.ListFeature.as_view()),
     path('feature/<uuid:pk>/', views.DetailFeature.as_view()),
     path('config/', views.ListBEConfig.as_view()),
     path('config/<uuid:pk>/', views.DetailBEConfig.as_view()),
