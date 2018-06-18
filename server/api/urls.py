@@ -6,14 +6,14 @@ from . import views
 urlpatterns = [
     path('transfer/', views.ListTransfer.as_view()),
     path('transfer/<uuid:pk>/', views.DetailTransfer.as_view()),
-    path('files/<uuid:session>/', views.ListFile.as_view()),
     path('file/<uuid:pk>/', views.DetailFile.as_view()),
-    path('features/<uuid:file>/', views.ListFeature.as_view()),
+    path('file/<uuid:pk>/features/', views.ListFeature.as_view()),
     path('feature/<uuid:pk>/', views.DetailFeature.as_view()),
     path('config/', views.ListBEConfig.as_view()),
     path('config/<uuid:pk>/', views.DetailBEConfig.as_view()),
     path('session/', views.ListBESession.as_view()),
     path('session/<uuid:pk>/', views.DetailBESession.as_view()),
+    path('session/<uuid:pk>/files/', views.ListFile.as_view()),
     path('bulk_extractor/<uuid:pk>/', views.bulk_extractor, name='bulk_extractor'),
 ]
 
