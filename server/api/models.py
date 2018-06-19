@@ -28,7 +28,12 @@ class BEConfig(models.Model):
         editable=False
     )
     name = models.CharField(max_length=100)
-    # TODO: scanners, alert list, stop list, ssn_mode, regex
+    regex_file = models.FileField(
+        upload_to='regex_files/',
+        null=True,
+        blank=True
+    )
+    # TODO: scanners, alert list, stop list, ssn_mode
 
     def __str__(self):
         return('{0}: {1}'.format(str(self.uuid), self.name))
@@ -51,22 +56,10 @@ class BESession(models.Model):
         related_name="sessions",
         on_delete=models.CASCADE
     )
-    extracted_transfer = models.TextField(
-        null=True,
-        blank=True
-    )
-    feature_files_path = models.TextField(
-        null=True,
-        blank=True
-    )
-    annotated_feature_files_path = models.TextField(
-        null=True,
-        blank=True
-    )
-    dfxml_path = models.TextField(
-        null=True,
-        blank=True
-    )
+    extracted_transfer = models.TextField(blank=True)
+    feature_files_path = models.TextField(blank=True)
+    annotated_feature_files_path = models.TextField(blank=True)
+    dfxml_path = models.TextField(blank=True)
     in_process = models.BooleanField(default=False)
     be_complete = models.BooleanField(default=False)
     features_annotated = models.BooleanField(default=False)
@@ -117,10 +110,16 @@ class Feature(models.Model):
         editable=False
     )
     feature_file = models.CharField(max_length=50)
-    forensic_path = models.CharField(max_length=100, null=True)
-    offset = models.IntegerField(null=True)
-    feature = models.TextField(null=True)
-    context = models.TextField(null=True)
+    forensic_path = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    offset = models.IntegerField(
+        null=True,
+        blank=True
+    )
+    feature = models.TextField(blank=True)
+    context = models.TextField(blank=True)
     source_file = models.ForeignKey(
         File,
         related_name="features",
