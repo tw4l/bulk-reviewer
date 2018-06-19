@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from celery import shared_task
-from .models import BESession, BEConfig
+from .models import BESession, BEConfig, File
 from .utils import unzip_transfer, parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
 
+import magic
 import os
 import subprocess
 
@@ -142,6 +143,15 @@ def run_bulk_extractor(be_session_uuid):
 
         # Read files into db from dfxml
         parse_dfxml_to_db(be_session_uuid)
+
+        # Identify mime types for uploaded files
+        if not disk_image:
+            files_to_identify = File.objects.filter(be_session=be_session_uuid)
+            for f in files_to_identify:
+                fpath = os.path.join(extracted_files_path, f.filepath)
+                mime_type = magic.from_file(fpath, mime=True)
+                f.mime_type = mime_type
+                f.save()
 
         # Read feature files into db
         if disk_image:

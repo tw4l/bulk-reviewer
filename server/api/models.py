@@ -97,7 +97,7 @@ class File(models.Model):
     )
     redacted = models.BooleanField(default=False)
     note = models.TextField(blank=True)
-    file_type = models.CharField(
+    mime_type = models.CharField(
         max_length=200,
         blank=True
     )
