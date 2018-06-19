@@ -139,3 +139,18 @@ class Feature(models.Model):
 
     def __str__(self):
         return('{0}: {1}'.format(str(self.uuid), self.feature))
+
+
+class RedactedSet(models.Model):
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    log_only = models.BooleanField(default=False)
+    redacted_set_path = models.TextField(blank=True)
+    be_session = models.ForeignKey(
+        BESession,
+        related_name="redacted_sets",
+        on_delete=models.CASCADE
+    )
