@@ -1,5 +1,4 @@
 from .models import BESession, File, Feature
-from django.shortcuts import get_object_or_404
 import os
 import sys
 import zipfile
@@ -17,7 +16,7 @@ def unzip_transfer(zip_file, new_path):
 
 
 def parse_dfxml_to_db(be_session_uuid):
-    be_session = get_object_or_404(BESession, pk=be_session_uuid)
+    be_session = BESession.objects.get(pk=be_session_uuid)
     dfxml_file = be_session.dfxml_path
 
     # Gather info for each FileObject and save to db
@@ -76,17 +75,17 @@ def parse_feature_file(feature_file, be_session_uuid):
                 context = context.rstrip()  # strip trailing newline
 
                 # Make filepath relative to match DFXML filename
-                be_session = get_object_or_404(BESession, pk=be_session_uuid)
+                be_session = BESession.objects.get(pk=be_session_uuid)
                 substr = str(be_session.uuid) + '/'
                 filepath = filepath.split(substr)[1]
 
                 # Find matching file
                 try:
-                    matching_file = get_object_or_404(
-                        File,
+                    matching_file = File.objects.get(
                         filepath=filepath,
-                        be_session=be_session)
-                except:
+                        be_session=be_session
+                    )
+                except File.DoesNotExist:
                     print("Matching file not found for", filepath)
                     continue
 
@@ -98,7 +97,7 @@ def parse_feature_file(feature_file, be_session_uuid):
                     context=context,
                     source_file=matching_file
                 )
-            except:
+            except Exception:
                 print("Error processing line in feature file", feature_file)
 
 
@@ -114,14 +113,13 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                 (offset, feature, context, filepath, blockhash) = line.split('\t')
 
                 # Find matching file
-                be_session = get_object_or_404(BESession, pk=be_session_uuid)
+                be_session = BESession.objects.get(pk=be_session_uuid)
                 try:
-                    matching_file = get_object_or_404(
-                        File,
+                    matching_file = File.objects.get(
                         filepath=filepath,
                         be_session=be_session)
                     print("Matching file:", str(matching_file.filename))
-                except:
+                except File.DoesNotExist:
                     print("Matching file not found for", filepath)
                     continue
 
@@ -133,5 +131,5 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                     context=context,
                     source_file=matching_file
                 )
-            except:
+            except Exception:
                 print("Error reading line in feature file", feature_file)

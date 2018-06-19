@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from celery import shared_task
 from .models import BESession, BEConfig, File
 from .utils import unzip_transfer, parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
@@ -13,10 +12,10 @@ import subprocess
 def run_bulk_extractor(be_session_uuid):
 
     # Get necessary information
-    be_session = get_object_or_404(BESession, pk=be_session_uuid)
+    be_session = BESession.objects.get(pk=be_session_uuid)
     transfer_source = be_session.transfer.source_path.path
     disk_image = be_session.transfer.disk_image
-    be_config = get_object_or_404(BEConfig, pk=str(be_session.be_config.uuid))
+    be_config = BEConfig.objects.get(pk=str(be_session.be_config.uuid))
     if be_config.regex_file:
         regex_file = be_config.regex_file.path
 
@@ -41,7 +40,7 @@ def run_bulk_extractor(be_session_uuid):
             unzip_transfer(transfer_source, extracted_files_path)
             be_session.extracted_transfer = extracted_files_path
             be_session.save()
-        except:
+        except Exception:
             return('Error extracting transfer zip file')
 
     # Create feature file output directory
@@ -153,7 +152,7 @@ def run_bulk_extractor(be_session_uuid):
                     mime_type = magic.from_file(fpath, mime=True)
                     f.mime_type = mime_type
                     f.save()
-                except:
+                except Exception:
                     print('Error determining mime type for', fpath)
 
         # Read feature files into db
