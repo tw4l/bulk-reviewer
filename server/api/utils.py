@@ -4,7 +4,10 @@ import sys
 import zipfile
 
 # Import Objects.py
-sys.path.append('/src/bulkext_scripts/')
+if "linux" in sys.platform:
+    sys.path.append('/usr/share/bulk_extractor')
+elif "darwin" in sys.platform:
+    sys.path.append('/usr/local/share/bulk_extractor')
 import Objects
 
 

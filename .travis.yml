@@ -1,5 +1,8 @@
 language: python
 
+before_install:
+  - sudo cp -R server/bulk_extractor/ /usr/share/bulk_extractor/
+
 install:
   - pip install tox 
 

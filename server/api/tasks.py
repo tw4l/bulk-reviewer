@@ -109,7 +109,7 @@ def run_bulk_extractor(be_session_uuid):
                 print('fiwalk failure', e)
 
         else:
-            cmd = 'cd "{0}" && python3 /src/bulkext_scripts/walk_to_dfxml.py > "{1}"'.format(transfer_source, dfxml_path)
+            cmd = 'cd "{0}" && python3 /usr/share/bulk_extractor/walk_to_dfxml.py > "{1}"'.format(transfer_source, dfxml_path)
             try:
                 subprocess.call(cmd, shell=True)
                 be_session.dfxml_path = dfxml_path
@@ -126,7 +126,7 @@ def run_bulk_extractor(be_session_uuid):
             if not os.path.exists(annotated_feature_file_dir):
                 os.makedirs(annotated_feature_file_dir)
             cmd = ['python3',
-                   '/src/bulkext_scripts/identify_filenames.py',
+                   '/usr/share/bulk_extractor/identify_filenames.py',
                    '--all',
                    '--xmlfile',
                    be_session.dfxml_path,

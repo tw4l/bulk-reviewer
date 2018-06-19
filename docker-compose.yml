@@ -18,6 +18,7 @@ services:
     hostname: server
     volumes:
       - ./server:/src
+      - ./server/bulk_extractor:/usr/share/bulk_extractor
     ports:
       - '8000:8000'
     command: >
@@ -33,6 +34,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./server:/src
+      - ./server/bulk_extractor:/usr/share/bulk_extractor
     command: celery -A server worker -l info
     depends_on:
       - rabbitmq
