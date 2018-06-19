@@ -22,6 +22,11 @@ class Transfer(models.Model):
 
 
 class BEConfig(models.Model):
+    SSN_CHOICES = (
+        (0, 'Labeled "SSN:" (strictest)'),
+        (1, 'No SSN, dashes required (default)'),
+        (2, 'No dashes required (least strict)'),
+    )
     uuid = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -33,7 +38,11 @@ class BEConfig(models.Model):
         null=True,
         blank=True
     )
-    # TODO: scanners, alert list, stop list, ssn_mode
+    ssn_mode = models.IntegerField(
+        choices=SSN_CHOICES,
+        default=1
+    )
+    # TODO: SIN, scanners, alert list, stop list
 
     def __str__(self):
         return('{0}: {1}'.format(str(self.uuid), self.name))
