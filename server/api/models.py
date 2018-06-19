@@ -147,6 +147,7 @@ class RedactedSet(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    name = models.CharField(max_length=100)
     log_only = models.BooleanField(default=False)
     redacted_set_path = models.TextField(blank=True)
     be_session = models.ForeignKey(
