@@ -149,9 +149,12 @@ def run_bulk_extractor(be_session_uuid):
             files_to_identify = File.objects.filter(be_session=be_session_uuid)
             for f in files_to_identify:
                 fpath = os.path.join(extracted_files_path, f.filepath)
-                mime_type = magic.from_file(fpath, mime=True)
-                f.mime_type = mime_type
-                f.save()
+                try:
+                    mime_type = magic.from_file(fpath, mime=True)
+                    f.mime_type = mime_type
+                    f.save()
+                except:
+                    print('Error determining mime type for', fpath)
 
         # Read feature files into db
         if disk_image:
