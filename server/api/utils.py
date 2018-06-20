@@ -49,6 +49,8 @@ def parse_dfxml_to_db(be_session_uuid):
             file_info['date_modified'] = obj.mtime
         if obj.crtime:
             file_info['date_created'] = obj.crtime
+        if obj.ctime:
+            file_info['date_created'] = obj.ctime
         if obj.unalloc:
             if obj.unalloc == 1:
                 file_info['allocated'] = False
