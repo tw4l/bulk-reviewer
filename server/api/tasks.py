@@ -1,6 +1,6 @@
 from django.conf import settings
 from celery import shared_task
-from .models import BESession, BEConfig, File
+from .models import BESession, File
 from .utils import unzip_transfer, parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
 
 import magic
@@ -15,7 +15,7 @@ def run_bulk_extractor(be_session_uuid):
     be_session = BESession.objects.get(pk=be_session_uuid)
     transfer_source = be_session.transfer.source_path.path
     disk_image = be_session.transfer.disk_image
-    be_config = BEConfig.objects.get(pk=str(be_session.be_config.uuid))
+    be_config = be_session.be_config
     if be_config.regex_file:
         regex_file = be_config.regex_file.path
 

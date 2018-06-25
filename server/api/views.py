@@ -6,6 +6,11 @@ from . import serializers
 from .tasks import run_bulk_extractor
 
 
+class CreateTransfer(generics.CreateAPIView):
+    queryset = models.Transfer.objects.all()
+    serializer_class = serializers.TransferSerializer
+
+
 class ListTransfer(generics.ListAPIView):
     queryset = models.Transfer.objects.all()
     serializer_class = serializers.TransferSerializer
@@ -62,6 +67,11 @@ class DetailFeature(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.FeatureSerializer
 
 
+class CreateBEConfig(generics.CreateAPIView):
+    queryset = models.BEConfig.objects.all()
+    serializer_class = serializers.BEConfigSerializer
+
+
 class ListBEConfig(generics.ListAPIView):
     queryset = models.BEConfig.objects.all()
     serializer_class = serializers.BEConfigSerializer
@@ -70,6 +80,11 @@ class ListBEConfig(generics.ListAPIView):
 class DetailBEConfig(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.BEConfig.objects.all()
     serializer_class = serializers.BEConfigSerializer
+
+
+class CreateBESession(generics.CreateAPIView):
+    queryset = models.BESession.objects.all()
+    serializer_class = serializers.BESessionSerializer
 
 
 class ListBESession(generics.ListAPIView):
