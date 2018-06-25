@@ -69,7 +69,7 @@ class BESession(models.Model):
     feature_files_path = models.TextField(blank=True)
     annotated_feature_files_path = models.TextField(blank=True)
     dfxml_path = models.TextField(blank=True)
-    in_process = models.BooleanField(default=False)
+    started = models.DateTimeField(auto_now_add=True)
     processing_failure = models.BooleanField(default=False)
     processing_complete = models.BooleanField(default=False)
 
