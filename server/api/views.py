@@ -1,9 +1,7 @@
 from rest_framework import generics
-from django.shortcuts import render
 
 from . import models
 from . import serializers
-from .tasks import run_bulk_extractor
 
 
 class CreateTransfer(generics.CreateAPIView):
