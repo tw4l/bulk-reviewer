@@ -95,9 +95,3 @@ class ListBESession(generics.ListAPIView):
 class DetailBESession(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.BESession.objects.all()
     serializer_class = serializers.BESessionSerializer
-
-
-def bulk_extractor(request, pk):
-    output = run_bulk_extractor.delay(pk)
-    res = output.get()
-    return render(request, 'bulk_extractor_test.html', {'output': res})
