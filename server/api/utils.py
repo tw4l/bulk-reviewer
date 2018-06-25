@@ -122,11 +122,31 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                 try:
                     matching_file = File.objects.get(
                         filepath=filepath,
-                        be_session=be_session)
-                    print("Matching file:", str(matching_file.filename))
+                        be_session=be_session
+                    )
+                
+                # If matching file doesn't exist, match to placeholder
+                # File instance for unallocated space instead
                 except File.DoesNotExist:
-                    print("Matching file not found for", filepath)
-                    continue
+                    
+                    # Check if placeholder already exists
+                    try:
+                        matching_file = File.objects.get(
+                            filepath="<unallocated space>",
+                            be_session=be_session
+                        )
+                        print("Matching unmatched feature to <unallocated space> placeholder")
+                    
+                    # Create placeholder if doesn't exist
+                    except File.DoesNotExist:
+                        unallocated_placeholder = File.objects.create(
+                            filepath="<unallocated space>",
+                            filename="<unallocated space>",
+                            allocated=False,
+                            be_session=be_session
+                        )
+                        matching_file = unallocated_placeholder
+                        print("Creating <unallocated space> placeholder for unmatched feature")
 
                 # Update db
                 Feature.objects.create(
