@@ -70,9 +70,7 @@ class BESession(models.Model):
     annotated_feature_files_path = models.TextField(blank=True)
     dfxml_path = models.TextField(blank=True)
     in_process = models.BooleanField(default=False)
-    be_complete = models.BooleanField(default=False)
-    features_annotated = models.BooleanField(default=False)
-    dfxml = models.BooleanField(default=False)
+    processing_failure = models.BooleanField(default=False)
     processing_complete = models.BooleanField(default=False)
 
     def __str__(self):
