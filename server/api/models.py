@@ -153,3 +153,6 @@ class RedactedSet(models.Model):
         related_name="redacted_sets",
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return('{0}: {1}'.format(str(self.uuid), self.name))
