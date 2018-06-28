@@ -138,6 +138,8 @@ class RedactedSet(models.Model):
     )
     unallocated_files = models.BooleanField(default=False)
     redacted_set_path = models.TextField(blank=True)
+    processing_failure = models.BooleanField(default=False)
+    processing_complete = models.BooleanField(default=False)
     be_session = models.ForeignKey(
         BESession,
         related_name="redacted_sets",
