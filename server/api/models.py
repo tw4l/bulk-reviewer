@@ -68,7 +68,6 @@ class BESession(models.Model):
         related_name="sessions",
         on_delete=models.CASCADE
     )
-    extracted_transfer = models.TextField(blank=True)
     feature_files_path = models.TextField(blank=True)
     annotated_feature_files_path = models.TextField(blank=True)
     dfxml_path = models.TextField(blank=True)

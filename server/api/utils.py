@@ -1,7 +1,6 @@
 from .models import BESession, File, Feature
 import os
 import sys
-import zipfile
 
 # Import Objects.py
 if "linux" in sys.platform:
@@ -9,13 +8,6 @@ if "linux" in sys.platform:
 elif "darwin" in sys.platform:
     sys.path.append('/usr/local/share/bulk_extractor')
 import Objects
-
-
-def unzip_transfer(zip_file, new_path):
-    with open(zip_file, 'rb') as f:
-        z = zipfile.ZipFile(f)
-        for name in z.namelist():
-            z.extract(name, new_path)
 
 
 def parse_dfxml_to_db(be_session_uuid):
