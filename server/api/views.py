@@ -4,21 +4,6 @@ from . import models
 from . import serializers
 
 
-class CreateTransfer(generics.CreateAPIView):
-    queryset = models.Transfer.objects.all()
-    serializer_class = serializers.TransferSerializer
-
-
-class ListTransfer(generics.ListAPIView):
-    queryset = models.Transfer.objects.all()
-    serializer_class = serializers.TransferSerializer
-
-
-class DetailTransfer(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.Transfer.objects.all()
-    serializer_class = serializers.TransferSerializer
-
-
 class ListFile(generics.ListAPIView):
     serializer_class = serializers.FileSerializer
 

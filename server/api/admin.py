@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from . import models
 
-admin.site.register(models.Transfer)
 admin.site.register(models.BEConfig)
 admin.site.register(models.BESession)
 admin.site.register(models.File)

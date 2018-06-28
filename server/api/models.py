@@ -2,28 +2,6 @@ import uuid
 from django.db import models
 
 
-class Transfer(models.Model):
-    uuid = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-    name = models.CharField(max_length=100)
-    description = models.CharField(
-        max_length=200,
-        blank=True
-    )
-    source_path = models.FilePathField(
-        path='/transfers/',
-        allow_folders=True
-    )
-    disk_image = models.BooleanField(default=False)
-    uploaded = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return('{0}: {1}'.format(str(self.uuid), self.source_path))
-
-
 class BEConfig(models.Model):
     SSN_CHOICES = (
         (0, 'Labeled "SSN:" (strictest)'),
@@ -58,11 +36,11 @@ class BESession(models.Model):
         editable=False
     )
     name = models.CharField(max_length=100)
-    transfer = models.ForeignKey(
-        Transfer,
-        related_name="sessions",
-        on_delete=models.CASCADE
+    source_path = models.FilePathField(
+        path='/transfers/',
+        allow_folders=True
     )
+    disk_image = models.BooleanField(default=False)
     be_config = models.ForeignKey(
         BEConfig,
         related_name="sessions",

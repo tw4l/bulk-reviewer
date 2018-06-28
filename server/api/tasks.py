@@ -16,8 +16,8 @@ def run_bulk_extractor(be_session_uuid):
 
     # Set variables
     be_session = BESession.objects.get(pk=be_session_uuid)
-    transfer_source = be_session.transfer.source_path
-    disk_image = be_session.transfer.disk_image
+    transfer_source = be_session.source_path
+    disk_image = be_session.disk_image
     be_config = be_session.be_config
 
     # Create feature file output directory

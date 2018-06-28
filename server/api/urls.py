@@ -4,9 +4,6 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('transfer/add/', views.CreateTransfer.as_view()),
-    path('transfer/<uuid:pk>/', views.DetailTransfer.as_view()),
-    path('transfer/', views.ListTransfer.as_view()),
     path('file/<uuid:pk>/', views.DetailFile.as_view()),
     path('file/<uuid:pk>/features/', views.ListFeature.as_view()),
     path('feature/<uuid:pk>/', views.DetailFeature.as_view()),

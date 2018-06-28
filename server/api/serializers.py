@@ -2,12 +2,6 @@ from rest_framework import serializers
 from . import models
 
 
-class TransferSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Transfer
-        fields = '__all__'
-
-
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.File
