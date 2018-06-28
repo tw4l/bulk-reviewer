@@ -73,7 +73,7 @@ def parse_feature_file(feature_file, be_session_uuid):
 
                 # Make filepath relative to match DFXML filename
                 be_session = BESession.objects.get(pk=be_session_uuid)
-                substr = str(be_session.uuid) + '/'
+                substr = be_session.source_path + '/'
                 filepath = filepath.split(substr)[1]
 
                 # Find matching file

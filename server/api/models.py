@@ -97,10 +97,7 @@ class Feature(models.Model):
         editable=False
     )
     feature_file = models.CharField(max_length=50)
-    forensic_path = models.CharField(
-        max_length=100,
-        blank=True
-    )
+    forensic_path = models.TextField(blank=True)
     offset = models.IntegerField(
         null=True,
         blank=True
