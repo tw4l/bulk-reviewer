@@ -1,5 +1,6 @@
-from .models import BESession, File, Feature
+from .models import BESession, File, Feature, RedactedSet
 import os
+import subprocess
 import sys
 
 # Import Objects.py
@@ -8,6 +9,33 @@ if "linux" in sys.platform:
 elif "darwin" in sys.platform:
     sys.path.append('/usr/local/share/bulk_extractor')
 import Objects
+
+
+def carve_files_from_disk_image(redacted_set_uuid, out_dir):
+    redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
+    be_session = redacted_set.be_session
+    transfer_source = redacted_set.be_session.source_path
+    unallocated = redacted_set.unallocated_files
+    # Sanity check
+    if not be_session.disk_image:
+        print("Transfer source not a disk image. Shutting down.")
+        return False
+    # Create output directory
+    carve_files_dir = os.path.join(out_dir, redacted_set_uuid)
+    # Create tsk_recover command
+    if unallocated:
+        cmd = ['tsk_recover', '-e', transfer_source, carve_files_dir]
+    else:
+        cmd = ['tsk_recover', '-a', transfer_source, carve_files_dir]
+    # Run tsk_recover as subprocess
+    try:
+        subprocess.check_output(cmd)
+    except subprocess.CalledProcessError as e:
+        print("tsk_recover error: {}".format(e))
+        redacted_set.processing_failure = True
+        redacted_set.save()
+        return False
+    return True
 
 
 def parse_dfxml_to_db(be_session_uuid):
