@@ -2,7 +2,7 @@ from django.conf import settings
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from .models import BESession, File
-from .utils import unzip_transfer, parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
+from .utils import parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
 
 import magic
 import os
@@ -16,40 +16,21 @@ def run_bulk_extractor(be_session_uuid):
 
     # Set variables
     be_session = BESession.objects.get(pk=be_session_uuid)
-    transfer_source = be_session.transfer.source_path.path
+    transfer_source = be_session.transfer.source_path
     disk_image = be_session.transfer.disk_image
     be_config = be_session.be_config
 
-    # Uncompress uploaded zip file
-    if not disk_image:
-        extracted_files_path = os.path.join(settings.MEDIA_ROOT,
-                                            'extracted_transfers',
-                                            be_session_uuid)
-        if not os.path.exists(extracted_files_path):
-            os.makedirs(extracted_files_path)
-        try:
-            unzip_transfer(transfer_source, extracted_files_path)
-            be_session.extracted_transfer = extracted_files_path
-            be_session.save()
-        except Exception:
-            be_session.processing_failure = True
-            be_session.save()
-            logger.error('Error extracting transfer zip file for session {}'.format(be_session_uuid))
-            return
-
     # Create feature file output directory
-    feature_file_dir = os.path.join(settings.MEDIA_ROOT,
-                                    'feature_files',
-                                    be_session_uuid)
-    if not os.path.exists(feature_file_dir):
-        os.makedirs(feature_file_dir)
+    feature_files_path = os.path.join(settings.MEDIA_ROOT,
+                                      'feature_files',
+                                      be_session_uuid)
+    if not os.path.exists(feature_files_path):
+        os.makedirs(feature_files_path)
 
     # Create bulk_extractor command
-    if not disk_image:
-        transfer_source = be_session.extracted_transfer
     cmd = ['bulk_extractor',
            '-o',
-           feature_file_dir,
+           feature_files_path,
            '-E',
            'accts',
            '-e',
@@ -76,7 +57,7 @@ def run_bulk_extractor(be_session_uuid):
     # Run bulk_extractor via subprocess and update model if successful
     try:
         subprocess.check_output(cmd)
-        be_session.feature_files_path = feature_file_dir
+        be_session.feature_files_path = feature_files_path
         be_session.save()
     except subprocess.CalledProcessError as e:
         be_session.processing_failure = True
@@ -121,21 +102,21 @@ def run_bulk_extractor(be_session_uuid):
 
     # Annotate feature files
     if disk_image:
-        annotated_feature_file_dir = os.path.join(settings.MEDIA_ROOT,
-                                                  'annotated_feature_files',
-                                                  be_session_uuid)
-        if not os.path.exists(annotated_feature_file_dir):
-            os.makedirs(annotated_feature_file_dir)
+        annotated_feature_files_path = os.path.join(settings.MEDIA_ROOT,
+                                                    'annotated_feature_files',
+                                                    be_session_uuid)
+        if not os.path.exists(annotated_feature_files_path):
+            os.makedirs(annotated_feature_files_path)
         cmd = ['python3',
                '/usr/share/bulk_extractor/identify_filenames.py',
                '--all',
                '--xmlfile',
                be_session.dfxml_path,
-               feature_file_dir,
-               annotated_feature_file_dir]
+               feature_files_path,
+               annotated_feature_files_path]
         try:
             subprocess.check_output(cmd)
-            be_session.annotated_feature_files_path = annotated_feature_file_dir
+            be_session.annotated_feature_files_path = annotated_feature_files_path
             be_session.save()
         except subprocess.CalledProcessError as e:
             be_session.processing_failure = True
@@ -150,7 +131,7 @@ def run_bulk_extractor(be_session_uuid):
     if not disk_image:
         files_to_identify = File.objects.filter(be_session=be_session_uuid)
         for f in files_to_identify:
-            fpath = os.path.join(extracted_files_path, f.filepath)
+            fpath = os.path.join(transfer_source, f.filepath)
             try:
                 mime_type = magic.from_file(fpath, mime=True)
                 f.mime_type = mime_type
@@ -160,18 +141,18 @@ def run_bulk_extractor(be_session_uuid):
 
     # Read feature files into db
     if disk_image:
-        for feature_file in os.listdir(annotated_feature_file_dir):
+        for feature_file in os.listdir(annotated_feature_files_path):
             # Absolute path for file
-            ff_abspath = os.path.join(annotated_feature_file_dir, feature_file)
+            ff_abspath = os.path.join(annotated_feature_files_path, feature_file)
             # Skip empty files
             if not os.path.getsize(ff_abspath) > 0:
                 continue
             # Parse file and write features into db
             parse_annotated_feature_file(ff_abspath, be_session_uuid)
     else:
-        for feature_file in os.listdir(feature_file_dir):
+        for feature_file in os.listdir(feature_files_path):
             # Absolute path for file
-            ff_abspath = os.path.join(feature_file_dir, feature_file)
+            ff_abspath = os.path.join(feature_files_path, feature_file)
             # Skip empty files
             if not os.path.getsize(ff_abspath) > 0:
                 continue

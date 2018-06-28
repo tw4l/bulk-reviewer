@@ -13,7 +13,10 @@ class Transfer(models.Model):
         max_length=200,
         blank=True
     )
-    source_path = models.FileField(upload_to='transfers/')
+    source_path = models.FilePathField(
+        path='/transfers/',
+        allow_folders=True
+    )
     disk_image = models.BooleanField(default=False)
     uploaded = models.DateTimeField(auto_now_add=True)
 

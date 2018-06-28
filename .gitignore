@@ -15,3 +15,6 @@ server/*.sqlite3
 
 # media
 server/media/
+
+# transfers
+transfers/
