@@ -16,5 +16,5 @@ server/*.sqlite3
 # media
 server/media/
 
-# transfers
-transfers/
+# user data
+data/
