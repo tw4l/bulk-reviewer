@@ -1,7 +1,9 @@
 from .models import BESession, File, Feature, RedactedSet
+import datetime
 import os
 import subprocess
 import sys
+import time
 
 # Import Objects.py
 if "linux" in sys.platform:
@@ -11,7 +13,19 @@ elif "darwin" in sys.platform:
 import Objects
 
 
+def time_to_int(str_time):
+    dt = time.mktime(datetime.datetime.strptime(
+        str_time,
+        "%Y-%m-%dT%H:%M:%S").timetuple())
+    return dt
+
+
 def carve_files(redacted_set_uuid, out_dir):
+    """
+    Carve allocated or all files from disk image
+    to output directory using tsk_recover and return
+    True if successful.
+    """
     redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
     be_session = redacted_set.be_session
     transfer_source = redacted_set.be_session.source_path
@@ -32,6 +46,58 @@ def carve_files(redacted_set_uuid, out_dir):
         print("tsk_recover error: {}".format(e))
         return False
     return True
+
+
+def restore_dates_from_dfxml(file_dir, dfxml):
+    """
+    Rewrite last modified dates of files based
+    on values recorded in a DFXML file.
+    """
+    for (event, obj) in Objects.iterparse(dfxml):
+
+        # only work on FileObjects
+        if not isinstance(obj, Objects.FileObject):
+            continue
+
+        # skip directories and links
+        if obj.name_type:
+            if obj.name_type != "r":
+                continue
+
+        # record filename
+        dfxml_filename = obj.filename
+        dfxml_filedate = int(time.time())  # default to current time
+
+        # record last modified or last created date
+        try:
+            mtime = obj.mtime
+            mtime = str(mtime)
+        except Exception:
+            pass
+
+        try:
+            crtime = obj.crtime
+            crtime = str(crtime)
+        except Exception:
+            pass
+
+        # fallback to created date if last modified doesn't exist
+        if mtime and (mtime != 'None'):
+            mtime = time_to_int(mtime[:19])
+            dfxml_filedate = mtime
+        elif crtime and (crtime != 'None'):
+            crtime = time_to_int(crtime[:19])
+            dfxml_filedate = crtime
+        else:
+            continue
+
+        # rewrite last modified date of corresponding file in objects/files
+        file_to_modify = os.path.join(file_dir, dfxml_filename)
+        if os.path.isfile(file_to_modify):
+            try:
+                os.utime(file_to_modify, (dfxml_filedate, dfxml_filedate))
+            except Exception as e:
+                print("Error modifying modified date for {0}. Error: {1}".format(file_to_modify, e))
 
 
 def parse_dfxml_to_db(be_session_uuid):

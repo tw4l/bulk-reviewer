@@ -180,6 +180,7 @@ def redact_remove_files(redacted_set_uuid):
     redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
     transfer_source = redacted_set.be_session.source_path
     disk_image = redacted_set.be_session.disk_image
+    dfxml = redacted_set.be_session.dfxml_path
 
     # Create temp working space
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
@@ -193,13 +194,15 @@ def redact_remove_files(redacted_set_uuid):
 
     # Carve and/or copy set of files to temporary working directory
     if disk_image:
+        # Carve files
         carve_files = utils.carve_files(redacted_set_uuid, working_dir)
         if not carve_files:
             logger.error('Unable to carve files from disk image for redacted set {0}.'.format(redacted_set_uuid))
             redacted_set.processing_failure = True
             redacted_set.save()
             return
-        # TODO: Restore last modified dates for carved files from DFXML values!
+        # Restore modified dates to values on disk
+        utils.restore_dates_from_dfxml(working_dir, dfxml)
     else:
         try:
             shutil.copytree(transfer_source, working_dir)
