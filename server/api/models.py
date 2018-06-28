@@ -136,6 +136,7 @@ class RedactedSet(models.Model):
         choices=REDACTION_CHOICES,
         default=1
     )
+    unallocated_files = models.BooleanField(default=False)
     redacted_set_path = models.TextField(blank=True)
     be_session = models.ForeignKey(
         BESession,
