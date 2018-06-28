@@ -1,11 +1,12 @@
 from django.conf import settings
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from .models import BESession, File
-from .utils import parse_dfxml_to_db, parse_feature_file, parse_annotated_feature_file
+from .models import BESession, File, RedactedSet
+from . import utils
 
 import magic
 import os
+import shutil
 import subprocess
 
 logger = get_task_logger(__name__)
@@ -125,7 +126,7 @@ def run_bulk_extractor(be_session_uuid):
             return
 
     # Read files into db from dfxml
-    parse_dfxml_to_db(be_session_uuid)
+    utils.parse_dfxml_to_db(be_session_uuid)
 
     # Identify mime types for uploaded files
     if not disk_image:
@@ -148,7 +149,7 @@ def run_bulk_extractor(be_session_uuid):
             if not os.path.getsize(ff_abspath) > 0:
                 continue
             # Parse file and write features into db
-            parse_annotated_feature_file(ff_abspath, be_session_uuid)
+            utils.parse_annotated_feature_file(ff_abspath, be_session_uuid)
     else:
         for feature_file in os.listdir(feature_files_path):
             # Absolute path for file
@@ -165,8 +166,82 @@ def run_bulk_extractor(be_session_uuid):
             if "url_" in feature_file:
                 continue
             # Parse file and write features into db
-            parse_feature_file(ff_abspath, be_session_uuid)
+            utils.parse_feature_file(ff_abspath, be_session_uuid)
 
     # Mark processing as complete in db
     be_session.processing_complete = True
     be_session.save()
+
+
+@shared_task
+def redact_remove_files(redacted_set_uuid):
+
+    # Set variables
+    redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
+    transfer_source = redacted_set.be_session.source_path
+    disk_image = redacted_set.be_session.disk_image
+
+    # Create temp working space
+    temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    working_dir = os.path.join(temp_dir, redacted_set_uuid)
+    # Only create output dir for disk images
+    if disk_image:
+        if not os.path.exists(working_dir):
+            os.makedirs(working_dir)
+
+    # Carve and/or copy set of files to temporary working directory
+    if disk_image:
+        carve_files = utils.carve_files(redacted_set_uuid, working_dir)
+        if not carve_files:
+            logger.error('Unable to carve files from disk image for redacted set {0}.'.format(redacted_set_uuid))
+            redacted_set.processing_failure = True
+            redacted_set.save()
+            return
+        # TODO: Restore last modified dates for carved files from DFXML values!
+    else:
+        try:
+            shutil.copytree(transfer_source, working_dir)
+        except Exception as e:
+            logger.error("Unable to copy source files to working dir for redacted set {0}. Error: {1}".format(redacted_set_uuid, e))
+            redacted_set.processing_failure = True
+            redacted_set.save()
+            return
+
+    # Build list of files to remove from working dir
+    redacted_list = list()
+    files_to_remove = File.objects.filter(be_session=redacted_set.be_session).filter(redact_file=True)
+    for f in files_to_remove:
+        redacted_list.append(f.filepath)
+    # Include files where any features have been marked for redaction
+    files_with_redacted_features = File.objects.distinct().filter(be_session=redacted_set.be_session).filter(features__redact_feature=True)
+    for f in files_with_redacted_features:
+        if f.filepath not in redacted_list:
+            redacted_list.append(f.filepath)
+
+    # Remove files in redacted_list from working dir
+    for f in redacted_list:
+        filepath = os.path.join(working_dir, f)
+        try:
+            os.remove(filepath)
+        except Exception as e:
+            logger.error("Error deleting file {0} from working directory for redacted set {1}. Error: {2}".format(filepath, redacted_set_uuid, e))
+            redacted_set.processing_failure = True
+            redacted_set.save()
+            return
+
+    # Move redacted set to data/redacted
+    try:
+        redacted_dir = '/data/redacted/' + redacted_set_uuid
+        shutil.move(working_dir, redacted_dir)
+    except Exception:
+        logger.error("Error moving redacted set to {}".format(redacted_dir))
+        redacted_set.processing_failure = True
+        redacted_set.save()
+        return
+
+    # Mark as completed in database
+    redacted_set.processing_complete = True
+    redacted_set.save()
+    return

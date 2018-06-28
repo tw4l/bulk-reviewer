@@ -11,7 +11,7 @@ elif "darwin" in sys.platform:
 import Objects
 
 
-def carve_files_from_disk_image(redacted_set_uuid, out_dir):
+def carve_files(redacted_set_uuid, out_dir):
     redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
     be_session = redacted_set.be_session
     transfer_source = redacted_set.be_session.source_path
@@ -20,20 +20,16 @@ def carve_files_from_disk_image(redacted_set_uuid, out_dir):
     if not be_session.disk_image:
         print("Transfer source not a disk image. Shutting down.")
         return False
-    # Create output directory
-    carve_files_dir = os.path.join(out_dir, redacted_set_uuid)
     # Create tsk_recover command
     if unallocated:
-        cmd = ['tsk_recover', '-e', transfer_source, carve_files_dir]
+        cmd = ['tsk_recover', '-e', transfer_source, out_dir]
     else:
-        cmd = ['tsk_recover', '-a', transfer_source, carve_files_dir]
+        cmd = ['tsk_recover', '-a', transfer_source, out_dir]
     # Run tsk_recover as subprocess
     try:
         subprocess.check_output(cmd)
     except subprocess.CalledProcessError as e:
         print("tsk_recover error: {}".format(e))
-        redacted_set.processing_failure = True
-        redacted_set.save()
         return False
     return True
 
