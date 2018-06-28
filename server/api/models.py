@@ -37,7 +37,7 @@ class BESession(models.Model):
     )
     name = models.CharField(max_length=100)
     source_path = models.FilePathField(
-        path='/transfers/',
+        path='/data/transfers/',
         allow_folders=True
     )
     disk_image = models.BooleanField(default=False)
