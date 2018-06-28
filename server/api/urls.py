@@ -15,8 +15,9 @@ urlpatterns = [
     path('session/<uuid:pk>/files/', views.ListFile.as_view()),
     path('session/<uuid:pk>/features/', views.ListFeatureBySession.as_view()),
     path('session/<uuid:pk>/redacted_sets/', views.ListRedactedSetBySession.as_view()),
-    path('session/<uuid:pk>/redact/', views.CreateRedactedSet.as_view()),
     path('session/', views.ListBESession.as_view()),
+    path('redacted_set/add', views.CreateRedactedSet.as_view()),
+    path('redacted_set/<uuid:pk>/', views.DetailRedactedSet.as_view()),
     path('redacted_set/', views.ListRedactedSet.as_view()),
 ]
 

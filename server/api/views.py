@@ -90,6 +90,11 @@ class ListRedactedSet(generics.ListAPIView):
     serializer_class = serializers.RedactedSetSerializer
 
 
+class DetailRedactedSet(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.RedactedSet.objects.all()
+    serializer_class = serializers.RedactedSetSerializer
+
+
 class ListRedactedSetBySession(generics.ListAPIView):
     serializer_class = serializers.RedactedSetSerializer
 
