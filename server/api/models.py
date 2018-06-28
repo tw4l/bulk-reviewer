@@ -119,13 +119,23 @@ class Feature(models.Model):
 
 
 class RedactedSet(models.Model):
+    REDACTION_CHOICES = (
+        (0, 'Log only'),
+        (1, 'Remove files'),
+        (2, 'Redact features (scrub)'),
+        (3, 'Redact features (replace)'),
+        (4, 'Redact features within disk image'),
+    )
     uuid = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
     name = models.CharField(max_length=100)
-    log_only = models.BooleanField(default=False)
+    redaction_type = models.IntegerField(
+        choices=REDACTION_CHOICES,
+        default=1
+    )
     redacted_set_path = models.TextField(blank=True)
     be_session = models.ForeignKey(
         BESession,
