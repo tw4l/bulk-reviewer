@@ -24,3 +24,9 @@ class BESessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BESession
         fields = '__all__'
+
+
+class RedactedSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RedactedSet
+        fields = '__all__'

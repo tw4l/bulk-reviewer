@@ -78,3 +78,25 @@ class ListBESession(generics.ListAPIView):
 class DetailBESession(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.BESession.objects.all()
     serializer_class = serializers.BESessionSerializer
+
+
+class CreateRedactedSet(generics.CreateAPIView):
+    queryset = models.RedactedSet.objects.all()
+    serializer_class = serializers.RedactedSetSerializer
+
+
+class ListRedactedSet(generics.ListAPIView):
+    queryset = models.RedactedSet.objects.all()
+    serializer_class = serializers.RedactedSetSerializer
+
+
+class ListRedactedSetBySession(generics.ListAPIView):
+    serializer_class = serializers.RedactedSetSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the redacted sets for
+        the session as determined by the UUID portion of the URL.
+        """
+        be_session = self.kwargs['pk']
+        return models.RedactedSet.objects.filter(be_session=be_session)
