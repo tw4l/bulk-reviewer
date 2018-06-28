@@ -17,6 +17,7 @@ urlpatterns = [
     path('session/<uuid:pk>/redacted_sets/', views.ListRedactedSetBySession.as_view()),
     path('session/<uuid:pk>/redact/', views.CreateRedactedSet.as_view()),
     path('session/', views.ListBESession.as_view()),
+    path('redacted_set/', views.ListRedactedSet.as_view()),
 ]
 
 if settings.DEBUG:
