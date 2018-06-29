@@ -287,6 +287,8 @@ def redact_remove_files(redacted_set_uuid):
             return
 
     # Move redacted set to data/redacted
+    if not os.path.exists('/data/redacted/'):
+        os.makedirs('/data/redacted/')
     try:
         redacted_dir = '/data/redacted/' + redacted_set.name
         shutil.move(working_dir, redacted_dir)
