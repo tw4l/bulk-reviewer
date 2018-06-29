@@ -1,7 +1,7 @@
 from django.conf import settings
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from .models import BESession, File, RedactedSet
+from .models import BESession, File, Feature, RedactedSet
 from . import utils
 
 import magic
@@ -171,6 +171,58 @@ def run_bulk_extractor(be_session_uuid):
     # Mark processing as complete in db
     be_session.processing_complete = True
     be_session.save()
+
+
+@shared_task
+def create_redaction_log(redacted_set_uuid):
+
+    # Set variables
+    redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
+
+    # Create output directory
+    log_dir = '/data/logs/'
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    # Write log file
+    log_name = redacted_set.name + '_redaction_log.txt'
+    log_file = os.path.join(log_dir, log_name)
+    with open(log_file, 'w') as log:
+        # Write header
+        log.write('Bulk Redactor Redaction Log\n\n')
+        log.write('Session Information:\n')
+        log.write('-------------------\n')
+        log.write('Session name: {}\n'.format(redacted_set.be_session.name))
+        log.write('Session UUID: {}\n'.format(str(redacted_set.be_session.uuid)))
+        log.write('Redacted set name: {}\n'.format(redacted_set.name))
+        log.write('Redacted Set UUID: {}\n'.format(str(redacted_set.uuid)))
+        log.write('Source files: {}\n'.format(redacted_set.be_session.source_path))
+        log.write('Disk image?: {}\n'.format(str(redacted_set.be_session.disk_image)))
+        log.write('Bulk Extractor configuration: {}\n'.format(redacted_set.be_session.be_config.name))
+        log.write('Bulk Extractor configuration UUID: {}\n'.format(str(redacted_set.be_session.be_config.uuid)))
+        log.write('\n\n')
+        # Write lines for Files marked as redacted
+        log.write('Files marked for redaction:\n')
+        log.write('--------------------------\n')
+        redacted_files = File.objects.filter(be_session=redacted_set.be_session).filter(redact_file=True)
+        if not redacted_files:
+            log.write('No files marked for redaction.')
+        log.write('Filepath\tUUID\tNote\n')
+        for f in redacted_files:
+            log.write('{0}\t{1}\t{2}\n'.format(f.filepath, str(f.uuid), f.redaction_note))
+        log.write('\n\n')
+        # Write lines for Features marked as redacted
+        log.write('Features marked for redaction:\n')
+        log.write('--------------------------\n')
+        redacted_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(redact_feature=True)
+        if not redacted_features:
+            log.write('No features marked for redaction.')
+        log.write('Feature file\tFeature\tContext\tSource file\tNote\n')
+        for f in redacted_features:
+            log.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(f.feature_file, f.feature, f.context, f.source_file.filepath, f.redaction_note))
+    # Update db
+    redacted_set.redaction_log = log_file
+    redacted_set.save()
 
 
 @shared_task
