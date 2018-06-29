@@ -186,7 +186,7 @@ def redact_remove_files(redacted_set_uuid):
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
-    working_dir = os.path.join(temp_dir, redacted_set_uuid)
+    working_dir = os.path.join(temp_dir, redacted_set.name)
     # Only create output dir for disk images
     if disk_image:
         if not os.path.exists(working_dir):
@@ -236,7 +236,7 @@ def redact_remove_files(redacted_set_uuid):
 
     # Move redacted set to data/redacted
     try:
-        redacted_dir = '/data/redacted/' + redacted_set_uuid
+        redacted_dir = '/data/redacted/' + redacted_set.name
         shutil.move(working_dir, redacted_dir)
     except Exception:
         logger.error("Error moving redacted set to {}".format(redacted_dir))

@@ -59,11 +59,6 @@ def restore_dates_from_dfxml(file_dir, dfxml):
         if not isinstance(obj, Objects.FileObject):
             continue
 
-        # skip directories and links
-        if obj.name_type:
-            if obj.name_type != "r":
-                continue
-
         # record filename
         dfxml_filename = obj.filename
         dfxml_filedate = int(time.time())  # default to current time
@@ -93,11 +88,10 @@ def restore_dates_from_dfxml(file_dir, dfxml):
 
         # rewrite last modified date of corresponding file in objects/files
         file_to_modify = os.path.join(file_dir, dfxml_filename)
-        if os.path.isfile(file_to_modify):
-            try:
-                os.utime(file_to_modify, (dfxml_filedate, dfxml_filedate))
-            except Exception as e:
-                print("Error modifying modified date for {0}. Error: {1}".format(file_to_modify, e))
+        try:
+            os.utime(file_to_modify, (dfxml_filedate, dfxml_filedate))
+        except Exception as e:
+            print("Error modifying modified date for {0}. Error: {1}".format(file_to_modify, e))
 
 
 def parse_dfxml_to_db(be_session_uuid):
