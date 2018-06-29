@@ -25,7 +25,7 @@ This script creates a `data` directory which is mounted in the Docker containers
 docker-compose up -d
 ```
 
-The first time you do this, it will take a while. Much of this time is set in installing dependencies for and then building bulk_extractor.
+The first time you do this, it will take a while (on my laptop, around 10 minutes). Much of this time is spent installing dependencies for and then building bulk_extractor.
 
 ### Django admin interface
 
