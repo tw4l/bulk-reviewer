@@ -17,7 +17,7 @@ This script creates a `data` directory which is mounted in the Docker containers
 
 * `data/transfers/`: A location for users to place disk images and directories to scan.
 * `data/logs/`: Where Bulk Redactor writes redaction logs.
-* `data/redacted/`: Where Bulk Extractor writes redacted files and disk images.
+* `data/redacted/`: Where Bulk Redactor writes redacted files and disk images.
 
 ### Start containers
 
