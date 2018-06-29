@@ -143,6 +143,7 @@ class RedactedSet(models.Model):
     redacted_set_path = models.TextField(blank=True)
     processing_failure = models.BooleanField(default=False)
     processing_complete = models.BooleanField(default=False)
+    redaction_log = models.TextField(blank=True)
     be_session = models.ForeignKey(
         BESession,
         related_name="redacted_sets",
