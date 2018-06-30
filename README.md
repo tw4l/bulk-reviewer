@@ -27,9 +27,20 @@ docker-compose up -d
 
 The first time you do this, it will take a while (on my laptop, around 10 minutes). Much of this time is spent installing dependencies for and then building bulk_extractor.
 
-### Django admin interface
+### API endpoints
 
-Visit [localhost:8000/admin](http://localhost:8000/admin) in browser.
+Documentation to come.
+
+### Frontend
+
+Start webpack dev server:
+
+```
+cd client
+npm run dev
+```
+
+Visit [localhost:8080](http://localhost:8080) in your browser
 
 ### Tox
 
