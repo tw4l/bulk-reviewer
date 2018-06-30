@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       title: 'Bulk Redactor',
-      subtitle: 'Identify, review, and redact PII.'
+      subtitle: 'Identify, review, and remove PII.'
     }
   }
 }
