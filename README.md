@@ -37,6 +37,7 @@ Start webpack dev server:
 
 ```
 cd client
+npm install
 npm run dev
 ```
 
