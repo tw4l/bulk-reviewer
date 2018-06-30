@@ -17,15 +17,15 @@ import axios from 'axios';
 export default {
 	data() {
 		return {
-			sessions: [],
-			errors: []
+			sessions: {},
+			errors: {}
 		}
 	},
 
 	created() {
 		axios.get(`http://127.0.0.1:8000/api/session`)
 		.then(response => {
-			this.sessions = response.data
+			this.sessions = response.data.results
 		})
 		.catch(e => {
 			this.errors.push(e)
