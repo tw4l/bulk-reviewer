@@ -1,14 +1,18 @@
 <template>
   <div>
-    <h3 class="title is-3">Sessions</h3>
-    <ul>
-      <li v-for="session in sessions" :key="session.uuid">
-        <div style="padding-bottom: 10px">
-          <h5 class="title is-5">{{ session.name }}</h5>
-          <p class="subtitle">{{ session.uuid }}</p>
-        </div>
-      </li>
-    </ul>
+    <section class="section">
+      <div class="container">
+        <h3 class="title is-3">Sessions</h3>
+        <ul>
+          <li v-for="session in sessions" :key="session.uuid">
+            <div style="padding-bottom: 10px">
+              <h5 class="title is-5">{{ session.name }}</h5>
+              <p class="subtitle">{{ session.uuid }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
   </div>
 </template>
 

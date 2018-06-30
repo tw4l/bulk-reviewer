@@ -12,10 +12,14 @@
         </div>
       </div>
     </section>
-    <ul>
-      <a href="/sessions"><li>Sessions</li></a>
-      <a href="/config"><li>Bulk Extractor configuration</li></a>
-    </ul>
+    <section class="section">
+      <div class="container is-fluid">
+        <ul>
+          <li><a href="/sessions">Sessions</a></li>
+          <li><a href="/config">Bulk Extractor configuration</a></li>
+        </ul>
+      </div>
+    </section>
   </div>
 </template>
 
