@@ -25,7 +25,6 @@ export default {
     return {
       sessions: {},
       errors: [],
-      isError: false
     }
   },
 
@@ -33,11 +32,9 @@ export default {
     axios.get(`http://127.0.0.1:8000/api/session`)
       .then(response => {
         this.sessions = response.data.results
-        this.isError = false
       })
       .catch(e => {
         this.errors.push(e)
-        this.isError = true
       })
   }
 }
