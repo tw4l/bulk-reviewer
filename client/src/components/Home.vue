@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-info is-medium">
+    <section class="hero is-info is-fullheight">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
@@ -10,14 +10,6 @@
             {{ subtitle }}
           </h2>
         </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container is-fluid">
-        <ul>
-          <li><a href="/sessions">Sessions</a></li>
-          <li><a href="/config">Bulk Extractor configuration</a></li>
-        </ul>
       </div>
     </section>
   </div>
