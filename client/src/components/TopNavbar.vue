@@ -11,13 +11,23 @@
       </div>
     </div>
     <div class="navbar-menu" :class="{ 'is-active': showNav }">
-      <div class="navbar-start">
-        <router-link class="navbar-item" to="/config">
-          <span>Config</span>
+      <div class="navbar-end">
+        <router-link class="navbar-item" to="/">
+          <span>Home</span>
         </router-link>
         <router-link class="navbar-item" to="/sessions">
           <span>Sessions</span>
         </router-link>
+        <router-link class="navbar-item" to="/config">
+          <span>Configuration</span>
+        </router-link>
+        <!-- + New Session links open modal instead of routing -->
+        <div class="navbar-item" v-if="!showNav">
+          <a class="button is-link is-inverted is-outlined is-rounded">+ New Session</a>
+        </div>
+        <a class="navbar-item" v-else>
+          <span>+ New Session</span>
+        </a>
       </div>
     </div>
   </nav>
