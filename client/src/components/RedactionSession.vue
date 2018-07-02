@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column">
-      File tree here
+       Tree View Here
     </div>
     <div class="column">
       Redaction review and actions here
@@ -50,13 +50,16 @@ export default {
       for (let file of files) {
         let path = file['filepath']
         let uuid = file['uuid']
+        let redacted = file['redact_file']
+        let cleared = file['cleared']
+        let allocated = file['allocated']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, redacted, cleared, allocated)
       }
       return rootNode
     },
 
-    buildNodeRecursive: function (node, path, index, uuid) {
+    buildNodeRecursive: function (node, path, index, uuid, redacted, cleared, allocated) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.children.find(child => child.name === item)
@@ -69,10 +72,13 @@ export default {
           if (index === path.length - 1) {
             dir['uuid'] = uuid
             dir['isDir'] = false
+            dir['redacted'] = redacted
+            dir['cleared'] = cleared
+            dir['allocated'] = allocated
           }
           node.children.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, redacted, cleared, allocated)
       }
     }
   }
