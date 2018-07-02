@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import BulkextConfig from '@/components/BulkextConfig'
 import Sessions from '@/components/Sessions'
+import RedactionSession from '@/components/RedactionSession'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/sessions',
       name: 'Sessions',
       component: Sessions
+    },
+    {
+      path: '/session/:uuid',
+      name: 'RedactionSession',
+      component: RedactionSession
     }
   ]
 })

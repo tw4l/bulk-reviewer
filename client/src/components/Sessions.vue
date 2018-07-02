@@ -23,7 +23,7 @@ export default {
   name: 'sessions',
   data () {
     return {
-      sessions: {},
+      sessions: [],
       errors: []
     }
   },
