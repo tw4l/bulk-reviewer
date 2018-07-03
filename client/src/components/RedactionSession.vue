@@ -75,8 +75,7 @@ export default {
         let dir = node.nodes.find(node => node.label === item)
         if (!dir) {
           const uuidv4 = require('uuid/v4')
-          let newUUID = uuidv4
-          let uuidString = newUUID.toString()
+          let uuidString = uuidv4().toString()
           dir = {
             label: item,
             isDir: true,
