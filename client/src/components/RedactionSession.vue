@@ -1,8 +1,16 @@
 <template>
   <div class="columns">
     <div class="column">
-       Tree View Here
-    </div>
+       <div class="tree">
+        <ul class="tree-list">
+          <node-tree
+            :label="fileTree.label"
+            :nodes="fileTree.nodes"
+            :depth="0"
+          ></node-tree>
+        </ul>
+       </div>
+      </div>
     <div class="column">
       Redaction review and actions here
     </div>
@@ -10,10 +18,12 @@
 </template>
 
 <script>
+import NodeTree from './NodeTree'
 import axios from 'axios'
 
 export default {
   name: 'session',
+  components: { NodeTree },
   data () {
     return {
       files: [],
@@ -45,7 +55,7 @@ export default {
   methods: {
     convertPathsToTree: function (files) {
       // Build the node structure
-      const rootNode = {name: 'root', children: []}
+      const rootNode = {label: 'Session', nodes: []}
 
       for (let file of files) {
         let path = file['filepath']
@@ -62,12 +72,16 @@ export default {
     buildNodeRecursive: function (node, path, index, uuid, redacted, cleared, allocated) {
       if (index < path.length) {
         let item = path[index]
-        let dir = node.children.find(child => child.name === item)
+        let dir = node.nodes.find(node => node.label === item)
         if (!dir) {
+          const uuidv4 = require('uuid/v4')
+          let newUUID = uuidv4
+          let uuidString = newUUID.toString()
           dir = {
-            name: item,
+            label: item,
             isDir: true,
-            children: []
+            nodes: [],
+            uuid: uuidString
           }
           if (index === path.length - 1) {
             dir['uuid'] = uuid
@@ -76,7 +90,7 @@ export default {
             dir['cleared'] = cleared
             dir['allocated'] = allocated
           }
-          node.children.push(dir)
+          node.nodes.push(dir)
         }
         this.buildNodeRecursive(dir, path, index + 1, uuid, redacted, cleared, allocated)
       }
