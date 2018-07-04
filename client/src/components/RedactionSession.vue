@@ -1,7 +1,11 @@
 <template>
+<div class="padded">
+  <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
+  <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
+  <hr>
   <div class="columns">
     <div class="column is-one-third">
-       <div class="tree padded">
+       <div class="tree">
         <ul class="tree-list">
           <node-tree
             :label="fileTree.label"
@@ -17,11 +21,12 @@
        </div>
       </div>
     <div class="column is-two-thirds">
-      <div class="padded">
+      <div>
         Redaction review and actions here
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -33,6 +38,7 @@ export default {
   components: { NodeTree },
   data () {
     return {
+      sessionInfo: {},
       files: [],
       fileTree: {},
       features: [],
@@ -46,6 +52,13 @@ export default {
   created () {
     // api calls to add data
     let uuid = this.$route.params.uuid
+    axios.get(`http://127.0.0.1:8000/api/session/${uuid}/`)
+      .then(response => {
+        this.sessionInfo = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
     axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
       .then(response => {
         this.files = response.data.results
