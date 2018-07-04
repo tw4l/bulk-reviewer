@@ -1,6 +1,8 @@
 <template>
   <div class="node-tree" :style="indent">
-    <span @click="toggleChildren">ICON: </span>
+    <span @click="toggleChildren" v-if="zeroDepth">SESSION: </span>
+    <span @click="toggleChildren" v-else-if="isDir">FOLDER: </span>
+    <span @click="toggleChildren" v-else>FILE: </span>
     <span @click="updateSelected">{{ label }}</span>
     <node-tree
       v-if="showChildren"
@@ -11,6 +13,7 @@
       :key="node.uuid"
       :currentlySelectedUUID="currentlySelectedUUID"
       :uuid="node.uuid"
+      :isDir="node.isDir"
       :class="{ active: currentlySelectedUUID === node.uuid }"
       @bus="bus"
     >
@@ -19,7 +22,7 @@
 </template>
 <script>
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir' ],
   data () {
     return { showChildren: false }
   },
@@ -27,7 +30,11 @@ export default {
   computed: {
     indent () {
       return { transform: `translate(${this.depth * 25}px)` }
+    },
+    zeroDepth () {
+      return this.depth === 0
     }
+
   },
   methods: {
     toggleChildren: function () {
