@@ -4,7 +4,7 @@
   <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
   <hr>
   <div class="columns">
-    <div class="column is-one-third">
+    <div class="column">
       <node-tree
         :label="fileTree.label"
         :nodes="fileTree.nodes"
@@ -15,7 +15,7 @@
         :class="{ active: currentlySelectedUUID === fileTree.uuid }"
         @bus="bus"></node-tree>
       </div>
-    <div class="column is-two-thirds">
+    <div class="column">
       <div>
         Redaction review and actions here
       </div>

@@ -6,6 +6,7 @@
         <font-awesome-icon icon="caret-down" v-if="showChildren"></font-awesome-icon>
         <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
       </span>
+      <span class="icon is-small" v-else></span>
     </span>
     <!-- icons for folders/directories -->
     <span>
