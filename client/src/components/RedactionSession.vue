@@ -9,6 +9,7 @@
             :currentlySelectedUUID="currentlySelectedUUID"
             :depth="0"
             :uuid="fileTree.uuid"
+            :allocated="fileTree.allocated"
             :class="{ active: currentlySelectedUUID === fileTree.uuid }"
             @bus="bus"
           ></node-tree>

@@ -13,8 +13,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.0",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0",
+    "@fortawesome/vue-fontawesome": "^0.1.0",
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
+    "i": "^0.3.6",
+    "npm": "^6.1.0",
     "uuid": "^3.3.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"

@@ -1,8 +1,23 @@
 <template>
   <div class="node-tree" :style="indent">
-    <span @click="toggleChildren" v-if="zeroDepth">SESSION: </span>
-    <span @click="toggleChildren" v-else-if="isDir">FOLDER: </span>
-    <span @click="toggleChildren" v-else>FILE: </span>
+    <!-- expanding carat for sessions and directories -->
+    <span>
+      <span class="icon is-small" @click="toggleChildren" v-if="openable">
+        <font-awesome-icon icon="caret-down" v-if="showChildren"></font-awesome-icon>
+        <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
+      </span>
+    </span>
+    <!-- icons for folders/directories -->
+    <span>
+      <span class="icon is-small" v-if="openable">
+        <font-awesome-icon icon="folder-open" v-if="showChildren"></font-awesome-icon>
+        <font-awesome-icon icon="folder" v-else></font-awesome-icon>
+      </span>
+      <span class="icon is-small" v-else>
+        <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
+        <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
+      </span>
+    </span>
     <span @click="updateSelected">{{ label }}</span>
     <node-tree
       v-if="showChildren"
@@ -14,6 +29,7 @@
       :currentlySelectedUUID="currentlySelectedUUID"
       :uuid="node.uuid"
       :isDir="node.isDir"
+      :allocated="node.allocated"
       :class="{ active: currentlySelectedUUID === node.uuid }"
       @bus="bus"
     >
@@ -22,19 +38,21 @@
 </template>
 <script>
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated' ],
   data () {
     return { showChildren: false }
   },
   name: 'node-tree',
   computed: {
     indent () {
-      return { transform: `translate(${this.depth * 25}px)` }
+      return { transform: `translate(${this.depth + 25}px)` }
     },
     zeroDepth () {
       return this.depth === 0
+    },
+    openable () {
+      return this.isDir || this.label === 'Session'
     }
-
   },
   methods: {
     toggleChildren: function () {
