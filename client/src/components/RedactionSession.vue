@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column is-one-third">
        <div class="tree padded">
         <ul class="tree-list">
           <node-tree
@@ -16,7 +16,7 @@
         </ul>
        </div>
       </div>
-    <div class="column">
+    <div class="column is-two-thirds">
       <div class="padded">
         Redaction review and actions here
       </div>
