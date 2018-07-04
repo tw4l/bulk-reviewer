@@ -6,8 +6,8 @@
         <ul>
           <li v-for="session in sessions" :key="session.uuid">
             <div style="padding-bottom: 10px">
-              <h5 class="title is-5">{{ session.name }}</h5>
-              <p class="subtitle">{{ session.uuid }}</p>
+              <router-link :to="{ name: 'RedactionSession', params: { uuid: session.uuid }}"><h5 class="title is-5">{{ session.name }}</h5></router-link>
+              <p class="subtitle is-6">{{ session.uuid }}</p>
             </div>
           </li>
         </ul>
