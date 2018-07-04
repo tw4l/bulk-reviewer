@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column">
-       <div class="tree">
+       <div class="tree padded">
         <ul class="tree-list">
           <node-tree
             :label="fileTree.label"
@@ -16,7 +16,9 @@
        </div>
       </div>
     <div class="column">
-      Redaction review and actions here
+      <div class="padded">
+        Redaction review and actions here
+      </div>
     </div>
   </div>
 </template>
@@ -112,4 +114,7 @@ export default {
 </script>
 
 <style>
+.padded {
+  margin: 20px;
+}
 </style>
