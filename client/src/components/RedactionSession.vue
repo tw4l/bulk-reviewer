@@ -6,7 +6,11 @@
           <node-tree
             :label="fileTree.label"
             :nodes="fileTree.nodes"
+            :currentlySelectedUUID="currentlySelectedUUID"
             :depth="0"
+            :uuid="fileTree.uuid"
+            :class="{ active: currentlySelectedUUID === fileTree.uuid }"
+            @bus="bus"
           ></node-tree>
         </ul>
        </div>
@@ -29,11 +33,15 @@ export default {
       files: [],
       fileTree: {},
       features: [],
-      errors: []
+      errors: [],
+      currentlySelectedUUID: ''
     }
   },
+  mounted () {
 
+  },
   created () {
+    // api calls to add data
     let uuid = this.$route.params.uuid
     axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
       .then(response => {
@@ -53,6 +61,11 @@ export default {
   },
 
   methods: {
+    // update currentlySelectedUUID from recursive node-tree components
+    bus (newUUID) {
+      this.currentlySelectedUUID = newUUID
+    },
+    // create fileTree from files JSON
     convertPathsToTree: function (files) {
       // Build the node structure
       const rootNode = {label: 'Session', nodes: []}

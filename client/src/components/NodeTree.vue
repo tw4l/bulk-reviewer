@@ -1,6 +1,7 @@
 <template>
-  <div class="node-tree">
-    <div :style="indent" @click="toggleChildren">{{ label }}</div>
+  <div class="node-tree" :style="indent">
+    <span @click="toggleChildren">ICON: </span>
+    <span @click="updateSelected">{{ label }}</span>
     <node-tree
       v-if="showChildren"
       v-for="node in nodes"
@@ -8,13 +9,17 @@
       :label="node.label"
       :depth="depth + 1"
       :key="node.uuid"
+      :currentlySelectedUUID="currentlySelectedUUID"
+      :uuid="node.uuid"
+      :class="{ active: currentlySelectedUUID === node.uuid }"
+      @bus="bus"
     >
     </node-tree>
   </div>
 </template>
 <script>
 export default {
-  props: [ 'label', 'nodes', 'depth' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid' ],
   data () {
     return { showChildren: false }
   },
@@ -25,11 +30,20 @@ export default {
     }
   },
   methods: {
-    toggleChildren () {
+    toggleChildren: function () {
       this.showChildren = !this.showChildren
+    },
+    bus: function (data) {
+      this.$emit('bus', data)
+    },
+    updateSelected: function () {
+      this.$emit('bus', this.uuid)
     }
   }
 }
 </script>
 <style>
+.active {
+  background-color: #d3d3d3;
+}
 </style>
