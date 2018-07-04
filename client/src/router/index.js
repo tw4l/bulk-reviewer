@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import BulkextConfig from '@/components/BulkextConfig'
+import Settings from '@/components/Settings'
 import Sessions from '@/components/Sessions'
 import RedactionSession from '@/components/RedactionSession'
 
@@ -16,9 +16,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/config',
-      name: 'BulkextConfig',
-      component: BulkextConfig
+      path: '/settings',
+      name: 'Settings',
+      component: Settings
     },
     {
       path: '/sessions',

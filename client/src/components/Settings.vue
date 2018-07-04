@@ -2,8 +2,8 @@
   <div>
     <section class="section">
       <div class="container">
-        <h3 class="title is-3">Configs</h3>
-        <p>Stuff here!</p>
+        <h3 class="title is-3">Settings</h3>
+        <p>Set and edit bulk_extractor settings on this page.</p>
       </div>
     </section>
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'config'
+  name: 'settings'
 }
 </script>
 

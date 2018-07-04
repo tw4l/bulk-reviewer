@@ -18,8 +18,8 @@
         <router-link class="navbar-item" to="/sessions">
           <span>Sessions</span>
         </router-link>
-        <router-link class="navbar-item" to="/config">
-          <span>Configuration</span>
+        <router-link class="navbar-item" to="/settings">
+          <span>Settings</span>
         </router-link>
         <!-- + New Session links open modal instead of routing -->
         <div class="navbar-item" v-if="!showNav">
