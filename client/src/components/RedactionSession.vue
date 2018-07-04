@@ -5,20 +5,15 @@
   <hr>
   <div class="columns">
     <div class="column is-one-third">
-       <div class="tree">
-        <ul class="tree-list">
-          <node-tree
-            :label="fileTree.label"
-            :nodes="fileTree.nodes"
-            :currentlySelectedUUID="currentlySelectedUUID"
-            :depth="0"
-            :uuid="fileTree.uuid"
-            :allocated="fileTree.allocated"
-            :class="{ active: currentlySelectedUUID === fileTree.uuid }"
-            @bus="bus"
-          ></node-tree>
-        </ul>
-       </div>
+      <node-tree
+        :label="fileTree.label"
+        :nodes="fileTree.nodes"
+        :currentlySelectedUUID="currentlySelectedUUID"
+        :depth="0"
+        :uuid="fileTree.uuid"
+        :allocated="fileTree.allocated"
+        :class="{ active: currentlySelectedUUID === fileTree.uuid }"
+        @bus="bus"></node-tree>
       </div>
     <div class="column is-two-thirds">
       <div>
