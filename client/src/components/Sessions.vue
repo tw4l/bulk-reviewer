@@ -6,8 +6,23 @@
         <ul>
           <li v-for="session in sessions" :key="session.uuid">
             <div style="padding-bottom: 10px">
-              <router-link :to="{ name: 'RedactionSession', params: { uuid: session.uuid }}"><h5 class="title is-5">{{ session.name }}</h5></router-link>
-              <p class="subtitle is-6">{{ session.uuid }}</p>
+              <div class="columns">
+                <div class="column">
+                  <h5 class="title is-5">{{ session.name }}</h5>
+                  <p class="subtitle is-6">{{ session.uuid }}</p>
+                </div>
+                <div class="column">
+                  <router-link
+                    :to="{ name: 'RedactionSession', params: { uuid: session.uuid }}"
+                    v-if="session.processing_complete">
+                    <button class="button is-info">Go to session</button>
+                  </router-link>
+                  <button class="button is-info" disabled v-else>
+                    <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
+                  </button>
+                  <button class="button is-danger">Delete</button>
+                </div>
+              </div>
             </div>
           </li>
         </ul>
