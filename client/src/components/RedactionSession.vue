@@ -56,7 +56,7 @@ export default {
       })
     axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
       .then(response => {
-        this.files = response.data.results
+        this.files = response.data
         this.fileTree = this.convertPathsToTree(this.files)
       })
       .catch(e => {
@@ -64,7 +64,7 @@ export default {
       })
     axios.get(`http://127.0.0.1:8000/api/session/${uuid}/features/`)
       .then(response => {
-        this.features = response.data.results
+        this.features = response.data
       })
       .catch(e => {
         this.errors.push(e)

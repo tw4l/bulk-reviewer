@@ -46,7 +46,7 @@ export default {
   created () {
     axios.get(`http://127.0.0.1:8000/api/session`)
       .then(response => {
-        this.sessions = response.data.results
+        this.sessions = response.data
       })
       .catch(e => {
         this.errors.push(e)
