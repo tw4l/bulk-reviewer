@@ -8,8 +8,8 @@
       </span>
       <span class="icon is-small" v-else></span>
     </span>
-    <!-- icons for folders/directories -->
-    <span>
+    <!-- icons and labels -->
+    <span @click="updateSelected">
       <span class="icon is-small" v-if="openable">
         <font-awesome-icon icon="folder-open" v-if="showChildren"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-else></font-awesome-icon>
@@ -18,8 +18,8 @@
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
         <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
       </span>
+      {{ label }}
     </span>
-    <span @click="updateSelected">{{ label }}</span>
     <node-tree
       v-if="showChildren"
       v-for="node in nodes"
