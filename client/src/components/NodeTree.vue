@@ -18,7 +18,9 @@
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
         <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
       </span>
+      <span :class="{ active: currentlySelectedUUID === uuid }">
       {{ label }}
+      </span>
     </span>
     <node-tree
       v-if="showChildren"
@@ -33,7 +35,6 @@
       :allocated="node.allocated"
       :redacted="node.redacted"
       :cleared="node.cleared"
-      :class="{ active: currentlySelectedUUID === node.uuid }"
       @bus="bus"
     >
     </node-tree>
