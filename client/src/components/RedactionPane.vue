@@ -5,7 +5,7 @@
     <hr>
     <div class="message" v-for="featureType in featureTypeArray" :key="featureType">
       <div class="message-header">{{ featureType }} ({{ featureTypeCount(featureType) }})</div>
-      <div class="message-body">
+      <div class="message-body" style="word-wrap: break-word;">
         <ul>
           <li v-for="f in filterByFeatureType(featureType)" :key="f.uuid">
             <p><strong>Feature: </strong> {{ f.feature }}</p>
