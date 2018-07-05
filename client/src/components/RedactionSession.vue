@@ -12,6 +12,8 @@
         :depth="0"
         :uuid="fileTree.uuid"
         :allocated="fileTree.allocated"
+        :redacted="fileTree.redacted"
+        :cleared="fileTree.cleared"
         :class="{ active: currentlySelectedUUID === fileTree.uuid }"
         @bus="bus"></node-tree>
       </div>

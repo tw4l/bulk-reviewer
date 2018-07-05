@@ -31,6 +31,8 @@
       :uuid="node.uuid"
       :isDir="node.isDir"
       :allocated="node.allocated"
+      :redacted="node.redacted"
+      :cleared="node.cleared"
       :class="{ active: currentlySelectedUUID === node.uuid }"
       @bus="bus"
     >
@@ -39,7 +41,7 @@
 </template>
 <script>
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'redacted', 'cleared' ],
   data () {
     return { showChildren: false }
   },
