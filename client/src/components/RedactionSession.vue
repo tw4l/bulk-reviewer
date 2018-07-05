@@ -4,7 +4,7 @@
   <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
   <hr>
   <div class="columns">
-    <div class="column">
+    <div class="column padded">
       <node-tree
         :label="fileTree.label"
         :nodes="fileTree.nodes"
@@ -15,9 +15,10 @@
         :class="{ active: currentlySelectedUUID === fileTree.uuid }"
         @bus="bus"></node-tree>
       </div>
-    <div class="column">
+    <div class="column padded">
       <div>
-        Redaction review and actions here
+        <redaction-pane
+        :currentlySelectedUUID="currentlySelectedUUID"></redaction-pane>
       </div>
     </div>
   </div>
@@ -26,11 +27,12 @@
 
 <script>
 import NodeTree from './NodeTree'
+import RedactionPane from './RedactionPane'
 import axios from 'axios'
 
 export default {
   name: 'session',
-  components: { NodeTree },
+  components: { NodeTree, RedactionPane },
   data () {
     return {
       sessionInfo: {},
@@ -40,9 +42,6 @@ export default {
       errors: [],
       currentlySelectedUUID: ''
     }
-  },
-  mounted () {
-
   },
   created () {
     // api calls to add data
