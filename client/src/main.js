@@ -9,13 +9,7 @@ import { faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // register fontawesome icons
-library.add(faCaretDown)
-library.add(faCaretRight)
-library.add(faFolder)
-library.add(faFolderOpen)
-library.add(faFile)
-library.add(faTrashAlt)
-library.add(faSpinner)
+library.add(faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false

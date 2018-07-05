@@ -36,7 +36,6 @@
 <script>
 export default {
   name: 'TopNavbar',
-
   data () {
     return {
       showNav: false

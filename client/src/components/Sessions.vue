@@ -1,8 +1,13 @@
 <template>
   <div>
     <section class="section">
+      <new-session-modal
+        v-show="showModal"
+        @close="showModal = false"/>
       <div class="container">
         <h3 class="title is-3">Sessions</h3>
+        <button class="button is-link" @click="showModal = true">+ New Session</button>
+        <br><br>
         <ul>
           <li v-for="session in sessions" :key="session.uuid">
             <div style="padding-bottom: 10px">
@@ -33,16 +38,18 @@
 
 <script>
 import axios from 'axios'
+import NewSessionModal from '@/components/NewSessionModal'
 
 export default {
   name: 'sessions',
+  components: { NewSessionModal },
   data () {
     return {
       sessions: [],
-      errors: []
+      errors: [],
+      showModal: false
     }
   },
-
   created () {
     axios.get(`http://127.0.0.1:8000/api/session`)
       .then(response => {
