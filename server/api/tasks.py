@@ -32,28 +32,30 @@ def run_bulk_extractor(be_session_uuid):
     cmd = ['bulk_extractor',
            '-o',
            feature_files_path,
-           '-E',
+           '-x',
            'accts',
-           '-e',
+           '-x',
            'email',
-           '-e',
-           'pdf',
-           '-S',
-           'jpeg_carve_mode=0',
-           '-S',
-           'unzip_carve_mode=0',
-           '-S',
-           'unrar_carve_mode=0',
+           '-x',
+           'gps',
+           '-x',
+           'find',
+           '-x',
+           'windirs',
+           '-x',
+           'winpe',
+           '-x',
+           'winlnk',
+           '-x',
+           'winprefetch',
            '-S',
            'ssn_mode={}'.format(be_config.ssn_mode),
            transfer_source]
     if not disk_image:
-        cmd.insert(17, '-R')
+        cmd.insert(21, '-R')
     if be_config.regex_file:
         cmd.insert(1, '-F')
         cmd.insert(2, be_config.regex_file.path)
-        cmd.insert(7, '-e')
-        cmd.insert(8, 'lightgrep')
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
