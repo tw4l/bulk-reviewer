@@ -3,33 +3,30 @@
     <p><strong>Path:</strong> {{ fileInfo.filepath }}</p>
     <p><strong>Features:</strong> {{ featureCount }}</p>
     <hr>
-    <div class="message" v-for="featureType in featureTypeArray" :key="featureType">
-      <div class="message-header">{{ featureType }} ({{ featureTypeCount(featureType) }})</div>
-      <div class="message-body" style="word-wrap: break-word;">
-        <ul>
-          <li v-for="f in filterByFeatureType(featureType)" :key="f.uuid">
-            <p><strong>Feature: </strong> {{ f.feature }}</p>
-            <p><strong>Context: </strong> {{ f.context }}</p>
-            <br>
-          </li>
-        </ul>
-      </div>
-      <hr>
-    </div>
+    <feature-type-message
+    v-for="featureType in featureTypeArray"
+    :key="featureType"
+    :featureType="featureType"
+    :featureTypeCount="featureTypeCount(featureType)"
+    :filteredFeatureArray="filterByFeatureType(featureType)"
+    ></feature-type-message>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import FeatureTypeMessage from '@/components/FeatureTypeMessage'
 
 export default {
   name: 'redaction-pane',
   props: [ 'currentlySelectedUUID' ],
+  components: { FeatureTypeMessage },
   data () {
     return {
       fileInfo: {},
       features: [],
-      errors: []
+      errors: [],
+      messagesOpen: false
     }
   },
   watch: {
