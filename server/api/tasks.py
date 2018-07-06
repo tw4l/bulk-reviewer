@@ -50,13 +50,15 @@ def run_bulk_extractor(be_session_uuid):
            'winprefetch',
            '-x',
            'exif',
+           '-x',
+           'base16_lg',
            '-S',
            'ssn_mode={}'.format(be_config.ssn_mode),
            '-S',
            'jpeg_carve_mode=0',
            transfer_source]
     if not disk_image:
-        cmd.insert(25, '-R')
+        cmd.insert(27, '-R')
     if be_config.regex_file:
         cmd.insert(1, '-F')
         cmd.insert(2, be_config.regex_file.path)
