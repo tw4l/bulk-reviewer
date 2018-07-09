@@ -12,8 +12,6 @@
         :depth="0"
         :uuid="fileTree.uuid"
         :allocated="fileTree.allocated"
-        :redacted="fileTree.redacted"
-        :cleared="fileTree.cleared"
         :class="{ active: currentlySelectedUUID === fileTree.uuid }"
         @bus="bus"></node-tree>
       </div>
@@ -46,36 +44,43 @@ export default {
     }
   },
   created () {
-    // api calls to add data
-    let uuid = this.$route.params.uuid
-    axios.get(`http://127.0.0.1:8000/api/session/${uuid}/`)
-      .then(response => {
-        this.sessionInfo = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
-    axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
-      .then(response => {
-        this.files = response.data
-        this.fileTree = this.convertPathsToTree(this.files)
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
-    axios.get(`http://127.0.0.1:8000/api/session/${uuid}/features/`)
-      .then(response => {
-        this.features = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    this.getData()
+
+    setInterval(function () {
+      this.getData()
+    }.bind(this), 20000)
   },
 
   methods: {
     // update currentlySelectedUUID from recursive node-tree components
     bus (newUUID) {
       this.currentlySelectedUUID = newUUID
+    },
+    getData () {
+      // api calls to add data
+      let uuid = this.$route.params.uuid
+      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/`)
+        .then(response => {
+          this.sessionInfo = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
+        .then(response => {
+          this.files = response.data
+          this.fileTree = this.convertPathsToTree(this.files)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/features/`)
+        .then(response => {
+          this.features = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     },
     // create fileTree from files JSON
     convertPathsToTree: function (files) {
@@ -85,16 +90,16 @@ export default {
       for (let file of files) {
         let path = file['filepath']
         let uuid = file['uuid']
-        let redacted = file['redact_file']
-        let cleared = file['cleared']
         let allocated = file['allocated']
+        let cleared = file['cleared']
+        let redacted = file['redact_file']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, redacted, cleared, allocated)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, cleared, redacted)
       }
       return rootNode
     },
 
-    buildNodeRecursive: function (node, path, index, uuid, redacted, cleared, allocated) {
+    buildNodeRecursive: function (node, path, index, uuid, allocated, cleared, redacted) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.nodes.find(node => node.label === item)
@@ -110,13 +115,13 @@ export default {
           if (index === path.length - 1) {
             dir['uuid'] = uuid
             dir['isDir'] = false
-            dir['redacted'] = redacted
-            dir['cleared'] = cleared
             dir['allocated'] = allocated
+            dir['cleared'] = cleared
+            dir['redacted'] = redacted
           }
           node.nodes.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid, redacted, cleared, allocated)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, cleared, redacted)
       }
     }
   }

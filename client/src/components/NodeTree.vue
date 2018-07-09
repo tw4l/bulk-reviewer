@@ -18,7 +18,7 @@
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
         <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
       </span>
-      <span :class="{ active: currentlySelectedUUID === uuid }">
+      <span :class="{ active: currentlySelectedUUID === uuid, cleared: cleared }">
       {{ label }}
       </span>
     </span>
@@ -33,18 +33,22 @@
       :uuid="node.uuid"
       :isDir="node.isDir"
       :allocated="node.allocated"
-      :redacted="node.redacted"
       :cleared="node.cleared"
-      @bus="bus"
-    >
+      :redacted="node.redacted"
+      @bus="bus">
     </node-tree>
   </div>
 </template>
+
 <script>
+
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'redacted', 'cleared' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'cleared', 'redacted' ],
   data () {
-    return { showChildren: false }
+    return {
+      showChildren: false,
+      errors: []
+    }
   },
   name: 'node-tree',
   computed: {
@@ -71,8 +75,12 @@ export default {
   }
 }
 </script>
+
 <style>
 .active {
   background-color: #d3d3d3;
+}
+.cleared {
+  color: green;
 }
 </style>
