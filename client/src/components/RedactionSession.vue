@@ -18,7 +18,8 @@
     <div class="column padded">
       <div>
         <redaction-pane
-        :currentlySelectedUUID="currentlySelectedUUID"></redaction-pane>
+        :currentlySelectedUUID="currentlySelectedUUID">
+        </redaction-pane>
       </div>
     </div>
   </div>
