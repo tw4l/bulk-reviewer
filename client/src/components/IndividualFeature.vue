@@ -34,7 +34,21 @@ export default {
       featureCleared: false
     }
   },
+  created () {
+    this.$parent.$on('getFeatureStatus', this.getFeatureStatus)
+  },
   methods: {
+    getFeatureStatus: function () {
+      let featureUUID = this.featureInfo.uuid
+      axios.get(`http://127.0.0.1:8000/api/feature/${featureUUID}/`)
+        .then(response => {
+          this.featureRedacted = response.data.redact_feature
+          this.featureCleared = response.data.cleared
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     markFeatureRedacted: function () {
       let featureUUID = this.featureInfo.uuid
       axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'redact_feature': true, 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
