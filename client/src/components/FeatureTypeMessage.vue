@@ -44,7 +44,9 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
-      this.$emit('getFeatureStatus')
+      if (this.showMessageBody === true) {
+        this.$emit('getFeatureStatus')
+      }
     },
     markAllFeaturesRedacted: function () {
       let featuresToRedact = this.filteredFeatureArray
