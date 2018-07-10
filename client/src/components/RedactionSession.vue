@@ -49,7 +49,7 @@ export default {
 
     setInterval(function () {
       this.getData()
-    }.bind(this), 20000)
+    }.bind(this), 3000)
   },
 
   methods: {
