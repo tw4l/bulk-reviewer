@@ -8,8 +8,7 @@
       :showMessage="showAlertMessage"
       v-if="showAlertMessage"
       @hideMessage="showAlertMessage = false">
-      </alert>
-    <button class="button" @click="getAllSessionFeatures">See all Session features</button>
+    </alert>
     <p><strong>Path:</strong> {{ fileInfo.filepath || "Entire Session" }}</p>
     <!-- Status indicators -->
     <p v-if="allClear"><strong>Status:</strong> Clear (no features in file)</p>
@@ -32,6 +31,7 @@
     :featureTypeCount="featureTypeCount(featureType)"
     :filteredFeatureArray="filterByFeatureType(featureType)"
     ></feature-type-message>
+    <button v-if="fileInfo.uuid" class="button" @click="getAllSessionFeatures">Return to all Session features <font-awesome-icon icon="level-up-alt"></font-awesome-icon></button>
   </div>
 </template>
 
@@ -88,6 +88,7 @@ export default {
     },
     getAllSessionFeatures () {
       // retrieve data
+      this.loading = true
       let apiCall = 'http://127.0.0.1:8000/api' + this.$route.path + '/features/'
       axios.get(`${apiCall}`)
         .then(response => {
