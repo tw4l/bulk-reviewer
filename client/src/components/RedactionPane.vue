@@ -106,7 +106,7 @@ export default {
         })
         .catch(e => {
           this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.alertMessage = 'Failure updating database via API. ' + e
           this.showAlertMessage = true
         })
     },
@@ -121,7 +121,7 @@ export default {
         })
         .catch(e => {
           this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.alertMessage = 'Failure updating database via API. ' + e
           this.showAlertMessage = true
         })
     },
@@ -135,7 +135,7 @@ export default {
           this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
-          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.alertMessage = 'Failure updating database via API. ' + e
           this.showAlertMessage = true
         })
     },
@@ -149,7 +149,7 @@ export default {
           this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
-          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.alertMessage = 'Failure updating database via API. ' + e
           this.showAlertMessage = true
         })
     },
