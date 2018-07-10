@@ -53,6 +53,9 @@ export default {
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {
+      // hide alert message from last file if existing
+      this.showAlertMessage = false
+      // update data shown to user
       axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/`)
         .then(response => {
           this.fileInfo = response.data
