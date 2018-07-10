@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="loading === true">
+    <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
+  </div>
+  <div v-else>
     <alert
       :message="alertMessage"
       :showMessage="showAlertMessage"
@@ -48,7 +51,8 @@ export default {
       errors: [],
       messagesOpen: false,
       alertMessage: '',
-      showAlertMessage: false
+      showAlertMessage: false,
+      loading: true
     }
   },
   created () {
@@ -88,6 +92,7 @@ export default {
       axios.get(`${apiCall}`)
         .then(response => {
           this.features = response.data
+          this.loading = false
         })
         .catch(e => {
           this.errors.push(e)
