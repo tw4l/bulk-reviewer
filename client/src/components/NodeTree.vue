@@ -18,7 +18,7 @@
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
         <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
       </span>
-      <span :class="{ active: currentlySelectedUUID === uuid, cleared: cleared }">
+      <span :class="{ active: currentlySelectedUUID === uuid, cleared: cleared, redacted: redacted }">
       {{ label }}
       </span>
     </span>
@@ -82,5 +82,8 @@ export default {
 }
 .cleared {
   color: green;
+}
+.redacted {
+  color: red;
 }
 </style>

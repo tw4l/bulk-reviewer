@@ -11,6 +11,7 @@
         :currentlySelectedUUID="currentlySelectedUUID"
         :depth="0"
         :uuid="fileTree.uuid"
+        :nodeIndex="0"
         :allocated="fileTree.allocated"
         :class="{ active: currentlySelectedUUID === fileTree.uuid }"
         @bus="bus"></node-tree>
@@ -18,8 +19,7 @@
     <div class="column padded">
       <div>
         <redaction-pane
-        :currentlySelectedUUID="currentlySelectedUUID">
-        </redaction-pane>
+        :currentlySelectedUUID="currentlySelectedUUID"></redaction-pane>
       </div>
     </div>
   </div>
@@ -87,6 +87,7 @@ export default {
     convertPathsToTree: function (files) {
       // Build the node structure
       const rootNode = {label: 'Session', nodes: []}
+      let nodeIndex = 0
 
       for (let file of files) {
         let path = file['filepath']
@@ -95,23 +96,22 @@ export default {
         let cleared = file['cleared']
         let redacted = file['redact_file']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, cleared, redacted)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, cleared, redacted, nodeIndex)
       }
       return rootNode
     },
 
-    buildNodeRecursive: function (node, path, index, uuid, allocated, cleared, redacted) {
+    buildNodeRecursive: function (node, path, index, uuid, allocated, cleared, redacted, nodeIndex) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.nodes.find(node => node.label === item)
+        let newNodeIndex = nodeIndex + 1
         if (!dir) {
-          const uuidv4 = require('uuid/v4')
-          let uuidString = uuidv4().toString()
           dir = {
             label: item,
             isDir: true,
             nodes: [],
-            uuid: uuidString
+            nodeIndex: newNodeIndex
           }
           if (index === path.length - 1) {
             dir['uuid'] = uuid
@@ -119,10 +119,11 @@ export default {
             dir['allocated'] = allocated
             dir['cleared'] = cleared
             dir['redacted'] = redacted
+            dir['nodeIndex'] = newNodeIndex
           }
           node.nodes.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, cleared, redacted)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, cleared, redacted, newNodeIndex)
       }
     }
   }
