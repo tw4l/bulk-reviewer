@@ -12,6 +12,7 @@ venv/
 
 # database
 server/*.sqlite3
+server/*.sqlite3-journal
 
 # media
 server/media/
