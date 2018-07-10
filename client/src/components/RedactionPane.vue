@@ -96,6 +96,7 @@ export default {
           console.log(response)
           this.alertMessage = 'Success'
           this.showAlertMessage = true
+          this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
           this.errors.push(e)
@@ -110,6 +111,7 @@ export default {
           console.log(response)
           this.alertMessage = 'Success'
           this.showAlertMessage = true
+          this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
           this.errors.push(e)
@@ -124,6 +126,7 @@ export default {
           console.log(response)
           this.alertMessage = 'Success'
           this.showAlertMessage = true
+          this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
           this.alertMessage = 'Failure updating database via API. Error message: ' + e
@@ -137,10 +140,20 @@ export default {
           console.log(response)
           this.alertMessage = 'Success'
           this.showAlertMessage = true
+          this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
           this.alertMessage = 'Failure updating database via API. Error message: ' + e
           this.showAlertMessage = true
+        })
+    },
+    updateRedactionPane (fileUUID) {
+      axios.get(`http://127.0.0.1:8000/api/file/${fileUUID}/`)
+        .then(response => {
+          this.fileInfo = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
         })
     }
   },
