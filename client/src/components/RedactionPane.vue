@@ -1,9 +1,11 @@
 <template>
   <div>
     <p><strong>Path:</strong> {{ fileInfo.filepath || "Entire Session" }}</p>
+    <p v-if="fileInfo.uuid"><strong>Cleared:</strong> {{ fileInfo.cleared }}</p>
+    <p v-if="fileInfo.uuid"><strong>Marked for redaction:</strong> {{ fileInfo.redact_file }}</p>
     <p><strong>Features:</strong> {{ featureCount }}</p>
     <button class="button" @click="getAllSessionFeatures">See all Session features</button>
-    <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid">Mark file cleared</button>
+    <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark file cleared</button>
     <hr>
     <feature-type-message
     v-for="featureType in featureTypeArray"
@@ -77,6 +79,7 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
+          alert('success!')
         })
         .catch(e => {
           this.errors.push(e)
