@@ -3,6 +3,7 @@
     <div>
       <p><strong>Feature: </strong> {{ featureInfo.feature }}</p>
       <p><strong>Context: </strong> {{ featureInfo.context }}</p>
+      <p v-if="viewingFile === false"><strong>File: </strong> {{ featureInfo.source_file }}</p>
     </div>
     <div>
       <button
@@ -27,7 +28,7 @@ import axios from 'axios'
 
 export default {
   name: 'individual-feature',
-  props: [ 'featureInfo' ],
+  props: [ 'featureInfo', 'viewingFile' ],
   data () {
     return {
       featureRedacted: false,

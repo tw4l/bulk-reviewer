@@ -22,7 +22,8 @@
       <individual-feature
         v-for="f in filteredFeatureArray"
         :key="f.uuid"
-        :featureInfo="f"></individual-feature>
+        :featureInfo="f"
+        :viewingFile="viewingFile"></individual-feature>
     </div>
   </div>
 </template>
@@ -33,7 +34,7 @@ import IndividualFeature from '@/components/IndividualFeature'
 
 export default {
   name: 'feature-result',
-  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray'],
+  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'viewingFile'],
   components: { IndividualFeature },
   data () {
     return {
@@ -43,6 +44,7 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
+      this.$emit('getFeatureStatus')
     },
     markAllFeaturesRedacted: function () {
       let featuresToRedact = this.filteredFeatureArray
@@ -51,6 +53,7 @@ export default {
         let featureUUID = f.uuid
         self.markFeatureRedacted(featureUUID)
       })
+      this.$emit('getFeatureStatus')
     },
     markAllFeaturesCleared: function () {
       let featuresToClear = this.filteredFeatureArray
@@ -59,12 +62,12 @@ export default {
         let featureUUID = f.uuid
         self.markFeatureCleared(featureUUID)
       })
+      this.$emit('getFeatureStatus')
     },
     markFeatureRedacted: function (featureUUID) {
       axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'redact_feature': true, 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          this.$emit('getFeatureStatus')
         })
         .catch(e => {
           console.log(e)
@@ -74,7 +77,6 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'redact_feature': false, 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          this.$emit('getFeatureStatus')
         })
         .catch(e => {
           console.log(e)

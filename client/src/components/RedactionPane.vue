@@ -30,6 +30,7 @@
     :featureType="featureType"
     :featureTypeCount="featureTypeCount(featureType)"
     :filteredFeatureArray="filterByFeatureType(featureType)"
+    :viewingFile="viewingFile"
     ></feature-type-message>
     <!-- Button to return to all Session feature results -->
     <button v-if="fileInfo.uuid" class="button" @click="getAllSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Return to all Session features</button>
@@ -53,7 +54,8 @@ export default {
       messagesOpen: false,
       alertMessage: '',
       showAlertMessage: false,
-      loading: true
+      loading: true,
+      viewingFile: false
     }
   },
   created () {
@@ -63,6 +65,8 @@ export default {
     currentlySelectedUUID: function (newUUID, oldUUID) {
       // hide alert message from last file if existing
       this.showAlertMessage = false
+      // mark redaction pane as viewing single file
+      this.viewingFile = true
       // update data shown to user
       axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/`)
         .then(response => {
@@ -101,6 +105,8 @@ export default {
         })
       // clear fileInfo
       this.fileInfo = {}
+      // mark redaction pane as viewing session
+      this.viewingFile = false
     },
     markFileCleared () {
       let fileUUID = this.fileInfo.uuid
