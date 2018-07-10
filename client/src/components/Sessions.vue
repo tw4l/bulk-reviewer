@@ -51,13 +51,22 @@ export default {
     }
   },
   created () {
-    axios.get(`http://127.0.0.1:8000/api/session`)
+    this.getSessions()
+
+    setInterval(function () {
+      this.getSessions()
+    }.bind(this), 10000)
+  },
+  methods: {
+    getSessions () {
+      axios.get(`http://127.0.0.1:8000/api/session`)
       .then(response => {
         this.sessions = response.data
       })
       .catch(e => {
         this.errors.push(e)
       })
+    }
   }
 }
 </script>
