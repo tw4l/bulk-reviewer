@@ -1,6 +1,6 @@
 <template>
   <div class="modal is-active">
-    <div class="modal-background"></div>
+    <div class="modal-background" @click="close"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Create New Session</p>
@@ -11,7 +11,7 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success">Create</button>
-        <button class="button">Cancel</button>
+        <button class="button" @click="close">Cancel</button>
       </footer>
     </div>
   </div>
@@ -22,7 +22,7 @@ export default {
   name: 'new-session-modal',
   methods: {
     close: function () {
-      this.$emit('close')
+      this.$emit('newSessionClose')
     }
   }
 }

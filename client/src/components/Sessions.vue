@@ -2,11 +2,11 @@
   <div>
     <section class="section">
       <new-session-modal
-        v-show="showModal"
-        @close="showModal = false"/>
+        v-show="showNewSessionModal"
+        @newSessionClose="showNewSessionModal = false"></new-session-modal>
       <div class="container">
         <h3 class="title is-3">Sessions</h3>
-        <button class="button is-link" @click="showModal = true">+ New Session</button>
+        <button class="button is-link" @click="showNewSessionModal = true">+ New Session</button>
         <br><br>
         <ul>
           <li v-for="session in sessions" :key="session.uuid">
@@ -25,7 +25,10 @@
                   <button class="button is-info" disabled v-else>
                     <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
                   </button>
-                  <button class="button is-danger">Delete</button>
+                  <delete-modal-button
+                    :sessionUUID="session.uuid"
+                    :sessionName="session.name">
+                  </delete-modal-button>
                 </div>
               </div>
             </div>
@@ -39,15 +42,16 @@
 <script>
 import axios from 'axios'
 import NewSessionModal from '@/components/NewSessionModal'
+import DeleteModalButton from '@/components/DeleteModalButton'
 
 export default {
   name: 'sessions',
-  components: { NewSessionModal },
+  components: { NewSessionModal, DeleteModalButton },
   data () {
     return {
       sessions: [],
       errors: [],
-      showModal: false
+      showNewSessionModal: false
     }
   },
   created () {
@@ -55,7 +59,7 @@ export default {
 
     setInterval(function () {
       this.getSessions()
-    }.bind(this), 10000)
+    }.bind(this), 3000)
   },
   methods: {
     getSessions () {
