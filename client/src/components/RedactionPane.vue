@@ -31,6 +31,7 @@
     :featureTypeCount="featureTypeCount(featureType)"
     :filteredFeatureArray="filterByFeatureType(featureType)"
     ></feature-type-message>
+    <!-- Button to return to all Session feature results -->
     <button v-if="fileInfo.uuid" class="button" @click="getAllSessionFeatures">Return to all Session features <font-awesome-icon icon="level-up-alt"></font-awesome-icon></button>
   </div>
 </template>
