@@ -1,5 +1,11 @@
 <template>
   <div>
+    <alert
+      :message="alertMessage"
+      :showMessage="showAlertMessage"
+      v-if="showAlertMessage"
+      @hideMessage="showAlertMessage = false">
+      </alert>
     <p><strong>Path:</strong> {{ fileInfo.filepath || "Entire Session" }}</p>
     <p v-if="fileInfo.uuid"><strong>Cleared:</strong> {{ fileInfo.cleared }}</p>
     <p v-if="fileInfo.uuid"><strong>Marked for redaction:</strong> {{ fileInfo.redact_file }}</p>
@@ -26,17 +32,20 @@
 <script>
 import axios from 'axios'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
+import Alert from '@/components/Alert'
 
 export default {
   name: 'redaction-pane',
   props: [ 'currentlySelectedUUID' ],
-  components: { FeatureTypeMessage },
+  components: { FeatureTypeMessage, Alert },
   data () {
     return {
       fileInfo: {},
       features: [],
       errors: [],
-      messagesOpen: false
+      messagesOpen: false,
+      alertMessage: '',
+      showAlertMessage: false
     }
   },
   created () {
@@ -85,10 +94,13 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true, 'redact_file': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          alert('success!')
+          this.alertMessage = 'Success'
+          this.showAlertMessage = true
         })
         .catch(e => {
           this.errors.push(e)
+          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.showAlertMessage = true
         })
     },
     markFileNotCleared () {
@@ -96,9 +108,13 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
+          this.alertMessage = 'Success'
+          this.showAlertMessage = true
         })
         .catch(e => {
           this.errors.push(e)
+          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.showAlertMessage = true
         })
     },
     markFileRedacted () {
@@ -106,10 +122,12 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'redact_file': true, 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          alert('success!')
+          this.alertMessage = 'Success'
+          this.showAlertMessage = true
         })
         .catch(e => {
-          this.errors.push(e)
+          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.showAlertMessage = true
         })
     },
     markFileNotRedacted () {
@@ -117,9 +135,12 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'redact_file': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
+          this.alertMessage = 'Success'
+          this.showAlertMessage = true
         })
         .catch(e => {
-          this.errors.push(e)
+          this.alertMessage = 'Failure updating database via API. Error message: ' + e
+          this.showAlertMessage = true
         })
     }
   },
