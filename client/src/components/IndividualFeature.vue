@@ -35,6 +35,9 @@ export default {
     }
   },
   created () {
+    this.featureRedacted = this.featureInfo.redact_feature
+    this.featureCleared = this.featureInfo.cleared
+
     this.$parent.$on('getFeatureStatus', this.getFeatureStatus)
   },
   methods: {

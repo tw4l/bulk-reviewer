@@ -43,7 +43,6 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
-      this.$emit('getFeatureStatus')
     },
     markAllFeaturesRedacted: function () {
       let featuresToRedact = this.filteredFeatureArray
