@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import IndividualFeature from '@/components/IndividualFeature'
 
 export default {
@@ -44,45 +44,19 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
-      if (this.showMessageBody === true) {
-        this.$emit('getFeatureStatus')
-      }
     },
     markAllFeaturesRedacted: function () {
-      let featuresToRedact = this.filteredFeatureArray
-      let self = this
-      featuresToRedact.forEach(function (f) {
-        let featureUUID = f.uuid
-        self.markFeatureRedacted(featureUUID)
-      })
-      this.$emit('getFeatureStatus')
+      // in place for testing - replace with API call and front end refresh
+      console.log(this.filteredFeatureUUIDArray)
     },
     markAllFeaturesCleared: function () {
-      let featuresToClear = this.filteredFeatureArray
-      let self = this
-      featuresToClear.forEach(function (f) {
-        let featureUUID = f.uuid
-        self.markFeatureCleared(featureUUID)
-      })
-      this.$emit('getFeatureStatus')
-    },
-    markFeatureRedacted: function (featureUUID) {
-      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'redact_feature': true, 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
-    markFeatureCleared: function (featureUUID) {
-      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'redact_feature': false, 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      // in place for testing - replace with API call and front end refresh
+      console.log(this.filteredFeatureUUIDArray)
+    }
+  },
+  computed: {
+    filteredFeatureUUIDArray () {
+      return this.filteredFeatureArray.map(a => a.uuid)
     }
   }
 }
