@@ -47,11 +47,23 @@ export default {
     },
     markAllFeaturesRedacted: function () {
       // in place for testing - replace with API call and front end refresh
-      console.log(this.filteredFeatureUUIDArray)
+      let uuids = this.filteredFeatureUUIDArray
+      console.log(uuids)
+      // emit signal for each uuid
+      let self = this
+      uuids.forEach(function (uuid) {
+        self.$emit('redactFeature', uuid)
+      })
     },
     markAllFeaturesCleared: function () {
       // in place for testing - replace with API call and front end refresh
-      console.log(this.filteredFeatureUUIDArray)
+      let uuids = this.filteredFeatureUUIDArray
+      console.log(uuids)
+      // emit signal for each uuid
+      let self = this
+      uuids.forEach(function (uuid) {
+        self.$emit('clearFeature', uuid)
+      })
     }
   },
   computed: {

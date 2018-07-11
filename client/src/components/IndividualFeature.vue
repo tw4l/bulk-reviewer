@@ -38,6 +38,10 @@ export default {
   created () {
     this.featureRedacted = this.featureInfo.redact_feature
     this.featureCleared = this.featureInfo.cleared
+
+    // listen for parent signals with this uuid
+    this.$parent.$on('redactFeature', this.showAsRedacted)
+    this.$parent.$on('clearFeature', this.showAsCleared)
   },
   methods: {
     markFeatureRedacted: function () {
@@ -51,6 +55,20 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    showAsRedacted: function (uuid) {
+      if (uuid === this.featureInfo.uuid) {
+        this.featureRedacted = true
+        this.featureCleared = false
+        console.log(this.featureInfo.uuid, 'marked as redacted')
+      }
+    },
+    showAsCleared: function (uuid) {
+      if (uuid === this.featureInfo.uuid) {
+        this.featureRedacted = false
+        this.featureCleared = true
+        console.log(this.featureInfo.uuid, 'marked as cleared')
+      }
     },
     markFeatureCleared: function () {
       let featureUUID = this.featureInfo.uuid
