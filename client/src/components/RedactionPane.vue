@@ -18,7 +18,7 @@
       <p v-else-if="fileInfo.uuid && (fileInfo.cleared === true)"><strong>Status:</strong> <span class="cleared">Cleared</span></p>
       <p v-else-if="fileInfo.uuid && (fileInfo.redact_file === true)"><strong>Status:</strong> <span class="redacted">Redacted</span></p>
       <p v-else><strong>Status:</strong> Under review</p>
-      <p><strong>Features:</strong> {{ featureCount }}</p>
+      <p><strong>Results:</strong> {{ featureCount }}</p>
     </div>
     <!-- Sctions -->
     <div v-show="!allClear">
