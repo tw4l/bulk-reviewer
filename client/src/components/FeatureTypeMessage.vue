@@ -1,29 +1,30 @@
 <template>
   <div class="message">
-    <div class="message-header">
-      <span @click="toggleMessageBody">{{ featureType }} ({{ featureTypeCount }})</span>
-      <span style="align: right;">
-        <button
-          class="button is-danger"
-          @click="markAllFeaturesRedacted">
-          <font-awesome-icon icon="bars" class="fa-fw"></font-awesome-icon>
-          Redact all
-        </button>
-        <button
-          class="button is-success"
-          @click="markAllFeaturesCleared">
-          <font-awesome-icon icon="check" class="fa-fw"></font-awesome-icon>
-          Clear all
-        </button>
-        <button class="button" @click="toggleMessageBody">(+/-)</button>
-      </span>
+    <div class="message-header" @click="toggleMessageBody" style="align: left;">
+      <font-awesome-icon icon="caret-down" v-if="showMessageBody"></font-awesome-icon>
+      <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
+      {{ featureType }} ({{ featureTypeCount }})
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
+      <button
+        class="button is-danger"
+        @click="markAllFeaturesRedacted">
+        <font-awesome-icon icon="bars" class="fa-fw"></font-awesome-icon>
+        Mark all redacted
+      </button>
+      <button
+        class="button is-success"
+        @click="markAllFeaturesCleared"
+        style="margin-bottom:15px;">
+        <font-awesome-icon icon="check" class="fa-fw"></font-awesome-icon>
+        Mark all reviewed
+      </button>
       <individual-feature
         v-for="f in filteredFeatureArray"
         :key="f.uuid"
         :featureInfo="f"
-        :viewingFile="viewingFile"></individual-feature>
+        :viewingFile="viewingFile">
+      </individual-feature>
     </div>
   </div>
 </template>
