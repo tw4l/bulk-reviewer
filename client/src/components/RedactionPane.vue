@@ -18,9 +18,9 @@
     <!-- Features and actions -->
     <p><strong>Features:</strong> {{ featureCount }}</p>
     <div v-show="!allClear">
-      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark file cleared</button>
-      <button class="button" @click="markFileNotCleared" v-else-if="fileInfo.uuid && (fileInfo.cleared === true)">Mark file not cleared</button>
       <button class="button is-danger" @click="markFileRedacted" v-if="fileInfo.uuid && (fileInfo.redact_file === false) && (fileInfo.cleared === false)">Mark file redacted</button>
+      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark file reviewed</button>
+      <button class="button" @click="markFileNotCleared" v-else-if="fileInfo.uuid && (fileInfo.cleared === true)">Undo reviewed</button>
     </div>
     <hr>
     <!-- Features grouped by type -->
