@@ -15,7 +15,7 @@
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p v-if="allClear"><strong>Status:</strong> Clear (no features in file)</p>
-      <p v-else-if="fileInfo.uuid && (fileInfo.cleared === true)"><strong>Status:</strong> <span class="cleared">Cleared</span></p>
+      <p v-else-if="fileInfo.uuid && (fileInfo.cleared === true)"><strong>Status:</strong> <span class="cleared">Reviewed</span></p>
       <p v-else-if="fileInfo.uuid && (fileInfo.redact_file === true)"><strong>Status:</strong> <span class="redacted">Redacted</span></p>
       <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results:</strong> {{ featureCount }}</p>
