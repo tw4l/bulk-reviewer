@@ -10,7 +10,7 @@
     <!-- Context -->
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
-      <h4 class="title is-4" v-else>All files</h4>
+      <h4 class="title is-4" v-else>All results</h4>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
