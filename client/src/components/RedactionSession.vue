@@ -5,6 +5,7 @@
   <hr>
   <div class="columns">
     <div class="column padded">
+      <h4 class="title is-4">Files</h4>
       <node-tree
         :label="fileTree.label"
         :nodes="fileTree.nodes"
@@ -17,6 +18,7 @@
         @bus="bus"></node-tree>
       </div>
     <div class="column padded">
+      <h4 class="title is-4">Results</h4>
       <div>
         <redaction-pane
         :currentlySelectedUUID="currentlySelectedUUID"></redaction-pane>
