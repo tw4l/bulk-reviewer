@@ -226,7 +226,7 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
 
                 # Update db
                 Feature.objects.create(
-                    feature_file=os.path.basename(feature_file),
+                    feature_file=os.path.basename(feature_file).replace('annotated_', ''),
                     offset=int(offset),
                     feature=feature,
                     context=context,
