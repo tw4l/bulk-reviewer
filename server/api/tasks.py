@@ -173,6 +173,9 @@ def run_bulk_extractor(be_session_uuid):
                 continue
             if "url_" in feature_file:
                 continue
+            # Skip zip-related files
+            if "zip" in feature_file:
+                continue
             # Parse file and write features into db
             utils.parse_feature_file(ff_abspath, be_session_uuid)
 
