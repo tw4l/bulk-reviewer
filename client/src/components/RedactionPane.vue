@@ -28,14 +28,91 @@
     </div>
     <hr>
     <!-- Features grouped by type -->
-    <feature-type-message
-    v-for="featureType in featureTypeArray"
-    :key="featureType"
-    :featureType="featureType"
-    :featureTypeCount="featureTypeCount(featureType)"
-    :filteredFeatureArray="filterByFeatureType(featureType)"
-    :viewingFile="viewingFile"
-    ></feature-type-message>
+    <h5
+      class="title is-5"
+      v-if="featureFileInArray(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
+      <feature-type-message
+        v-if="featureFileInArray(['pii.txt'])"
+        :key="'pii.txt'"
+        :featureType="'pii.txt'"
+        :featureTypeCount="featureTypeCount('pii.txt')"
+        :filteredFeatureArray="filterByFeatureType('pii.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['ccn.txt'])"
+        :key="'ccn.txt'"
+        :featureType="'ccn.txt'"
+        :featureTypeCount="featureTypeCount('ccn.txt')"
+        :filteredFeatureArray="filterByFeatureType('ccn.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['telephone.txt'])"
+        :key="'telephone.txt'"
+        :featureType="'telephone.txt'"
+        :featureTypeCount="featureTypeCount('telephone.txt')"
+        :filteredFeatureArray="filterByFeatureType('telephone.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['email.txt'])"
+        :key="'email.txt'"
+        :featureType="'email.txt'"
+        :featureTypeCount="featureTypeCount('email.txt')"
+        :filteredFeatureArray="filterByFeatureType('email.txt')">
+      </feature-type-message>
+    <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
+      <feature-type-message
+        v-if="featureFileInArray(['lightgrep.txt'])"
+        :key="'lightgrep.txt'"
+        :featureType="'lightgrep.txt'"
+        :featureTypeCount="featureTypeCount('lightgrep.txt')"
+        :filteredFeatureArray="filterByFeatureType('lightgrep.txt')">
+      </feature-type-message>
+    <h5
+    class="title is-5"
+    v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web usage</h5>
+      <feature-type-message
+        v-if="featureFileInArray(['url.txt'])"
+        :key="'url.txt'"
+        :featureType="'url.txt'"
+        :featureTypeCount="featureTypeCount('url.txt')"
+        :filteredFeatureArray="filterByFeatureType('url.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['domain.txt'])"
+        :key="'domain.txt'"
+        :featureType="'domain.txt'"
+        :featureTypeCount="featureTypeCount('domain.txt')"
+        :filteredFeatureArray="filterByFeatureType('domain.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['rfc822.txt'])"
+        :key="'rfc822.txt'"
+        :featureType="'rfc822.txt'"
+        :featureTypeCount="featureTypeCount('rfc822.txt')"
+        :filteredFeatureArray="filterByFeatureType('rfc822.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['httplogs.txt'])"
+        :key="'httplogs.txt'"
+        :featureType="'httplogs.txt'"
+        :featureTypeCount="featureTypeCount('httplogs.txt')"
+        :filteredFeatureArray="filterByFeatureType('httplogs.txt')">
+      </feature-type-message>
+    <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
+      <feature-type-message
+        v-if="featureFileInArray(['gps.txt'])"
+        :key="'gps.txt'"
+        :featureType="'gps.txt'"
+        :featureTypeCount="featureTypeCount('gps.txt')"
+        :filteredFeatureArray="filterByFeatureType('gps.txt')">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['exif.txt'])"
+        :key="'exif.txt'"
+        :featureType="'exif.txt'"
+        :featureTypeCount="featureTypeCount('exif.txt')"
+        :filteredFeatureArray="filterByFeatureType('exif.txt')">
+      </feature-type-message>
   </div>
 </template>
 
@@ -92,6 +169,17 @@ export default {
     },
     filterByFeatureType (featureFile) {
       return this.features.filter(feature => feature['feature_file'] === featureFile)
+    },
+    // return true if any feature files in input array are in this.featureTypeArray
+    featureFileInArray (arrayOfFeatureFiles) {
+      let returnValue = false
+      let self = this
+      arrayOfFeatureFiles.forEach(function (featureFile) {
+        if (self.featureTypeArray.includes(featureFile)) {
+          returnValue = true
+        }
+      })
+      return returnValue
     },
     getAllSessionFeatures () {
       // retrieve data

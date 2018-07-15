@@ -98,7 +98,6 @@ export default {
       }
       return rootNode
     },
-
     buildNodeRecursive: function (node, path, index, uuid, allocated, cleared, redacted) {
       if (index < path.length) {
         let item = path[index]
