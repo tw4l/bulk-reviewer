@@ -12,9 +12,6 @@
     </div>
     <div class="navbar-menu" :class="{ 'is-active': showNav }">
       <div class="navbar-end">
-        <router-link class="navbar-item" to="/">
-          <span>Home</span>
-        </router-link>
         <router-link class="navbar-item" to="/sessions">
           <span>Sessions</span>
         </router-link>
