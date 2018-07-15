@@ -12,7 +12,7 @@
     </div>
     <div class="navbar-menu" :class="{ 'is-active': showNav }">
       <div class="navbar-end">
-        <router-link class="navbar-item" to="/sessions">
+        <router-link class="navbar-item" to="/">
           <span>Sessions</span>
         </router-link>
         <router-link class="navbar-item" to="/settings">
