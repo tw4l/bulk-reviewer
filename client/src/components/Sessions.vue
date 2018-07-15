@@ -59,7 +59,7 @@ export default {
 
     setInterval(function () {
       this.getSessions()
-    }.bind(this), 5000)
+    }.bind(this), 10000)
   },
   methods: {
     getSessions () {

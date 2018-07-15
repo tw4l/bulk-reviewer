@@ -46,9 +46,9 @@ export default {
   created () {
     this.getData()
 
-    setInterval(function () {
-      this.getData()
-    }.bind(this), 10000)
+    // setInterval(function () {
+    //   this.getData()
+    // }.bind(this), 10000)
   },
 
   methods: {

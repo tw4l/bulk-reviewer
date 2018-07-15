@@ -6,19 +6,6 @@
       {{ featureType }} ({{ featureTypeCount }})
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
-      <button
-        class="button is-danger"
-        @click="markAllFeaturesRedacted">
-        <font-awesome-icon icon="bars" class="fa-fw"></font-awesome-icon>
-        Mark all redacted
-      </button>
-      <button
-        class="button is-success"
-        @click="markAllFeaturesCleared"
-        style="margin-bottom:15px;">
-        <font-awesome-icon icon="check" class="fa-fw"></font-awesome-icon>
-        Mark all reviewed
-      </button>
       <individual-feature
         v-for="f in filteredFeatureArray"
         :key="f.uuid"
@@ -45,26 +32,6 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
-    },
-    markAllFeaturesRedacted: function () {
-      // in place for testing - replace with API call and front end refresh
-      let uuids = this.filteredFeatureUUIDArray
-      console.log(uuids)
-      // emit signal for each uuid
-      let self = this
-      uuids.forEach(function (uuid) {
-        self.$emit('redactFeature', uuid)
-      })
-    },
-    markAllFeaturesCleared: function () {
-      // in place for testing - replace with API call and front end refresh
-      let uuids = this.filteredFeatureUUIDArray
-      console.log(uuids)
-      // emit signal for each uuid
-      let self = this
-      uuids.forEach(function (uuid) {
-        self.$emit('clearFeature', uuid)
-      })
     }
   },
   computed: {
