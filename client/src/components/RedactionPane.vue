@@ -36,28 +36,32 @@
         :key="'pii.txt'"
         :featureType="'pii.txt'"
         :featureTypeCount="featureTypeCount('pii.txt')"
-        :filteredFeatureArray="filterByFeatureType('pii.txt')">
+        :filteredFeatureArray="filterByFeatureType('pii.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['ccn.txt'])"
         :key="'ccn.txt'"
         :featureType="'ccn.txt'"
         :featureTypeCount="featureTypeCount('ccn.txt')"
-        :filteredFeatureArray="filterByFeatureType('ccn.txt')">
+        :filteredFeatureArray="filterByFeatureType('ccn.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['telephone.txt'])"
         :key="'telephone.txt'"
         :featureType="'telephone.txt'"
         :featureTypeCount="featureTypeCount('telephone.txt')"
-        :filteredFeatureArray="filterByFeatureType('telephone.txt')">
+        :filteredFeatureArray="filterByFeatureType('telephone.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['email.txt'])"
         :key="'email.txt'"
         :featureType="'email.txt'"
         :featureTypeCount="featureTypeCount('email.txt')"
-        :filteredFeatureArray="filterByFeatureType('email.txt')">
+        :filteredFeatureArray="filterByFeatureType('email.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
       <feature-type-message
@@ -65,7 +69,8 @@
         :key="'lightgrep.txt'"
         :featureType="'lightgrep.txt'"
         :featureTypeCount="featureTypeCount('lightgrep.txt')"
-        :filteredFeatureArray="filterByFeatureType('lightgrep.txt')">
+        :filteredFeatureArray="filterByFeatureType('lightgrep.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
     <h5
     class="title is-5"
@@ -75,28 +80,32 @@
         :key="'url.txt'"
         :featureType="'url.txt'"
         :featureTypeCount="featureTypeCount('url.txt')"
-        :filteredFeatureArray="filterByFeatureType('url.txt')">
+        :filteredFeatureArray="filterByFeatureType('url.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['domain.txt'])"
         :key="'domain.txt'"
         :featureType="'domain.txt'"
         :featureTypeCount="featureTypeCount('domain.txt')"
-        :filteredFeatureArray="filterByFeatureType('domain.txt')">
+        :filteredFeatureArray="filterByFeatureType('domain.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['rfc822.txt'])"
         :key="'rfc822.txt'"
         :featureType="'rfc822.txt'"
         :featureTypeCount="featureTypeCount('rfc822.txt')"
-        :filteredFeatureArray="filterByFeatureType('rfc822.txt')">
+        :filteredFeatureArray="filterByFeatureType('rfc822.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['httplogs.txt'])"
         :key="'httplogs.txt'"
         :featureType="'httplogs.txt'"
         :featureTypeCount="featureTypeCount('httplogs.txt')"
-        :filteredFeatureArray="filterByFeatureType('httplogs.txt')">
+        :filteredFeatureArray="filterByFeatureType('httplogs.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
       <feature-type-message
@@ -104,14 +113,16 @@
         :key="'gps.txt'"
         :featureType="'gps.txt'"
         :featureTypeCount="featureTypeCount('gps.txt')"
-        :filteredFeatureArray="filterByFeatureType('gps.txt')">
+        :filteredFeatureArray="filterByFeatureType('gps.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['exif.txt'])"
         :key="'exif.txt'"
         :featureType="'exif.txt'"
         :featureTypeCount="featureTypeCount('exif.txt')"
-        :filteredFeatureArray="filterByFeatureType('exif.txt')">
+        :filteredFeatureArray="filterByFeatureType('exif.txt')"
+        :viewingFile="viewingFile">
       </feature-type-message>
   </div>
 </template>

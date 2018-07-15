@@ -9,7 +9,8 @@
       <individual-feature
         v-for="f in filteredFeatureArray"
         :key="f.uuid"
-        :featureInfo="f">
+        :featureInfo="f"
+        :viewingFile="viewingFile">
       </individual-feature>
     </div>
   </div>
@@ -21,7 +22,7 @@ import IndividualFeature from '@/components/IndividualFeature'
 
 export default {
   name: 'feature-result',
-  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray'],
+  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'viewingFile'],
   components: { IndividualFeature },
   data () {
     return {
