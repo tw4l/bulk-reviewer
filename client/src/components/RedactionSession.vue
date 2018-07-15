@@ -19,7 +19,8 @@
       </div>
     <div class="column padded">
       <redaction-pane
-      :currentlySelectedUUID="currentlySelectedUUID"></redaction-pane>
+      :currentlySelectedUUID="currentlySelectedUUID"
+      @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
     </div>
   </div>
 </div>
@@ -55,6 +56,9 @@ export default {
     // update currentlySelectedUUID from recursive node-tree components
     bus (newUUID) {
       this.currentlySelectedUUID = newUUID
+    },
+    clearCurrentlySelectedUUID () {
+      this.currentlySelectedUUID = ''
     },
     getData () {
       // api calls to add data

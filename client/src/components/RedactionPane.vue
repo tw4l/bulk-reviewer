@@ -208,6 +208,8 @@ export default {
       this.fileInfo = {}
       // mark redaction pane as viewing session
       this.viewingFile = false
+      // clear currentlySelectedUUID
+      this.$emit('clearSelected')
     },
     markFileCleared () {
       let fileUUID = this.fileInfo.uuid
