@@ -74,7 +74,7 @@
       </feature-type-message>
     <h5
     class="title is-5"
-    v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web usage</h5>
+    v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
       <feature-type-message
         v-if="featureFileInArray(['url.txt'])"
         :key="'url.txt'"
