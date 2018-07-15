@@ -1,9 +1,9 @@
 <template>
   <div class="message">
     <div class="message-header" @click="toggleMessageBody" style="align: left;">
+      {{ featureTypeLabel }} ({{ featureTypeCount }})
       <font-awesome-icon icon="caret-down" v-if="showMessageBody"></font-awesome-icon>
       <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
-      {{ featureTypeLabel }} ({{ featureTypeCount }})
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <individual-feature
