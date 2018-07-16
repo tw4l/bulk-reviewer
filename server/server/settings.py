@@ -78,7 +78,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8080/'
+    'localhost:8080/',
+    'localhost:8000'
 )
 
 ROOT_URLCONF = 'server.urls'
@@ -152,6 +153,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+)
 
 # User uploaded media
 

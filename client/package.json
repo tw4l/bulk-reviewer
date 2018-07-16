@@ -22,7 +22,8 @@
     "npm": "^6.1.0",
     "uuid": "^3.3.2",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "webpack-bundle-tracker": "^0.3.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
