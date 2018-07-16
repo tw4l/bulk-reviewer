@@ -66,7 +66,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
-    new BundleTracker({filename: '../sever/webpack-stats.json'})
+    new BundleTracker({filename: '../server/webpack-stats.json'})
   ]
 })
 
