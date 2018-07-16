@@ -5,7 +5,7 @@
   <div v-else>
     <!-- All files button -->
     <div style="margin-bottom: 15px;">
-      <button v-if="fileInfo.uuid" class="button" @click="getAllSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
+      <button v-if="fileInfo.uuid" class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
     </div>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
@@ -139,6 +139,7 @@ export default {
   data () {
     return {
       fileInfo: {},
+      sessionFeatures: [],
       features: [],
       errors: [],
       messagesOpen: false,
@@ -153,25 +154,27 @@ export default {
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {
-      // hide alert message from last file if existing
-      this.showAlertMessage = false
-      // mark redaction pane as viewing single file
-      this.viewingFile = true
-      // update data shown to user
-      axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/`)
-        .then(response => {
-          this.fileInfo = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/features`)
-        .then(response => {
-          this.features = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+      if (newUUID !== '') {
+        // hide alert message from last file if existing
+        this.showAlertMessage = false
+        // mark redaction pane as viewing single file
+        this.viewingFile = true
+        // update data shown to user
+        axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/`)
+          .then(response => {
+            this.fileInfo = response.data
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+        axios.get(`http://127.0.0.1:8000/api/file/${newUUID}/features`)
+          .then(response => {
+            this.features = response.data
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      }
     }
   },
   methods: {
@@ -198,7 +201,8 @@ export default {
       let apiCall = 'http://127.0.0.1:8000/api' + this.$route.path + '/features/'
       axios.get(`${apiCall}`)
         .then(response => {
-          this.features = response.data
+          this.sessionFeatures = response.data
+          this.features = this.sessionFeatures
           this.loading = false
         })
         .catch(e => {
@@ -208,6 +212,16 @@ export default {
       this.fileInfo = {}
       // mark redaction pane as viewing session
       this.viewingFile = false
+      // clear currentlySelectedUUID
+      this.$emit('clearSelected')
+    },
+    returnToSessionFeatures () {
+      // mark redaction pane as viewing session
+      this.viewingFile = false
+      // use session features
+      this.features = this.sessionFeatures
+      // clear fileInfo
+      this.fileInfo = {}
       // clear currentlySelectedUUID
       this.$emit('clearSelected')
     },
