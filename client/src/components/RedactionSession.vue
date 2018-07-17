@@ -30,6 +30,7 @@
 import NodeTree from './NodeTree'
 import RedactionPane from './RedactionPane'
 import axios from 'axios'
+import bus from '../bus'
 
 export default {
   name: 'session',
@@ -51,14 +52,17 @@ export default {
     //   this.getData()
     // }.bind(this), 10000)
   },
-
+  mounted () {
+    bus.$on('viewFileFromBulkTable', this.updateCurrentlySelectedUUID)
+    bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
+  },
   methods: {
     // update currentlySelectedUUID from recursive node-tree components
-    bus (newUUID) {
-      this.currentlySelectedUUID = newUUID
-    },
     clearCurrentlySelectedUUID () {
       this.currentlySelectedUUID = ''
+    },
+    updateCurrentlySelectedUUID (newUUID) {
+      this.currentlySelectedUUID = newUUID
     },
     getData () {
       // api calls to add data

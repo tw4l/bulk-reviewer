@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import bus from '../bus'
 
 export default {
   props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'cleared', 'redacted' ],
@@ -66,11 +67,8 @@ export default {
     toggleChildren: function () {
       this.showChildren = !this.showChildren
     },
-    bus: function (data) {
-      this.$emit('bus', data)
-    },
     updateSelected: function () {
-      this.$emit('bus', this.uuid)
+      bus.$emit('updateSelected', this.uuid)
     }
   }
 }
