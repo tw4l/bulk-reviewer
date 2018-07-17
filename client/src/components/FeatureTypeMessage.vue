@@ -6,12 +6,18 @@
       <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
-      <individual-feature
-        v-for="f in filteredFeatureArray"
-        :key="f.uuid"
-        :featureInfo="f"
-        :viewingFile="viewingFile">
-      </individual-feature>
+      <div v-if="viewingFile === true">
+        <individual-feature
+          v-for="f in filteredFeatureArray"
+          :key="f.uuid"
+          :featureInfo="f">
+        </individual-feature>
+      </div>
+      <div v-else>
+        <bulk-view-table
+          :fileData="bulkViewFilteredFeatureArray">
+        </bulk-view-table>
+      </div>
     </div>
   </div>
 </template>
@@ -19,11 +25,12 @@
 <script>
 // import axios from 'axios'
 import IndividualFeature from '@/components/IndividualFeature'
+import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
   name: 'feature-result',
   props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'viewingFile'],
-  components: { IndividualFeature },
+  components: { IndividualFeature, BulkViewTable },
   data () {
     return {
       showMessageBody: false
@@ -37,6 +44,22 @@ export default {
   computed: {
     filteredFeatureUUIDArray () {
       return this.filteredFeatureArray.map(a => a.uuid)
+    },
+    bulkViewFilteredFeatureArray () {
+      const arr = this.filteredFeatureArray
+      let checkedUUIDs = []
+      let returnArr = []
+      // create array of unique files with counts
+      arr.forEach(function (e) {
+        if (!checkedUUIDs.includes(e.source_file)) {
+          let filepath = e.source_filepath
+          let fileUUID = e.source_file
+          let count = arr.filter(function (obj) { return obj.source_file === fileUUID }).length
+          checkedUUIDs.push(fileUUID)
+          returnArr.push({'filepath': filepath, 'file_uuid': fileUUID, 'count': count})
+        }
+      })
+      return returnArr
     },
     featureTypeLabel () {
       switch (this.featureType) {
