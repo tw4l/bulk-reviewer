@@ -14,9 +14,9 @@
         :uuid="fileTree.uuid"
         :nodeIndex="0"
         :allocated="fileTree.allocated"
-        :class="{ active: currentlySelectedUUID === fileTree.uuid }"
-        @bus="bus"></node-tree>
-      </div>
+        :class="{ active: currentlySelectedUUID === fileTree.uuid }">
+      </node-tree>
+    </div>
     <div class="column padded">
       <redaction-pane
       :currentlySelectedUUID="currentlySelectedUUID"

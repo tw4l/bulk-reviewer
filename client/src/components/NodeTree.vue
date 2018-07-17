@@ -34,8 +34,7 @@
       :isDir="node.isDir"
       :allocated="node.allocated"
       :cleared="node.cleared"
-      :redacted="node.redacted"
-      @bus="bus">
+      :redacted="node.redacted">
     </node-tree>
   </div>
 </template>
