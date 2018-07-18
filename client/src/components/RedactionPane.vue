@@ -11,10 +11,10 @@
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
       <h4 class="title is-4" v-else>All results</h4>
-      <div>
-        <button class="button" v-if="viewingCleared === true" @click="toggleViewingCleared">Hide cleared features</button>
-        <button class="button" v-else @click="toggleViewingCleared">Show cleared features</button>
-      </div>
+      <label class="checkbox">
+        <input type="checkbox" @click="toggleViewingCleared">
+        Show results I've already cleared
+      </label>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
@@ -30,16 +30,9 @@
     </div>
     <hr>
     <!-- Features grouped by type -->
-    <div v-if="viewingCleared === true">
-      <h5
-      class="title is-5"
-      v-if="featureFileInArray(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
-    </div>
-    <div v-else>
-      <h5
-      class="title is-5"
-      v-if="featureFileInArrayNotCleared(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
-    </div>
+    <h5
+    class="title is-5"
+    v-if="featureFileInArray(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
       <feature-type-message
         v-if="featureFileInArray(['pii.txt'])"
         :key="'pii.txt'"
@@ -84,12 +77,7 @@
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
-    <div v-if="viewingCleared === true">
-      <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
-    </div>
-    <div v-else>
-      <h5 class="title is-5" v-if="featureFileInArrayNotCleared(['lightgrep.txt'])">User-supplied regular expressions</h5>
-    </div>
+    <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
       <feature-type-message
         v-if="featureFileInArray(['lightgrep.txt'])"
         :key="'lightgrep.txt'"
@@ -101,16 +89,9 @@
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
-    <div v-if="viewingCleared === true">
-      <h5
-        class="title is-5"
-        v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
-    </div>
-    <div v-else>
-      <h5
-        class="title is-5"
-        v-if="featureFileInArrayNotCleared(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
-    </div>
+    <h5
+      class="title is-5"
+      v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
       <feature-type-message
         v-if="featureFileInArray(['url.txt'])"
         :key="'url.txt'"
@@ -155,12 +136,7 @@
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
-    <div v-if="viewingCleared === true">
-      <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
-    </div>
-    <div v-else>
-      <h5 class="title is-5" v-if="featureFileInArrayNotCleared(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
-    </div>
+    <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
       <feature-type-message
         v-if="featureFileInArray(['gps.txt'])"
         :key="'gps.txt'"
