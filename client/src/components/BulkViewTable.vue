@@ -4,7 +4,7 @@
       <tr>
         <th>File</th>
         <th>Count</th>
-        <th>Actions</th>
+        <th>Clear</th>
       </tr>
     </thead>
     <tbody>

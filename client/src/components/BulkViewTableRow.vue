@@ -1,10 +1,9 @@
 <template>
   <tr>
-    <td>{{ fileInfo.filepath }}</td>
+    <td>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td>{{ fileInfo.count }}</td>
     <td>
-      <button class="button" @click="viewFile">View file</button>
-      <button class="button is-success" @click="markReviewed">Clear all<font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
+      <button class="button is-success" @click="markReviewed"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
   </tr>
 </template>
