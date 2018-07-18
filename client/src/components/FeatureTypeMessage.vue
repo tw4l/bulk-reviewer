@@ -1,15 +1,15 @@
 <template>
   <div class="message">
     <div class="message-header" @click="toggleMessageBody" style="align: left;">
-      {{ featureTypeLabel }} ({{ featureTypeCount }})
+        {{ featureTypeLabel }} ({{ count }})
       <font-awesome-icon icon="caret-down" v-if="showMessageBody"></font-awesome-icon>
       <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <div v-if="viewingFile === true">
-        <individual-view-table
-          :featureData="filteredFeatureArray">
-        </individual-view-table>
+          <individual-view-table
+            :featureData="filteredFeatureArray">
+          </individual-view-table>
       </div>
       <div v-else>
         <bulk-view-table
@@ -26,8 +26,8 @@ import IndividualViewTable from '@/components/IndividualViewTable'
 import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
-  name: 'feature-result',
-  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'viewingFile'],
+  name: 'feature-type-message',
+  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'featureTypeCountNotCleared', 'filteredFeatureArrayNotCleared', 'viewingFile', 'viewingCleared'],
   components: { IndividualViewTable, BulkViewTable },
   data () {
     return {
@@ -40,11 +40,11 @@ export default {
     }
   },
   computed: {
-    filteredFeatureUUIDArray () {
-      return this.filteredFeatureArray.map(a => a.uuid)
-    },
     bulkViewFilteredFeatureArray () {
-      const arr = this.filteredFeatureArray
+      let arr = this.filteredFeatureArrayNotCleared
+      if (this.viewingCleared === true) {
+        arr = this.filteredFeatureArray
+      }
       let checkedUUIDs = []
       let returnArr = []
       // create array of unique files with counts
@@ -58,6 +58,13 @@ export default {
         }
       })
       return returnArr
+    },
+    count () {
+      let count = this.featureTypeCountNotCleared
+      if (this.viewingCleared === true) {
+        count = this.featureTypeCount
+      }
+      return count
     },
     featureTypeLabel () {
       switch (this.featureType) {

@@ -11,6 +11,10 @@
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
       <h4 class="title is-4" v-else>All results</h4>
+      <div>
+        <button class="button" v-if="viewingCleared === true" @click="toggleViewingCleared">Hide cleared features</button>
+        <button class="button" v-else @click="toggleViewingCleared">Show cleared features</button>
+      </div>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
@@ -26,16 +30,26 @@
     </div>
     <hr>
     <!-- Features grouped by type -->
-    <h5
+    <div v-if="viewingCleared === true">
+      <h5
       class="title is-5"
       v-if="featureFileInArray(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
+    </div>
+    <div v-else>
+      <h5
+      class="title is-5"
+      v-if="featureFileInArrayNotCleared(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
+    </div>
       <feature-type-message
         v-if="featureFileInArray(['pii.txt'])"
         :key="'pii.txt'"
         :featureType="'pii.txt'"
         :featureTypeCount="featureTypeCount('pii.txt')"
         :filteredFeatureArray="filterByFeatureType('pii.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('pii.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('pii.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['ccn.txt'])"
@@ -43,7 +57,10 @@
         :featureType="'ccn.txt'"
         :featureTypeCount="featureTypeCount('ccn.txt')"
         :filteredFeatureArray="filterByFeatureType('ccn.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('ccn.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('ccn.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['telephone.txt'])"
@@ -51,7 +68,10 @@
         :featureType="'telephone.txt'"
         :featureTypeCount="featureTypeCount('telephone.txt')"
         :filteredFeatureArray="filterByFeatureType('telephone.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('telephone.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('telephone.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['email.txt'])"
@@ -59,27 +79,48 @@
         :featureType="'email.txt'"
         :featureTypeCount="featureTypeCount('email.txt')"
         :filteredFeatureArray="filterByFeatureType('email.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('email.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('email.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
+    <div v-if="viewingCleared === true">
+      <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
+    </div>
+    <div v-else>
+      <h5 class="title is-5" v-if="featureFileInArrayNotCleared(['lightgrep.txt'])">User-supplied regular expressions</h5>
+    </div>
       <feature-type-message
         v-if="featureFileInArray(['lightgrep.txt'])"
         :key="'lightgrep.txt'"
         :featureType="'lightgrep.txt'"
         :featureTypeCount="featureTypeCount('lightgrep.txt')"
         :filteredFeatureArray="filterByFeatureType('lightgrep.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('lightgrep.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('lightgrep.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
-    <h5
-    class="title is-5"
-    v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
+    <div v-if="viewingCleared === true">
+      <h5
+        class="title is-5"
+        v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
+    </div>
+    <div v-else>
+      <h5
+        class="title is-5"
+        v-if="featureFileInArrayNotCleared(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
+    </div>
       <feature-type-message
         v-if="featureFileInArray(['url.txt'])"
         :key="'url.txt'"
         :featureType="'url.txt'"
         :featureTypeCount="featureTypeCount('url.txt')"
         :filteredFeatureArray="filterByFeatureType('url.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('url.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('url.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['domain.txt'])"
@@ -87,7 +128,10 @@
         :featureType="'domain.txt'"
         :featureTypeCount="featureTypeCount('domain.txt')"
         :filteredFeatureArray="filterByFeatureType('domain.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('domain.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('domain.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['rfc822.txt'])"
@@ -95,7 +139,10 @@
         :featureType="'rfc822.txt'"
         :featureTypeCount="featureTypeCount('rfc822.txt')"
         :filteredFeatureArray="filterByFeatureType('rfc822.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('rfc822.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('rfc822.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['httplogs.txt'])"
@@ -103,16 +150,27 @@
         :featureType="'httplogs.txt'"
         :featureTypeCount="featureTypeCount('httplogs.txt')"
         :filteredFeatureArray="filterByFeatureType('httplogs.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('httplogs.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('httplogs.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
+    <div v-if="viewingCleared === true">
+      <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
+    </div>
+    <div v-else>
+      <h5 class="title is-5" v-if="featureFileInArrayNotCleared(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
+    </div>
       <feature-type-message
         v-if="featureFileInArray(['gps.txt'])"
         :key="'gps.txt'"
         :featureType="'gps.txt'"
         :featureTypeCount="featureTypeCount('gps.txt')"
         :filteredFeatureArray="filterByFeatureType('gps.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('gps.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('gps.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['exif.txt'])"
@@ -120,7 +178,10 @@
         :featureType="'exif.txt'"
         :featureTypeCount="featureTypeCount('exif.txt')"
         :filteredFeatureArray="filterByFeatureType('exif.txt')"
-        :viewingFile="viewingFile">
+        :featureTypeCountNotCleared="featureTypeCountNotCleared('exif.txt')"
+        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('exif.txt')"
+        :viewingFile="viewingFile"
+        :viewingCleared="viewingCleared">
       </feature-type-message>
   </div>
 </template>
@@ -144,7 +205,8 @@ export default {
       alertMessage: '',
       showAlertMessage: false,
       loading: true,
-      viewingFile: false
+      viewingFile: false,
+      viewingCleared: false
     }
   },
   created () {
@@ -179,8 +241,14 @@ export default {
     featureTypeCount: function (featureFile) {
       return this.features.filter(feature => feature['feature_file'] === featureFile).length
     },
+    featureTypeCountNotCleared: function (featureFile) {
+      return this.featuresNotCleared.filter(feature => feature['feature_file'] === featureFile).length
+    },
     filterByFeatureType (featureFile) {
       return this.features.filter(feature => feature['feature_file'] === featureFile)
+    },
+    filterByFeatureTypeNotCleared (featureFile) {
+      return this.featuresNotCleared.filter(feature => feature['feature_file'] === featureFile)
     },
     // return true if any feature files in input array are in this.featureTypeArray
     featureFileInArray (arrayOfFeatureFiles) {
@@ -188,6 +256,16 @@ export default {
       let self = this
       arrayOfFeatureFiles.forEach(function (featureFile) {
         if (self.featureTypeArray.includes(featureFile)) {
+          returnValue = true
+        }
+      })
+      return returnValue
+    },
+    featureFileInArrayNotCleared (arrayOfFeatureFiles) {
+      let returnValue = false
+      let self = this
+      arrayOfFeatureFiles.forEach(function (featureFile) {
+        if (self.featureTypeArrayNotCleared.includes(featureFile)) {
           returnValue = true
         }
       })
@@ -260,6 +338,9 @@ export default {
     },
     viewFile () {
       this.viewingFile = true
+    },
+    toggleViewingCleared () {
+      this.viewingCleared = !this.viewingCleared
     }
   },
   computed: {
@@ -274,6 +355,9 @@ export default {
     },
     featureTypeArray () {
       return [...new Set(this.features.map(feature => feature['feature_file']))]
+    },
+    featureTypeArrayNotCleared () {
+      return [...new Set(this.featuresNotCleared.map(feature => feature['feature_file']))]
     },
     allClear () {
       return this.features.length === 0
