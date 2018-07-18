@@ -73,8 +73,7 @@ class File(models.Model):
         max_length=50,
         blank=True
     )
-    redact_file = models.BooleanField(default=False)
-    redaction_note = models.TextField(blank=True)
+    note = models.TextField(blank=True)
     cleared = models.BooleanField(default=False)
     mime_type = models.CharField(
         max_length=200,
@@ -105,8 +104,7 @@ class Feature(models.Model):
     )
     feature = models.TextField(blank=True)
     context = models.TextField(blank=True)
-    redact_feature = models.BooleanField(default=False)
-    redaction_note = models.TextField(blank=True)
+    note = models.TextField(blank=True)
     cleared = models.BooleanField(default=False)
     source_file = models.ForeignKey(
         File,
