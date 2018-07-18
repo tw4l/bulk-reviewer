@@ -32,11 +32,10 @@ export default {
       this.$emit('updateSessionsList')
     },
     deleteSession: function () {
+      this.close()
       axios.delete(`http://127.0.0.1:8000/api/session/${this.sessionUUID}/`)
         .then(response => {
-          console.log(response)
-
-          this.close()
+          console.log(response) 
         })
         .catch(e => {
           this.errors.push(e)
