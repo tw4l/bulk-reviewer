@@ -1,6 +1,6 @@
 <template>
   <tr :class="{ cleared: featureInfo.cleared === true }">
-    <td>{{ featureInfo.feature }}</td>
+    <td>{{ featureWithLineBreaks }}</td>
     <td>{{ contextWithLineBreaks }}</td>
     <td v-if="featureInfo.cleared === false">
       <button class="button is-success" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
@@ -40,9 +40,13 @@ export default {
     }
   },
   computed: {
+    featureWithLineBreaks: function () {
+      // Add a space tag every 40 chars for narrow display
+      return this.featureInfo.feature.replace(/(.{40})/g, '$1 ')
+    },
     contextWithLineBreaks: function () {
-      // Add <br> tag every 100 chars for narrow display
-      return this.featureInfo.context.replace(/(.{100})/g, '$1<br>')
+      // Add a space tag every 60 chars for narrow display
+      return this.featureInfo.context.replace(/(.{60})/g, '$1 ')
     }
   }
 }

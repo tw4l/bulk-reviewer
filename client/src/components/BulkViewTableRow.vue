@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
+    <td>{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td>{{ fileInfo.count }}</td>
     <td>
       <button class="button is-success" @click="markReviewed"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
@@ -28,6 +28,12 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    }
+  },
+  computed: {
+    filepathWithLineBreaks: function () {
+      // Add a space tag every 60 chars for narrow display
+      return this.fileInfo.filepath.replace(/(.{60})/g, '$1 ')
     }
   }
 }
