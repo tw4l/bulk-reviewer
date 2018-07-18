@@ -22,7 +22,7 @@ export default {
     },
     markReviewed: function () {
       let fileUUID = this.fileInfo.file_uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true, 'redact_file': false }, { headers: { 'Content-Type': 'application/json' } })
+      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
           this.alertMessage = 'Success'
