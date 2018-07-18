@@ -16,7 +16,8 @@
     <div style="margin-bottom: 15px;">
       <p v-if="allClear"><strong>Status:</strong> Clear (no results to review)</p>
       <p v-else><strong>Status:</strong> Under review</p>
-      <p><strong>Results:</strong> {{ featureCount }}</p>
+      <p><strong>Total results:</strong> {{ featureCount }}</p>
+      <p><strong>Results not cleared:</strong> {{ featuresNotClearedCount }}</p>
     </div>
     <!-- Sctions -->
     <div v-show="!allClear">
@@ -264,6 +265,9 @@ export default {
   computed: {
     featureCount () {
       return this.features.length
+    },
+    featuresNotClearedCount () {
+      return this.features.filter(a => a.cleared === false).length
     },
     featureTypeArray () {
       return [...new Set(this.features.map(feature => feature['feature_file']))]
