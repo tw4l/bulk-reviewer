@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr :class="{ cleared: featureInfo.cleared === true }">
     <td>{{ featureInfo.feature }}</td>
     <td>{{ contextWithLineBreaks }}</td>
     <td v-if="featureInfo.cleared === false">
@@ -49,4 +49,7 @@ export default {
 </script>
 
 <style>
+.cleared {
+  color: #808080;
+}
 </style>
