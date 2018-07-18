@@ -216,7 +216,7 @@ def create_redaction_log(redacted_set_uuid):
         # Write lines for Files marked as redacted
         log.write('Files marked for redaction:\n')
         log.write('--------------------------\n')
-        redacted_files = File.objects.filter(be_session=redacted_set.be_session).filter(redact_file=True)
+        redacted_files = File.objects.filter(be_session=redacted_set.be_session).filter(cleared=False)
         if not redacted_files:
             log.write('No files marked for redaction.')
         log.write('Filepath\tUUID\tNote\n')
@@ -226,7 +226,7 @@ def create_redaction_log(redacted_set_uuid):
         # Write lines for Features marked as redacted
         log.write('Features marked for redaction:\n')
         log.write('--------------------------\n')
-        redacted_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(redact_feature=True)
+        redacted_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(cleared=False)
         if not redacted_features:
             log.write('No features marked for redaction.')
         log.write('Feature file\tFeature\tContext\tSource file\tNote\n')
@@ -278,11 +278,11 @@ def redact_remove_files(redacted_set_uuid):
 
     # Build list of files to remove from working dir
     redacted_list = list()
-    files_to_remove = File.objects.filter(be_session=redacted_set.be_session).filter(redact_file=True)
+    files_to_remove = File.objects.filter(be_session=redacted_set.be_session).filter(cleared=False)
     for f in files_to_remove:
         redacted_list.append(f.filepath)
     # Include files where any features have been marked for redaction
-    files_with_redacted_features = File.objects.distinct().filter(be_session=redacted_set.be_session).filter(features__redact_feature=True)
+    files_with_redacted_features = File.objects.distinct().filter(be_session=redacted_set.be_session).filter(features__cleared=False)
     for f in files_with_redacted_features:
         if f.filepath not in redacted_list:
             redacted_list.append(f.filepath)
