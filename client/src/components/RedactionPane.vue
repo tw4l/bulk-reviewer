@@ -263,6 +263,9 @@ export default {
     }
   },
   computed: {
+    featuresNotCleared () {
+      return this.features.filter(a => a.cleared === false)
+    },
     featureCount () {
       return this.features.length
     },
