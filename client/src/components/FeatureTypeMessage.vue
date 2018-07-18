@@ -7,11 +7,9 @@
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <div v-if="viewingFile === true">
-        <individual-feature
-          v-for="f in filteredFeatureArray"
-          :key="f.uuid"
-          :featureInfo="f">
-        </individual-feature>
+        <individual-view-table
+          :featureData="filteredFeatureArray">
+        </individual-view-table>
       </div>
       <div v-else>
         <bulk-view-table
@@ -24,13 +22,13 @@
 
 <script>
 // import axios from 'axios'
-import IndividualFeature from '@/components/IndividualFeature'
+import IndividualViewTable from '@/components/IndividualViewTable'
 import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
   name: 'feature-result',
   props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'viewingFile'],
-  components: { IndividualFeature, BulkViewTable },
+  components: { IndividualViewTable, BulkViewTable },
   data () {
     return {
       showMessageBody: false

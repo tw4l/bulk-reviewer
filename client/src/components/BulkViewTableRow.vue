@@ -25,7 +25,6 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          this.alertMessage = 'Success'
         })
         .catch(e => {
           console.log(e)

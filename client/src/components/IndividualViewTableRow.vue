@@ -1,0 +1,39 @@
+<template>
+  <tr>
+    <td>{{ featureInfo.feature }}</td>
+    <td>{{ contextWithLineBreaks }}</td>
+    <td>
+      <button class="button is-success" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
+    </td>
+  </tr>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'individual-view-table-row',
+  props: [ 'featureInfo' ],
+  methods: {
+    markCleared: function () {
+      let featureUUID = this.featureInfo.uuid
+      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  },
+  computed: {
+    contextWithLineBreaks: function () {
+      // Add <br> tag every 100 chars for narrow display
+      return this.featureInfo.context.replace(/(.{100})/g, '$1<br>')
+    }
+  }
+}
+</script>
+
+<style>
+</style>
