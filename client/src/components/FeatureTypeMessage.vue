@@ -8,7 +8,7 @@
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <div v-if="viewingFile === true">
           <individual-view-table
-            :featureData="filteredFeatureArray">
+            :featureData="individualViewFilteredFeatureArray">
           </individual-view-table>
       </div>
       <div v-else>
@@ -40,6 +40,13 @@ export default {
     }
   },
   computed: {
+    individualViewFilteredFeatureArray () {
+      let arr = this.filteredFeatureArrayNotCleared
+      if (this.viewingCleared === true) {
+        arr = this.filteredFeatureArray
+      }
+      return arr
+    },
     bulkViewFilteredFeatureArray () {
       let arr = this.filteredFeatureArrayNotCleared
       if (this.viewingCleared === true) {
