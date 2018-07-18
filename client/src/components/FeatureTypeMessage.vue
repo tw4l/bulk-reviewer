@@ -27,7 +27,7 @@ import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
   name: 'feature-type-message',
-  props: ['featureType', 'featureTypeCount', 'filteredFeatureArray', 'featureTypeCountNotCleared', 'filteredFeatureArrayNotCleared', 'viewingFile', 'viewingCleared'],
+  props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'viewingCleared'],
   components: { IndividualViewTable, BulkViewTable },
   data () {
     return {
@@ -40,17 +40,29 @@ export default {
     }
   },
   computed: {
+    featureTypeCount: function () {
+      return this.features.filter(feature => feature['feature_file'] === this.featureType).length
+    },
+    featureTypeCountNotCleared: function () {
+      return this.featuresNotCleared.filter(feature => feature['feature_file'] === this.featureType).length
+    },
+    filterByFeatureType () {
+      return this.features.filter(feature => feature['feature_file'] === this.featureType)
+    },
+    filterByFeatureTypeNotCleared () {
+      return this.featuresNotCleared.filter(feature => feature['feature_file'] === this.featureType)
+    },
     individualViewFilteredFeatureArray () {
-      let arr = this.filteredFeatureArrayNotCleared
+      let arr = this.filterByFeatureTypeNotCleared
       if (this.viewingCleared === true) {
-        arr = this.filteredFeatureArray
+        arr = this.filterByFeatureType
       }
       return arr
     },
     bulkViewFilteredFeatureArray () {
-      let arr = this.filteredFeatureArrayNotCleared
+      let arr = this.filterByFeatureTypeNotCleared
       if (this.viewingCleared === true) {
-        arr = this.filteredFeatureArray
+        arr = this.filterByFeatureType
       }
       let checkedUUIDs = []
       let returnArr = []

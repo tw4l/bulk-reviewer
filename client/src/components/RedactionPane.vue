@@ -37,10 +37,8 @@
         v-if="featureFileInArray(['pii.txt'])"
         :key="'pii.txt'"
         :featureType="'pii.txt'"
-        :featureTypeCount="featureTypeCount('pii.txt')"
-        :filteredFeatureArray="filterByFeatureType('pii.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('pii.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('pii.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -48,10 +46,8 @@
         v-if="featureFileInArray(['ccn.txt'])"
         :key="'ccn.txt'"
         :featureType="'ccn.txt'"
-        :featureTypeCount="featureTypeCount('ccn.txt')"
-        :filteredFeatureArray="filterByFeatureType('ccn.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('ccn.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('ccn.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -59,10 +55,8 @@
         v-if="featureFileInArray(['telephone.txt'])"
         :key="'telephone.txt'"
         :featureType="'telephone.txt'"
-        :featureTypeCount="featureTypeCount('telephone.txt')"
-        :filteredFeatureArray="filterByFeatureType('telephone.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('telephone.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('telephone.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -70,10 +64,8 @@
         v-if="featureFileInArray(['email.txt'])"
         :key="'email.txt'"
         :featureType="'email.txt'"
-        :featureTypeCount="featureTypeCount('email.txt')"
-        :filteredFeatureArray="filterByFeatureType('email.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('email.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('email.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -82,10 +74,8 @@
         v-if="featureFileInArray(['lightgrep.txt'])"
         :key="'lightgrep.txt'"
         :featureType="'lightgrep.txt'"
-        :featureTypeCount="featureTypeCount('lightgrep.txt')"
-        :filteredFeatureArray="filterByFeatureType('lightgrep.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('lightgrep.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('lightgrep.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -96,10 +86,8 @@
         v-if="featureFileInArray(['url.txt'])"
         :key="'url.txt'"
         :featureType="'url.txt'"
-        :featureTypeCount="featureTypeCount('url.txt')"
-        :filteredFeatureArray="filterByFeatureType('url.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('url.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('url.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -107,10 +95,8 @@
         v-if="featureFileInArray(['domain.txt'])"
         :key="'domain.txt'"
         :featureType="'domain.txt'"
-        :featureTypeCount="featureTypeCount('domain.txt')"
-        :filteredFeatureArray="filterByFeatureType('domain.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('domain.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('domain.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -118,10 +104,8 @@
         v-if="featureFileInArray(['rfc822.txt'])"
         :key="'rfc822.txt'"
         :featureType="'rfc822.txt'"
-        :featureTypeCount="featureTypeCount('rfc822.txt')"
-        :filteredFeatureArray="filterByFeatureType('rfc822.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('rfc822.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('rfc822.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -129,10 +113,8 @@
         v-if="featureFileInArray(['httplogs.txt'])"
         :key="'httplogs.txt'"
         :featureType="'httplogs.txt'"
-        :featureTypeCount="featureTypeCount('httplogs.txt')"
-        :filteredFeatureArray="filterByFeatureType('httplogs.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('httplogs.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('httplogs.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -141,10 +123,8 @@
         v-if="featureFileInArray(['gps.txt'])"
         :key="'gps.txt'"
         :featureType="'gps.txt'"
-        :featureTypeCount="featureTypeCount('gps.txt')"
-        :filteredFeatureArray="filterByFeatureType('gps.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('gps.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('gps.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -152,10 +132,8 @@
         v-if="featureFileInArray(['exif.txt'])"
         :key="'exif.txt'"
         :featureType="'exif.txt'"
-        :featureTypeCount="featureTypeCount('exif.txt')"
-        :filteredFeatureArray="filterByFeatureType('exif.txt')"
-        :featureTypeCountNotCleared="featureTypeCountNotCleared('exif.txt')"
-        :filteredFeatureArrayNotCleared="filterByFeatureTypeNotCleared('exif.txt')"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :viewingCleared="viewingCleared">
       </feature-type-message>
@@ -214,18 +192,6 @@ export default {
     }
   },
   methods: {
-    featureTypeCount: function (featureFile) {
-      return this.features.filter(feature => feature['feature_file'] === featureFile).length
-    },
-    featureTypeCountNotCleared: function (featureFile) {
-      return this.featuresNotCleared.filter(feature => feature['feature_file'] === featureFile).length
-    },
-    filterByFeatureType (featureFile) {
-      return this.features.filter(feature => feature['feature_file'] === featureFile)
-    },
-    filterByFeatureTypeNotCleared (featureFile) {
-      return this.featuresNotCleared.filter(feature => feature['feature_file'] === featureFile)
-    },
     // return true if any feature files in input array are in this.featureTypeArray
     featureFileInArray (arrayOfFeatureFiles) {
       let returnValue = false
