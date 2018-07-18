@@ -4,7 +4,7 @@
     <td>{{ fileInfo.count }}</td>
     <td>
       <button class="button" @click="viewFile">View file</button>
-      <button class="button is-success" @click="markReviewed"><font-awesome-icon icon="eye-slash" class="fa-fw"></font-awesome-icon></button>
+      <button class="button is-success" @click="markReviewed"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
   </tr>
 </template>

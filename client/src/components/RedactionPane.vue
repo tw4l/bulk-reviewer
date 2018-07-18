@@ -14,16 +14,13 @@
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
-      <p v-if="allClear"><strong>Status:</strong> Clear (no features in file)</p>
-      <p v-else-if="fileInfo.uuid && (fileInfo.cleared === true)"><strong>Status:</strong> <span class="cleared">Reviewed</span></p>
-      <p v-else-if="fileInfo.uuid && (fileInfo.redact_file === true)"><strong>Status:</strong> <span class="redacted">Redacted</span></p>
+      <p v-if="allClear"><strong>Status:</strong> Clear (no results to review)</p>
       <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results:</strong> {{ featureCount }}</p>
     </div>
     <!-- Sctions -->
     <div v-show="!allClear">
-      <button class="button is-danger" @click="markFileRedacted" v-if="fileInfo.uuid && (fileInfo.redact_file === false) && (fileInfo.cleared === false)">Mark file redacted</button>
-      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark file reviewed</button>
+      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark all results reviewed</button>
       <button class="button" @click="markFileNotCleared" v-else-if="fileInfo.uuid && (fileInfo.cleared === true)">Undo reviewed</button>
     </div>
     <hr>
@@ -227,11 +224,9 @@ export default {
     },
     markFileCleared () {
       let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true, 'redact_file': false }, { headers: { 'Content-Type': 'application/json' } })
+      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          this.alertMessage = 'Success'
-          this.showAlertMessage = true
           this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
@@ -245,40 +240,10 @@ export default {
       axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
-          this.alertMessage = 'Success'
-          this.showAlertMessage = true
           this.updateRedactionPane(fileUUID)
         })
         .catch(e => {
           this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
-    },
-    markFileRedacted () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'redact_file': true, 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.alertMessage = 'Success'
-          this.showAlertMessage = true
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
-    },
-    markFileNotRedacted () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'redact_file': false }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.alertMessage = 'Success'
-          this.showAlertMessage = true
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
           this.alertMessage = 'Failure updating database via API. ' + e
           this.showAlertMessage = true
         })
@@ -317,8 +282,5 @@ export default {
 <style>
 .cleared {
   color: green;
-}
-.redacted {
-  color: red;
 }
 </style>
