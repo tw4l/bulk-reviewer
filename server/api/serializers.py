@@ -14,7 +14,7 @@ class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Feature
         fields = ('uuid', 'feature_file', 'forensic_path', 'offset',
-                  'feature', 'context', 'note', 'cleared', 'source_file', 
+                  'feature', 'context', 'note', 'cleared', 'source_file',
                   'source_filepath')
 
 
