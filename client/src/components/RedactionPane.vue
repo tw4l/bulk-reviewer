@@ -164,6 +164,7 @@
 
 <script>
 import axios from 'axios'
+import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
 import Alert from '@/components/Alert'
 
@@ -187,6 +188,34 @@ export default {
   },
   created () {
     this.getAllSessionFeatures()
+  },
+  mounted () {
+    // Update features using websocket messages
+    // sent after Feature model post_save signal
+    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/features/')
+
+    let self = this
+    ws.onmessage = function (message) {
+      let data = JSON.parse(message.data)
+      // get data from websocket message
+      let featureToUpdateUUID = data.message.uuid
+      let featureToUpdateCleared = data.message.cleared
+      let featureToUpdateNote = data.message.note
+      // check features and update feature if UUID matches
+      let success = false
+      for (var i = 0; i < self.features.length; i++) {
+        if (self.features[i].uuid === featureToUpdateUUID) {
+          self.features[i].cleared = featureToUpdateCleared
+          self.features[i].note = featureToUpdateNote
+          success = true
+          break
+        }
+      }
+      // log to console if unsuccessful
+      if (success === false) {
+        console.log('Warning: Feature ' + featureToUpdateUUID + ' not found.')
+      }
+    }
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {

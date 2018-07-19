@@ -2,6 +2,11 @@ version: '3'
 
 services:
   
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+
   rabbitmq:
     image: rabbitmq:3.7.5
     environment:
@@ -28,6 +33,7 @@ services:
       python3 manage.py runserver 0.0.0.0:8000'
     depends_on:
       - rabbitmq
+      - redis
   
   worker:
     build:
@@ -40,3 +46,4 @@ services:
     command: celery -A server worker -l info
     depends_on:
       - rabbitmq
+      - redis

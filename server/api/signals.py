@@ -1,7 +1,31 @@
+import channels.layers
+from asgiref.sync import async_to_sync
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import BESession, RedactedSet
+from .models import BESession, RedactedSet, Feature
 from . import tasks
+
+
+@receiver(post_save, sender=Feature, dispatch_uid='update_feature_status_listeners')
+def update_feature_status_listeners(sender, instance, **kwargs):
+    # Send update to client when Feature is modified in a given Session
+    group_name = 'bulk-redactor'
+
+    message = {
+        'uuid': str(instance.uuid),
+        'cleared': instance.cleared,
+        'note': instance.note,
+    }
+
+    channel_layer = channels.layers.get_channel_layer()
+
+    async_to_sync(channel_layer.group_send)(
+        group_name,
+        {
+            'type': 'send_message',
+            'message': message
+        }
+    )
 
 
 @receiver(post_save, sender=BESession)

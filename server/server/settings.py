@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
     'rest_framework',
     'corsheaders',
     'django_cleanup',  # deletes FileFields
@@ -77,9 +78,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8080/'
-)
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'server.urls'
 
@@ -101,7 +100,20 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "server.routing.application"
 WSGI_APPLICATION = 'server.wsgi.application'
+
+
+# Redis/Django Channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 
 # Database

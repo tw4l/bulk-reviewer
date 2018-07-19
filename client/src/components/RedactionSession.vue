@@ -57,7 +57,6 @@ export default {
     bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
   },
   methods: {
-    // update currentlySelectedUUID from recursive node-tree components
     clearCurrentlySelectedUUID () {
       this.currentlySelectedUUID = ''
     },
