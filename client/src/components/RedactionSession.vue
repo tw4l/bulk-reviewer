@@ -4,7 +4,6 @@
   <div class="columns">
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
-      <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
       <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
       <p><strong>Source type:</strong> {{ sourceType }}</p>
     </div>
