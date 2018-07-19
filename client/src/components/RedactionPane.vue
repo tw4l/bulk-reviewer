@@ -13,15 +13,15 @@
       <h4 class="title is-4" v-else>All results</h4>
       <label class="checkbox">
         <input type="checkbox" @click="toggleViewingCleared">
-        Show results I've already cleared
+        Show results I've marked as Ignore
       </label>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p v-if="allClear"><strong>Status:</strong> Clear (no results to review)</p>
       <p v-else><strong>Status:</strong> Under review</p>
-      <p><strong>Total results:</strong> {{ featureCount }}</p>
-      <p><strong>Results not cleared:</strong> {{ featuresNotClearedCount }}</p>
+      <p><strong>Results found:</strong> {{ featureCount }}</p>
+      <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
     </div>
     <hr>
     <!-- Features grouped by type -->

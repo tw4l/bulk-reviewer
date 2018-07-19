@@ -4,7 +4,7 @@
       <tr>
         <th>Feature</th>
         <th>Context</th>
-        <th>Clear</th>
+        <th>Ignore</th>
       </tr>
     </thead>
     <tbody>

@@ -3,7 +3,7 @@
     <td>{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td>{{ fileInfo.count }}</td>
     <td>
-      <button class="button is-success" @click="markReviewed"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
+      <button class="button is-danger" @click="markReviewed"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
   </tr>
 </template>

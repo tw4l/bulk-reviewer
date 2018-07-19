@@ -3,7 +3,7 @@
     <td>{{ featureWithLineBreaks }}</td>
     <td>{{ contextWithLineBreaks }}</td>
     <td v-if="featureInfo.cleared === false">
-      <button class="button is-success" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
+      <button class="button is-danger" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
     <td v-else>
       <button class="button" @click="markNotCleared">Undo</button>
