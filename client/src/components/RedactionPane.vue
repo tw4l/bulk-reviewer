@@ -23,11 +23,6 @@
       <p><strong>Total results:</strong> {{ featureCount }}</p>
       <p><strong>Results not cleared:</strong> {{ featuresNotClearedCount }}</p>
     </div>
-    <!-- Sctions -->
-    <div v-show="!allClear">
-      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark all results reviewed</button>
-      <button class="button" @click="markFileNotCleared" v-else-if="fileInfo.uuid && (fileInfo.cleared === true)">Undo reviewed</button>
-    </div>
     <hr>
     <!-- Features grouped by type -->
     <h5
@@ -305,32 +300,6 @@ export default {
       this.fileInfo = {}
       // clear currentlySelectedUUID
       this.$emit('clearSelected')
-    },
-    markFileCleared () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
-          this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
-    },
-    markFileNotCleared () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
-          this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
     },
     updateRedactionPane (fileUUID) {
       axios.get(`http://127.0.0.1:8000/api/file/${fileUUID}/`)

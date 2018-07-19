@@ -98,13 +98,12 @@ export default {
         let path = file['filepath']
         let uuid = file['uuid']
         let allocated = file['allocated']
-        let cleared = file['cleared']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, cleared)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated)
       }
       return rootNode
     },
-    buildNodeRecursive: function (node, path, index, uuid, allocated, cleared) {
+    buildNodeRecursive: function (node, path, index, uuid, allocated) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.nodes.find(node => node.label === item)
@@ -118,11 +117,10 @@ export default {
             dir['uuid'] = uuid
             dir['isDir'] = false
             dir['allocated'] = allocated
-            dir['cleared'] = cleared
           }
           node.nodes.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, cleared)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
       }
     }
   }

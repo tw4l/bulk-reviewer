@@ -213,16 +213,6 @@ def create_redaction_log(redacted_set_uuid):
         log.write('Bulk Extractor configuration: {}\n'.format(redacted_set.be_session.be_config.name))
         log.write('Bulk Extractor configuration UUID: {}\n'.format(str(redacted_set.be_session.be_config.uuid)))
         log.write('\n\n')
-        # Write lines for Files marked as redacted
-        log.write('Files marked for redaction:\n')
-        log.write('--------------------------\n')
-        redacted_files = File.objects.filter(be_session=redacted_set.be_session).filter(cleared=False)
-        if not redacted_files:
-            log.write('No files marked for redaction.')
-        log.write('Filepath\tUUID\tNote\n')
-        for f in redacted_files:
-            log.write('{0}\t{1}\t{2}\n'.format(f.filepath, str(f.uuid), f.redaction_note))
-        log.write('\n\n')
         # Write lines for Features marked as redacted
         log.write('Features marked for redaction:\n')
         log.write('--------------------------\n')
@@ -276,11 +266,9 @@ def redact_remove_files(redacted_set_uuid):
             redacted_set.save()
             return
 
-    # Build list of files to remove from working dir
+    # Build list of files to remove from working dir, including
+    # all files with at least one feature not marked cleared
     redacted_list = list()
-    files_to_remove = File.objects.filter(be_session=redacted_set.be_session).filter(cleared=False)
-    for f in files_to_remove:
-        redacted_list.append(f.filepath)
     # Include files where any features have been marked for redaction
     files_with_redacted_features = File.objects.distinct().filter(be_session=redacted_set.be_session).filter(features__cleared=False)
     for f in files_with_redacted_features:

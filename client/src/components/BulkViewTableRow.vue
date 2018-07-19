@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import bus from '../bus'
 
 export default {
@@ -20,14 +20,8 @@ export default {
       bus.$emit('viewFileFromBulkTable', this.fileInfo.file_uuid)
     },
     markReviewed: function () {
-      let fileUUID = this.fileInfo.file_uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      // TODO: Batch update all features in this file as cleared
+      alert('Not yet implemented!')
     }
   },
   computed: {
