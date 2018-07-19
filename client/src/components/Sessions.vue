@@ -7,7 +7,7 @@
       <h3 class="title is-3">Sessions</h3>
       <button class="button is-link" @click="showNewSessionModal = true">+ New Session</button>
       <br><br>
-      <table class="table">
+      <table class="table is-bordered is-striped is-narrow is-hoverable">
         <thead>
           <tr>
             <th>Name</th>
