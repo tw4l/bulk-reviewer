@@ -74,7 +74,6 @@ class File(models.Model):
         blank=True
     )
     note = models.TextField(blank=True)
-    cleared = models.BooleanField(default=False)
     mime_type = models.CharField(
         max_length=200,
         blank=True

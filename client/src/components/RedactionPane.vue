@@ -13,20 +13,15 @@
       <h4 class="title is-4" v-else>All results</h4>
       <label class="checkbox">
         <input type="checkbox" @click="toggleViewingCleared">
-        Show results I've already cleared
+        Show results I've marked as Ignore
       </label>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p v-if="allClear"><strong>Status:</strong> Clear (no results to review)</p>
       <p v-else><strong>Status:</strong> Under review</p>
-      <p><strong>Total results:</strong> {{ featureCount }}</p>
-      <p><strong>Results not cleared:</strong> {{ featuresNotClearedCount }}</p>
-    </div>
-    <!-- Sctions -->
-    <div v-show="!allClear">
-      <button class="button is-success" @click="markFileCleared" v-if="fileInfo.uuid && (fileInfo.cleared === false)">Mark all results reviewed</button>
-      <button class="button" @click="markFileNotCleared" v-else-if="fileInfo.uuid && (fileInfo.cleared === true)">Undo reviewed</button>
+      <p><strong>Results found:</strong> {{ featureCount }}</p>
+      <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
     </div>
     <hr>
     <!-- Features grouped by type -->
@@ -142,6 +137,7 @@
 
 <script>
 import axios from 'axios'
+import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
 import Alert from '@/components/Alert'
 
@@ -165,6 +161,34 @@ export default {
   },
   created () {
     this.getAllSessionFeatures()
+  },
+  mounted () {
+    // Update features using websocket messages
+    // sent after Feature model post_save signal
+    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/features/')
+
+    let self = this
+    ws.onmessage = function (message) {
+      let data = JSON.parse(message.data)
+      // get data from websocket message
+      let featureToUpdateUUID = data.message.uuid
+      let featureToUpdateCleared = data.message.cleared
+      let featureToUpdateNote = data.message.note
+      // check features and update feature if UUID matches
+      let success = false
+      for (var i = 0; i < self.features.length; i++) {
+        if (self.features[i].uuid === featureToUpdateUUID) {
+          self.features[i].cleared = featureToUpdateCleared
+          self.features[i].note = featureToUpdateNote
+          success = true
+          break
+        }
+      }
+      // log to console if unsuccessful
+      if (success === false) {
+        console.log('Warning: Feature ' + featureToUpdateUUID + ' not found.')
+      }
+    }
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {
@@ -242,32 +266,6 @@ export default {
       this.fileInfo = {}
       // clear currentlySelectedUUID
       this.$emit('clearSelected')
-    },
-    markFileCleared () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
-          this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
-    },
-    markFileNotCleared () {
-      let fileUUID = this.fileInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/file/${fileUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => {
-          console.log(response)
-          this.updateRedactionPane(fileUUID)
-        })
-        .catch(e => {
-          this.errors.push(e)
-          this.alertMessage = 'Failure updating database via API. ' + e
-          this.showAlertMessage = true
-        })
     },
     updateRedactionPane (fileUUID) {
       axios.get(`http://127.0.0.1:8000/api/file/${fileUUID}/`)

@@ -20,6 +20,7 @@
     "bulma": "^0.7.1",
     "i": "^0.3.6",
     "npm": "^6.1.0",
+    "reconnectingwebsocket": "^1.0.0",
     "uuid": "^3.3.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

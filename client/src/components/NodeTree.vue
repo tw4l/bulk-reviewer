@@ -32,8 +32,7 @@
       :currentlySelectedUUID="currentlySelectedUUID"
       :uuid="node.uuid"
       :isDir="node.isDir"
-      :allocated="node.allocated"
-      :cleared="node.cleared">
+      :allocated="node.allocated">
     </node-tree>
   </div>
 </template>
@@ -42,7 +41,7 @@
 import bus from '../bus'
 
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'cleared' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated' ],
   data () {
     return {
       showChildren: false,

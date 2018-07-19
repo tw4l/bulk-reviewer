@@ -4,7 +4,8 @@
       <tr>
         <th>Feature</th>
         <th>Context</th>
-        <th>Clear</th>
+        <th>Ignore</th>
+        <th>Add note</th>
       </tr>
     </thead>
     <tbody>

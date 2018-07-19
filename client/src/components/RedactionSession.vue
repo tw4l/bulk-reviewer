@@ -1,7 +1,18 @@
 <template>
 <div class="padded">
-  <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
-  <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
+  <div class="columns">
+    <div class="column padded">
+      <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
+      <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
+      <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
+      <p><strong>Disk image?:</strong> {{ sessionInfo.disk_image }}</p>
+    </div>
+    <div class="column padded">
+      <h5 class="title is-5">Happy with current selection?</h5>
+      <button class="button is-info">Move on to redaction workflow</button>
+      <button class="button">Download CSV</button>
+    </div>
+  </div>
   <hr>
   <div class="columns">
     <div class="column padded">
@@ -57,7 +68,6 @@ export default {
     bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
   },
   methods: {
-    // update currentlySelectedUUID from recursive node-tree components
     clearCurrentlySelectedUUID () {
       this.currentlySelectedUUID = ''
     },
@@ -99,13 +109,12 @@ export default {
         let path = file['filepath']
         let uuid = file['uuid']
         let allocated = file['allocated']
-        let cleared = file['cleared']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, cleared)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated)
       }
       return rootNode
     },
-    buildNodeRecursive: function (node, path, index, uuid, allocated, cleared) {
+    buildNodeRecursive: function (node, path, index, uuid, allocated) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.nodes.find(node => node.label === item)
@@ -119,11 +128,10 @@ export default {
             dir['uuid'] = uuid
             dir['isDir'] = false
             dir['allocated'] = allocated
-            dir['cleared'] = cleared
           }
           node.nodes.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, cleared)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
       }
     }
   }
@@ -132,6 +140,8 @@ export default {
 
 <style>
 .padded {
-  margin: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>
