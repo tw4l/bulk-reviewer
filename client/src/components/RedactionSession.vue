@@ -5,7 +5,7 @@
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
       <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
       <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
-      <p><strong>Disk image?:</strong> {{ sessionInfo.disk_image }}</p>
+      <p><strong>Source type:</strong> {{ sourceType }}</p>
     </div>
     <div class="column padded">
       <h5 class="title is-5">Happy with current selection?</h5>
@@ -133,6 +133,11 @@ export default {
         }
         this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
       }
+    }
+  },
+  computed: {
+    sourceType: function () {
+      return this.sessionInfo.disk_image === true ? 'Disk image' : 'Directory'
     }
   }
 }
