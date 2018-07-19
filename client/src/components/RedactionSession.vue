@@ -1,5 +1,6 @@
 <template>
 <div class="padded">
+  <!-- Header -->
   <div class="columns">
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
@@ -9,14 +10,34 @@
     </div>
     <div class="column padded">
       <h5 class="title is-5">Happy with current selection?</h5>
-      <button class="button is-info">Move on to redaction workflow</button>
-      <button class="button">Download CSV</button>
+      <button
+        class="button is-primary"
+        @click="toggleRedactionView"
+        v-if="redactionView === false">Move on to Reporting and Removal</button>
+      <button
+        class="button is-info"
+        @click="toggleRedactionView"
+        v-else>Return to Review</button>
     </div>
   </div>
   <hr>
-  <div class="columns">
+  <!-- Redaction -->
+  <div class="padded" v-if="redactionView === true">
+    <h3 class="title is-3">Reporting and removal</h3>
+    <h4 class="title is-4">Reporting</h4>
+    <button class="button">Download results CSV</button>
+    <br><br>
+    <h4 class="title is-4">Redaction</h4>
+    <ul>
+      <li>- Remove files</li>
+      <li>- Redact bytes from disk image</li>
+      <li>- Use manual redaction workflow tracker</li>
+    </ul>
+  </div>
+  <!-- Review -->
+  <div class="columns" v-else>
     <div class="column padded">
-      <h4 class="title is-4">Files</h4>
+      <h3 class="title is-3">Review</h3>
       <node-tree
         :label="fileTree.label"
         :nodes="fileTree.nodes"
@@ -53,7 +74,8 @@ export default {
       fileTree: {},
       features: [],
       errors: [],
-      currentlySelectedUUID: ''
+      currentlySelectedUUID: '',
+      redactionView: false
     }
   },
   created () {
@@ -133,6 +155,9 @@ export default {
         }
         this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
       }
+    },
+    toggleRedactionView: function () {
+      this.redactionView = !this.redactionView
     }
   },
   computed: {
