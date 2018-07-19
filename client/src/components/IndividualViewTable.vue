@@ -5,6 +5,7 @@
         <th>Feature</th>
         <th>Context</th>
         <th>Ignore</th>
+        <th>Add note</th>
       </tr>
     </thead>
     <tbody>

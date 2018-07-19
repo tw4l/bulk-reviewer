@@ -1,7 +1,18 @@
 <template>
 <div class="padded">
-  <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
-  <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
+  <div class="columns">
+    <div class="column padded">
+      <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
+      <p class="subtitle is-6">{{ sessionInfo.uuid }}</p>
+      <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
+      <p><strong>Disk image?:</strong> {{ sessionInfo.disk_image }}</p>
+    </div>
+    <div class="column padded">
+      <h5 class="title is-5">Happy with current selection?</h5>
+      <button class="button is-info">Move on to redaction workflow</button>
+      <button class="button">Download CSV</button>
+    </div>
+  </div>
   <hr>
   <div class="columns">
     <div class="column padded">
@@ -129,6 +140,8 @@ export default {
 
 <style>
 .padded {
-  margin: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

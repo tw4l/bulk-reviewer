@@ -8,6 +8,9 @@
     <td v-else>
       <button class="button" @click="markNotCleared">Undo</button>
     </td>
+    <td>
+      <button class="button" @click="addNote"><font-awesome-icon icon="pen"></font-awesome-icon></button>
+    </td>
   </tr>
 </template>
 
@@ -37,6 +40,10 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    addNote: function () {
+      // TODO: Add note
+      alert('Not yet implemented!')
     }
   },
   computed: {
@@ -46,7 +53,7 @@ export default {
     },
     contextWithLineBreaks: function () {
       // Add a space tag every 60 chars for narrow display
-      return this.featureInfo.context.replace(/(.{60})/g, '$1 ')
+      return this.featureInfo.context.replace(/(.{40})/g, '$1 ')
     }
   }
 }
