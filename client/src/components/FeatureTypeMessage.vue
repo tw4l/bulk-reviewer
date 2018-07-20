@@ -88,7 +88,7 @@ export default {
     featureTypeLabel () {
       switch (this.featureType) {
         case 'pii.txt':
-          return 'SSNs'
+          return 'Social Security Numbers'
         case 'ccn.txt':
           return 'Credit card numbers'
         case 'telephone.txt':

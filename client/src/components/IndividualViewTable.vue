@@ -2,7 +2,7 @@
   <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
     <thead>
       <tr>
-        <th>Feature</th>
+        <th>Matching text</th>
         <th>Context</th>
         <th>Ignore</th>
         <th>Add note</th>
