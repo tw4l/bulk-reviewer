@@ -1,6 +1,10 @@
 <template>
   <tr :class="{ cleared: featureInfo.cleared === true }">
-    <td>{{ featureWithLineBreaks }}</td>
+    <td>{{ featureWithLineBreaks }}
+      <button
+        class="button is-small"
+        v-clipboard:copy="featureInfo.feature">Copy</button>
+    </td>
     <td>{{ contextWithLineBreaks }}</td>
     <td v-if="featureInfo.cleared === false">
       <button class="button is-danger" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>

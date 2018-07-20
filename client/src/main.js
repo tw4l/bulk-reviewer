@@ -7,6 +7,10 @@ import 'bulma/css/bulma.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faEyeSlash, faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueClipboard from 'vue-clipboard2'
+
+// use VueClipboard
+Vue.use(VueClipboard)
 
 // register fontawesome icons
 library.add(faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faEyeSlash, faPen)
