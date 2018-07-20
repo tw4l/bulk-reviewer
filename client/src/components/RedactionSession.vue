@@ -8,7 +8,8 @@
       <p><strong>Source type:</strong> {{ sourceType }}</p>
     </div>
     <div class="column padded">
-      <h5 class="title is-5">Happy with current selection?</h5>
+      <h5 class="title is-5" v-if="redactionView === false">Happy with current selection?</h5>
+      <h5 class="title is-5" v-else>Want to make changes to current selection?</h5>
       <button
         class="button is-primary"
         @click="toggleRedactionView"
@@ -22,7 +23,7 @@
   <hr>
   <!-- Redaction -->
   <div class="padded" v-if="redactionView === true">
-    <h3 class="title is-3">Reporting and removal</h3>
+    <h3 class="title is-3">Reporting and Removal</h3>
     <h4 class="title is-4">Reporting</h4>
     <button class="button">Download results CSV</button>
     <br><br>
