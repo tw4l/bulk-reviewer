@@ -7,14 +7,20 @@
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <div v-if="viewingFile === true">
-          <button class="button is-danger" @click="ignoreAllIndividualResults" style="margin-bottom: 15px; float: right;" v-show="count > 0">Ignore all</button>
-          <individual-view-table
-            :featureData="individualViewFilteredFeatureArray"
-            v-show="count > 0">
-          </individual-view-table>
+        <div style="float: right; padding-bottom: 15px;">
+          <button class="button is-danger" @click="ignoreAllIndividualResults" v-show="count > 0">Ignore all</button>
+          <button class="button is" @click="resetAllResults">Reset all</button>
+        </div>
+        <individual-view-table
+          :featureData="individualViewFilteredFeatureArray"
+          v-show="count > 0">
+        </individual-view-table>
       </div>
       <div v-else>
-        <button class="button is-danger" @click="ignoreAllBulkResults" style="margin-bottom: 15px; float: right;" v-show="count > 0">Ignore all</button>
+         <div style="float: right; padding-bottom: 15px;">
+          <button class="button is-danger" @click="ignoreAllBulkResults" v-show="count > 0">Ignore all</button>
+          <button class="button is" @click="resetAllResults">Reset all</button>
+        </div>
         <bulk-view-table
           :fileData="bulkViewFilteredFeatureArray"
           :features="features"
@@ -65,6 +71,16 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    resetAllResults: function () {
+      let featuresToUpdate = this.filterByFeatureTypeCleared
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
     }
   },
   computed: {
@@ -76,6 +92,9 @@ export default {
     },
     filterByFeatureType () {
       return this.features.filter(feature => feature['feature_file'] === this.featureType)
+    },
+    filterByFeatureTypeCleared () {
+      return this.filterByFeatureType.filter(f => f['cleared'] === true).map(f => f.uuid)
     },
     filterByFeatureTypeNotCleared () {
       return this.featuresNotCleared.filter(feature => feature['feature_file'] === this.featureType)
