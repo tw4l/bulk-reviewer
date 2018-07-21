@@ -221,7 +221,7 @@ def create_redaction_log(redacted_set_uuid):
             log.write('No features marked for redaction.')
         log.write('Feature file\tFeature\tContext\tSource file\tNote\n')
         for f in redacted_features:
-            log.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(f.feature_file, f.feature, f.context, f.source_file.filepath, f.redaction_note))
+            log.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(f.feature_file, f.feature, f.context, f.source_file.filepath, f.note))
     # Update db
     redacted_set.redaction_log = log_file
     redacted_set.save()
