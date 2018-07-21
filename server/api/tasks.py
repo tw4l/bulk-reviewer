@@ -60,9 +60,24 @@ def run_bulk_extractor(be_session_uuid):
     if be_config.regex_file:
         cmd.insert(1, '-F')
         cmd.insert(2, be_config.regex_file.path)
+    if be_config.pii_scanners == False:
+        cmd.insert(7, '-x')
+        cmd.insert(8, 'accts_lg')
+    if be_config.web_scanners == False:
+        cmd.insert(7, '-x')
+        cmd.insert(8, 'net')
+        cmd.insert(7, '-x')
+        cmd.insert(8, 'httplogs')
+    if be_config.exif_gps_scanners == False:
+        cmd.insert(7, '-x')
+        cmd.insert(8, 'exif')
+        cmd.insert(7, '-x')
+        cmd.insert(8, 'gps_lg')
+
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
+        logger.info('Bulk Extractor command: {}'.format(cmd))  # FOR DEBUGGING
         subprocess.check_output(cmd)
         be_session.feature_files_path = feature_files_path
         be_session.save()
@@ -177,6 +192,14 @@ def run_bulk_extractor(be_session_uuid):
             # Skip json
             if "json" in feature_file:
                 continue
+            # Skip web-related feature files if web scanners disabled
+            if be_config.web_scanners == False:
+                if "url" in feature_file:
+                    continue
+                if "domain" in feature_file:
+                    continue
+                if "rfc822" in feature_file:
+                    continue
             # Parse file and write features into db
             utils.parse_feature_file(ff_abspath, be_session_uuid)
 

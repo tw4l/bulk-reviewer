@@ -23,7 +23,10 @@ class BEConfig(models.Model):
         choices=SSN_CHOICES,
         default=1
     )
-    # TODO: SIN, scanners, alert list, stop list
+    pii_scanners = models.BooleanField(default=True)
+    web_scanners = models.BooleanField(default=False)
+    exif_gps_scanners = models.BooleanField(default=False)
+    # TODO: SIN, alert list, stop list
 
     def __str__(self):
         return('{0}: {1}'.format(str(self.uuid), self.name))
