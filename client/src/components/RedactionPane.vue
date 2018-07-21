@@ -22,7 +22,8 @@
       <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
-      <button class="button is-danger" @click="clearAll" v-if="!allIgnored">Ignore all results</button>
+      <button class="button is-danger" @click="clearAll" v-show="!allIgnored">Ignore all results</button>
+      <button class="button" @click="unclearAll">Reset all results</button>
     </div>
     <hr>
     <!-- Features grouped by type -->
@@ -222,6 +223,17 @@ export default {
           console.log(e)
         })
     },
+    unclearAll () {
+      // Batch update all features in this file as not cleared
+      let featuresToUpdate = this.featuresClearedUUIDs
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     // return true if any feature files in input array are in this.featureTypeArray
     featureFileInArray (arrayOfFeatureFiles) {
       let returnValue = false
@@ -296,6 +308,12 @@ export default {
     featuresNotClearedUUIDs () {
       return this.featuresNotCleared.map(f => f.uuid)
     },
+    featuresCleared () {
+      return this.features.filter(a => a.cleared === true)
+    },
+    featuresClearedUUIDs () {
+      return this.featuresCleared.map(f => f.uuid)
+    },
     featureCount () {
       return this.features.length
     },
@@ -313,6 +331,9 @@ export default {
     },
     allIgnored () {
       return this.featuresNotCleared.length === 0
+    },
+    someIgnored () {
+      return this.featuresCleared > 0
     },
     filePathWithLineBreaks () {
       // Add <br> tag every 100 chars for narrow display
