@@ -7,15 +7,19 @@
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
       <div v-if="viewingFile === true">
+          <button class="button is-danger" @click="ignoreAllIndividualResults" style="margin-bottom: 15px; float: right;" v-show="count > 0">Ignore all</button>
           <individual-view-table
-            :featureData="individualViewFilteredFeatureArray">
+            :featureData="individualViewFilteredFeatureArray"
+            v-show="count > 0">
           </individual-view-table>
       </div>
       <div v-else>
+        <button class="button is-danger" @click="ignoreAllBulkResults" style="margin-bottom: 15px; float: right;" v-show="count > 0">Ignore all</button>
         <bulk-view-table
           :fileData="bulkViewFilteredFeatureArray"
           :features="features"
-          :featureType="featureType">
+          :featureType="featureType"
+          v-show="count > 0">
         </bulk-view-table>
       </div>
     </div>
@@ -23,7 +27,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import IndividualViewTable from '@/components/IndividualViewTable'
 import BulkViewTable from '@/components/BulkViewTable'
 
@@ -39,6 +43,28 @@ export default {
   methods: {
     toggleMessageBody: function () {
       this.showMessageBody = !this.showMessageBody
+    },
+    ignoreAllIndividualResults: function () {
+      // Batch update all features in this file with correct type as cleared
+      let featuresToUpdate = this.individualViewFilteredFeatureUUIDArray
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    ignoreAllBulkResults: function () {
+      // Batch update all features in this file with correct type as cleared
+      let featuresToUpdate = this.bulkViewFilteredFeatureUUIDArray
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
     }
   },
   computed: {
@@ -61,6 +87,9 @@ export default {
       }
       return arr
     },
+    individualViewFilteredFeatureUUIDArray () {
+      return this.individualViewFilteredFeatureArray.map(f => f.uuid)
+    },
     bulkViewFilteredFeatureArray () {
       let arr = this.filterByFeatureTypeNotCleared
       if (this.viewingCleared === true) {
@@ -79,6 +108,9 @@ export default {
         }
       })
       return returnArr
+    },
+    bulkViewFilteredFeatureUUIDArray () {
+      return this.filterByFeatureTypeNotCleared.map(f => f.uuid)
     },
     count () {
       let count = this.featureTypeCountNotCleared
