@@ -22,6 +22,7 @@
       <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
+      <button class="button is-danger" @click="clearAll" v-if="!allIgnored">Ignore all results</button>
     </div>
     <hr>
     <!-- Features grouped by type -->
@@ -210,6 +211,17 @@ export default {
     }
   },
   methods: {
+    clearAll () {
+      // Batch update all features in this file as cleared
+      let featuresToUpdate = this.featuresNotClearedUUIDs
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     // return true if any feature files in input array are in this.featureTypeArray
     featureFileInArray (arrayOfFeatureFiles) {
       let returnValue = false
@@ -281,6 +293,9 @@ export default {
     featuresNotCleared () {
       return this.features.filter(a => a.cleared === false)
     },
+    featuresNotClearedUUIDs () {
+      return this.featuresNotCleared.map(f => f.uuid)
+    },
     featureCount () {
       return this.features.length
     },
@@ -295,6 +310,9 @@ export default {
     },
     allClear () {
       return this.features.length === 0
+    },
+    allIgnored () {
+      return this.featuresNotCleared.length === 0
     },
     filePathWithLineBreaks () {
       // Add <br> tag every 100 chars for narrow display
