@@ -80,9 +80,6 @@ export default {
     filterByFeatureTypeNotCleared () {
       return this.featuresNotCleared.filter(feature => feature['feature_file'] === this.featureType)
     },
-    allIgnored () {
-      return this.featureTypeCountNotCleared === 0
-    },
     individualViewFilteredFeatureArray () {
       let arr = this.filterByFeatureTypeNotCleared
       if (this.viewingCleared === true) {
