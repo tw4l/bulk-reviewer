@@ -13,7 +13,9 @@
       </div>
       <div v-else>
         <bulk-view-table
-          :fileData="bulkViewFilteredFeatureArray">
+          :fileData="bulkViewFilteredFeatureArray"
+          :features="features"
+          :featureType="featureType">
         </bulk-view-table>
       </div>
     </div>

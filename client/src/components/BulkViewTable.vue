@@ -11,7 +11,9 @@
       <bulk-view-table-row
         v-for="f in fileData"
         :key="f.uuid"
-        :fileInfo="f">
+        :fileInfo="f"
+        :features="features"
+        :featureType="featureType">
       </bulk-view-table-row>
     </tbody>
   </table>
@@ -23,7 +25,7 @@ import BulkViewTableRow from '@/components/BulkViewTableRow'
 export default {
   name: 'bulk-view-table',
   components: { BulkViewTableRow },
-  props: [ 'fileData' ]
+  props: [ 'fileData', 'features', 'featureType' ]
 }
 </script>
 

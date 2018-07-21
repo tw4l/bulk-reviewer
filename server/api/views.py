@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -40,16 +41,23 @@ class UpdateFeatureList(APIView):
     parser_classes = (JSONParser,)
 
     def patch(self, request, format=None):
-        feature_list = request.data.feature_list
-        cleared_status = request.data.cleared
+        """
+        This view should update the 'cleared' status using
+        the supplied value for Features with supplied UUIDs
+        """
+        feature_list = request.data['feature_list']
+        cleared_status = request.data['cleared']
 
-        for feature in feature_list:
-            instance = models.Feature.get(uuid=feature)
-            instance.cleared = cleared_status
-            instance.save()
-            data.append(instance)
+        try:
+            for feature in feature_list:
+                instance = models.Feature.objects.get(uuid=feature)
+                instance.cleared = cleared_status
+                instance.save()
 
-        return Response({'status': 'SUCCESS'})
+            return Response({'status': 'SUCCESS'})
+
+        except Exception:
+            return Response({'status': 'ERROR'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListFeatureBySession(generics.ListAPIView):
