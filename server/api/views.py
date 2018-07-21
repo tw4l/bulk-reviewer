@@ -1,4 +1,7 @@
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 
 from . import models
 from . import serializers
@@ -31,6 +34,22 @@ class ListFeature(generics.ListAPIView):
         """
         source_file = self.kwargs['pk']
         return models.Feature.objects.filter(source_file=source_file)
+
+
+class UpdateFeatureList(APIView):
+    parser_classes = (JSONParser,)
+
+    def patch(self, request, format=None):
+        feature_list = request.data.feature_list
+        cleared_status = request.data.cleared
+
+        for feature in feature_list:
+            instance = models.Feature.get(uuid=feature)
+            instance.cleared = cleared_status
+            instance.save()
+            data.append(instance)
+
+        return Response({'status': 'SUCCESS'})
 
 
 class ListFeatureBySession(generics.ListAPIView):
