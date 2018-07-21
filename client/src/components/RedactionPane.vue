@@ -177,12 +177,17 @@ export default {
       let featureToUpdateCleared = data.message.cleared
       let featureToUpdateNote = data.message.note
       // check features and update feature if UUID matches
-      for (var i = 0; i < self.features.length; i++) {
+      let success = false
+      for (let i = 0, numFeatures = self.features.length; i < numFeatures; i++) {
         if (self.features[i].uuid === featureToUpdateUUID) {
           self.features[i].cleared = featureToUpdateCleared
           self.features[i].note = featureToUpdateNote
+          success = true
           break
         }
+      }
+      if (success === false) {
+        console.log('Warning: Feature ' + featureToUpdateUUID + ' not found.')
       }
     }
   },
