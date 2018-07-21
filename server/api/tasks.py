@@ -186,6 +186,14 @@ def run_bulk_extractor(be_session_uuid):
 
 
 @shared_task
+def update_features(features, cleared):
+    for feature in features:
+        instance = Feature.objects.get(uuid=feature)
+        instance.cleared = cleared
+        instance.save()
+
+
+@shared_task
 def create_redaction_log(redacted_set_uuid):
 
     # Set variables

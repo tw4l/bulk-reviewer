@@ -6,6 +6,7 @@ from rest_framework.parsers import JSONParser
 
 from . import models
 from . import serializers
+from . import tasks
 
 
 class ListFile(generics.ListAPIView):
@@ -48,16 +49,8 @@ class UpdateFeatureList(APIView):
         feature_list = request.data['feature_list']
         cleared_status = request.data['cleared']
 
-        try:
-            for feature in feature_list:
-                instance = models.Feature.objects.get(uuid=feature)
-                instance.cleared = cleared_status
-                instance.save()
-
-            return Response({'status': 'SUCCESS'})
-
-        except Exception:
-            return Response({'status': 'ERROR'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        tasks.update_features.delay(feature_list, cleared_status)
+        return Response({'status': 'SUCCESS'})
 
 
 class ListFeatureBySession(generics.ListAPIView):
