@@ -5,7 +5,7 @@
       <font-awesome-icon icon="caret-down" v-if="showMessageBody"></font-awesome-icon>
       <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
     </div>
-    <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word;">
+    <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
         <div style="float: right; padding-bottom: 15px;">
           <button class="button is-danger" @click="ignoreAllIndividualResults" v-show="count > 0">Ignore all</button>
