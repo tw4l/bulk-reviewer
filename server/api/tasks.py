@@ -168,6 +168,25 @@ def run_bulk_extractor(be_session_uuid):
             # Skip empty files
             if not os.path.getsize(ff_abspath) > 0:
                 continue
+            # Skip histograms
+            if "histogram" in feature_file:
+                continue
+            if "url_" in feature_file:
+                continue
+            # Skip zip-related files
+            if "zip" in feature_file:
+                continue
+            # Skip json
+            if "json" in feature_file:
+                continue
+            # Skip web-related feature files if web scanners disabled
+            if be_config.web_scanners is False:
+                if "url" in feature_file:
+                    continue
+                if "domain" in feature_file:
+                    continue
+                if "rfc822" in feature_file:
+                    continue
             # Parse file and write features into db
             utils.parse_annotated_feature_file(ff_abspath, be_session_uuid)
     else:
