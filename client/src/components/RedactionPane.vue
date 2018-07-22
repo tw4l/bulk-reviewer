@@ -22,7 +22,7 @@
       <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
-      <button class="button is-danger" @click="clearAll" v-show="!allIgnored">Ignore all results</button>
+      <button class="button is-danger" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
       <button class="button" @click="unclearAll">Reset all results</button>
     </div>
     <hr>
