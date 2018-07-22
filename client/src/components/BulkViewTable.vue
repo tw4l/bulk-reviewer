@@ -28,7 +28,7 @@ export default {
   props: [ 'fileData', 'features', 'featureType' ],
   methods: {
     compare: function (a, b) {
-      // Use toUpperCase() to ignore character casing
+      // ensure that counts are ints before sorting
       const countA = parseInt(a.count)
       const countB = parseInt(b.count)
 
