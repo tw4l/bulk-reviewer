@@ -12,9 +12,6 @@
     <td v-else>
       <button class="button" @click="markNotCleared">Undo</button>
     </td>
-    <td>
-      <button class="button" @click="addNote"><font-awesome-icon icon="pen"></font-awesome-icon></button>
-    </td>
   </tr>
 </template>
 
@@ -56,7 +53,7 @@ export default {
       return this.featureInfo.feature.replace(/(.{40})/g, '$1 ')
     },
     contextWithLineBreaks: function () {
-      // Add a space tag every 60 chars for narrow display
+      // Add a space tag every 40 chars for narrow display
       return this.featureInfo.context.replace(/(.{40})/g, '$1 ')
     }
   }
