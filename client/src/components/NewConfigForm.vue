@@ -1,5 +1,5 @@
 <template>
-  <form id="new-config-form" @submit.prevent="processForm">
+  <form enctype="multipart/form-data" id="new-config-form">
     <!-- Name -->
     <div class="field">
       <label class="label">Name</label>
@@ -13,15 +13,13 @@
       <div class="control">
         <div class="file has-name">
           <label class="file-label">
-            <input class="file-input" type="file" name="regex">
+            <input class="file-input" type="file" name="regex" v-on:change="onFileChange">
             <span class="file-cta">
               <span class="file-label">
                 Choose a file
               </span>
             </span>
-            <span class="file-name">
-              None currently selected
-            </span>
+            <span class="file-name">{{ regexFileName }}</span>
           </label>
         </div>
       </div>
@@ -64,10 +62,10 @@
     <!-- Buttons -->
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" :disabled="formSubmit">Submit</button>
+        <button class="button is-link" @click.prevent="processForm" :disabled="formSubmit">Submit</button>
       </div>
       <div class="control">
-        <button class="button is-text">Cancel</button>
+        <button class="button is-text" @click.prevent="clearForm">Cancel</button>
       </div>
     </div>
   </form>
@@ -82,7 +80,8 @@ export default {
     return {
       formSubmit: false,
       name: '',
-      regexFile: '',
+      fileToUpload: null,
+      regexFileName: 'None currently selected',
       pii: true,
       web: false,
       exif: false,
@@ -95,18 +94,35 @@ export default {
     newConfigForm.addEventListener('submit', this.processNewConfigForm)
   },
   methods: {
-    processForm: function (e) {
+    onFileChange: function (e) {
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        console.log('No files uploaded')
+      } else {
+        this.fileToUpload = files[0]
+        this.regexFileName = files[0].name
+      }
+    },
+    processForm: function () {
       // disable submit button
       this.formSubmit = true
+
+      // set data
+      let data = new FormData()
+      data.append('name', this.name)
+      data.append('regex_file', this.fileToUpload, this.fileToUpload.name)
+      data.append('ssn_mode', parseInt(this.ssnMode))
+      data.append('pii_scanners', this.pii)
+      data.append('web_scanners', this.web)
+      data.append('exif_gps_scanners', this.exif)
+
+      // set config
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+      }
+
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/config/add/`, {
-        name: this.name,
-        // regex_file
-        ssn_mode: parseInt(this.ssnMode),
-        pii_scanners: this.pii,
-        web_scanners: this.web,
-        exif_gps_scanners: this.exif
-      })
+      axios.post(`http://127.0.0.1:8000/api/config/add/`, data, config)
         .then(response => {
           console.log(response)
         })
@@ -115,6 +131,16 @@ export default {
         })
       // re-enable submit button
       this.formSubmit = false
+    },
+    clearForm: function () {
+      this.formSubmit = false
+      this.name = ''
+      this.fileToUpload = null
+      this.regexFileName = 'None currently selected'
+      this.pii = true
+      this.web = false
+      this.exif = false
+      this.ssnMode = 1
     }
   }
 }
