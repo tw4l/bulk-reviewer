@@ -11,7 +11,7 @@
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
       <h4 class="title is-4" v-else>All results</h4>
-      <label class="checkbox">
+      <label class="checkbox" v-if="featuresClearedCount > 0">
         <input type="checkbox" @click="toggleViewingCleared">
         Show results I've marked as Ignore
       </label>
@@ -21,7 +21,7 @@
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
       <button class="button is-danger" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
-      <button class="button" @click="unclearAll">Reset all results</button>
+      <button class="button" @click="unclearAll" v-if="featuresClearedCount > 0">Reset all results</button>
     </div>
     <hr>
     <!-- Features grouped by type -->
@@ -325,6 +325,9 @@ export default {
     },
     featuresClearedUUIDs () {
       return this.featuresCleared.map(f => f.uuid)
+    },
+    featuresClearedCount () {
+      return this.featuresCleared.length
     },
     featureCount () {
       return this.features.length
