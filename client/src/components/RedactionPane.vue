@@ -20,7 +20,7 @@
     <div style="margin-bottom: 15px;">
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
-      <button class="button is-danger" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
+      <button class="button is-primary" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
       <button class="button" @click="unclearAll" v-if="featuresClearedCount > 0">Reset all results</button>
     </div>
     <hr>

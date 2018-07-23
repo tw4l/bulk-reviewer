@@ -1,5 +1,5 @@
 <template>
-  <div class="notification">
+  <div class="notification" style="max-width: 500px;">
     <button class="delete" @click="hideNotification"></button>
     {{ message }}
   </div>

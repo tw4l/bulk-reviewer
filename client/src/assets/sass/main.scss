@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+@import '~bulma/sass/utilities/initial-variables';
+
+// Brand colors
+$purple: #201130;
+$green: #49AE8B;
+$dark-green: #22644C;
+
+
+// Override defaults
+$primary: $dark-green;
+$info: $green;
+$danger: $purple;
+
+@import '~bulma/bulma'

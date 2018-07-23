@@ -5,7 +5,7 @@
       @newSessionClose="showNewSessionModal = false"></new-session-modal>
     <div class="container">
       <h3 class="title is-3">Sessions</h3>
-      <button class="button is-link" @click="showNewSessionModal = true">+ New Session</button>
+      <button class="button is-primary is-outlined" @click="showNewSessionModal = true">+ New Session</button>
       <br><br>
       <table class="table is-bordered is-striped is-narrow is-hoverable">
         <thead>

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <h4 class="title is-4" style="color: white">Bulk Redactor</h4>

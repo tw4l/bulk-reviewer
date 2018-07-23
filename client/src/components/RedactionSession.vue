@@ -6,7 +6,7 @@
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
       <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
       <p><strong>Source type:</strong> {{ sourceType }}</p>
-      <button class="button" @click="toggleShowFileBrowser" v-if="redactionView === false" style="margin-top: 10px;">Show/hide file browser</button>
+      <button class="button" @click="toggleShowFileBrowser" v-if="redactionView === false" style="margin-top: 10px;">(+/-) Show/hide file browser</button>
     </div>
     <div class="column padded">
       <h5 class="title is-5" v-if="redactionView === false">Happy with current selection?</h5>
@@ -15,7 +15,7 @@
          <button class="button is-primary" @click="toggleRedactionView">Move on to Reporting and Removal</button>
       </div>
       <div v-else>
-        <button class="button is-info" @click="toggleRedactionView">Return to Review</button>
+        <button class="button is-primary is-outlined" @click="toggleRedactionView">Return to Review</button>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
   <div class="padded" v-if="redactionView === true">
     <h3 class="title is-3">Reporting and Removal</h3>
     <h4 class="title is-4">Reporting</h4>
-    <button class="button">Download results CSV</button>
+    <button class="button is-primary is-outlined">Download results CSV</button>
     <br><br>
     <h4 class="title is-4">Redaction</h4>
     <ul>

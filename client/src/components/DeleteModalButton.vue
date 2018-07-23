@@ -7,9 +7,9 @@
       @deleteSessionClose="showDeleteSessionModal = false">
     </delete-session-modal>
     <button
-      class="button is-danger"
+      class="button"
       @click="showDeleteSessionModal = true"
-      >Delete</button>
+      ><font-awesome-icon icon="trash-alt"></font-awesome-icon></button>
   </span>
 </template>
 
