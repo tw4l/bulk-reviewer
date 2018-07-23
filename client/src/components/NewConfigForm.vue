@@ -1,5 +1,7 @@
 <template>
   <form enctype="multipart/form-data" id="new-config-form">
+    <!-- Errors -->
+    <alert :message="errorMessage" @hideMessage="hideAlertMessage" v-show="errorMessage" class="is-danger"></alert>
     <!-- Name -->
     <div class="field">
       <label class="label">Name</label>
@@ -73,9 +75,11 @@
 
 <script>
 import axios from 'axios'
+import Alert from '@/components/Alert'
 
 export default {
   name: 'new-config-form',
+  components: { Alert },
   data () {
     return {
       formSubmit: false,
@@ -85,7 +89,8 @@ export default {
       pii: true,
       web: false,
       exif: false,
-      ssnMode: 1
+      ssnMode: 1,
+      errorMessage: ''
     }
   },
   mounted () {
@@ -107,10 +112,19 @@ export default {
       // disable submit button
       this.formSubmit = true
 
+      // validate that user entered a name
+      if (!this.name) {
+        this.errorMessage = 'Name value is required.'
+        this.clearForm()
+        return
+      }
+
       // set data
       let data = new FormData()
       data.append('name', this.name)
-      data.append('regex_file', this.fileToUpload, this.fileToUpload.name)
+      if (this.fileToUpload) {
+        data.append('regex_file', this.fileToUpload, this.fileToUpload.name)
+      }
       data.append('ssn_mode', parseInt(this.ssnMode))
       data.append('pii_scanners', this.pii)
       data.append('web_scanners', this.web)
@@ -127,7 +141,7 @@ export default {
           console.log(response)
         })
         .catch(e => {
-          console.log(e)
+          this.errors.push(e)
         })
       // re-enable submit button
       this.formSubmit = false
@@ -141,6 +155,10 @@ export default {
       this.web = false
       this.exif = false
       this.ssnMode = 1
+    },
+    hideAlertMessage: function (e) {
+      event.preventDefault()
+      this.errorMessage = ''
     }
   }
 }
