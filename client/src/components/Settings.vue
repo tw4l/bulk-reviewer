@@ -2,11 +2,11 @@
   <section class="section">
     <h3 class="title is-3">Settings</h3>
     <div class="columns">
-      <div class="column is-two-thirds padded">
+      <div class="column is-two-thirds">
         <h4 class="title is-4">Create new Bulk Extractor profile</h4>
         <new-config-form @refreshConfigList="getAllConfigs"></new-config-form>
       </div>
-      <div class="column is-one-third padded">
+      <div class="column is-one-third">
         <h4 class="title is-4">Existing profiles</h4>
         <table class="table is-hoverable">
           <thead>
