@@ -1,6 +1,6 @@
 <template>
   <div class="notification">
-    <button class="delete" show="showNotification" @click="hideNotification"></button>
+    <button class="delete" @click="hideNotification"></button>
     {{ message }}
   </div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'alert',
-  props: [ 'message', 'showMessage' ],
+  props: [ 'message' ],
   methods: {
     hideNotification () {
       this.$emit('hideMessage')
