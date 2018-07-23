@@ -1,7 +1,9 @@
 <template>
   <form enctype="multipart/form-data" id="new-config-form">
     <!-- Errors -->
-    <alert :message="errorMessage" @hideMessage="hideAlertMessage" v-show="errorMessage" class="is-danger"></alert>
+    <alert :message="errorMessage" @hideMessage="hideErrorAlertMessage" v-show="errorMessage" class="is-danger"></alert>
+    <!-- Form upload success -->
+    <alert :message="successMessage" @hideMessage="hideSuccessAlertMessage" v-show="showSuccess" class="is-success"></alert>
     <!-- Name -->
     <div class="field">
       <label class="label">Name</label>
@@ -90,7 +92,9 @@ export default {
       web: false,
       exif: false,
       ssnMode: 1,
-      errorMessage: ''
+      errorMessage: '',
+      successMessage: 'Success!',
+      showSuccess: false
     }
   },
   mounted () {
@@ -139,6 +143,7 @@ export default {
       axios.post(`http://127.0.0.1:8000/api/config/add/`, data, config)
         .then(response => {
           console.log(response)
+          this.showSuccess = true
         })
         .catch(e => {
           this.errors.push(e)
@@ -156,9 +161,13 @@ export default {
       this.exif = false
       this.ssnMode = 1
     },
-    hideAlertMessage: function (e) {
+    hideErrorAlertMessage: function (e) {
       event.preventDefault()
       this.errorMessage = ''
+    },
+    hideSuccessAlertMessage: function (e) {
+      event.preventDefault()
+      this.showSuccess = false
     }
   }
 }
