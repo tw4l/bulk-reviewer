@@ -7,7 +7,7 @@
     <!-- Name -->
     <div class="field">
       <label class="label">Name</label>
-      <div class="control">
+      <div class="control input-container">
         <input class="input" type="text" name="name" v-model="name" placeholder="Name">
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="control">
         <label class="checkbox">
           <input type="checkbox" name="pii" default="true" v-model="pii">
-          PII (SSN, credit cards, phone, email)
+          PII (SSNs, credit cards, phone numbers, email addresses)
         </label>
       </div>
       <div class="control">
