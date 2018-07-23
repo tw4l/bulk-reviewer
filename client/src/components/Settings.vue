@@ -8,11 +8,15 @@
       </div>
       <div class="column is-one-third padded">
         <h4 class="title is-4">Existing profiles</h4>
-        <ul>
-          <li v-for="config in configs" :key="config.uuid" style="margin-bottom: 15px;">
-            - {{ config.name }} (edit) (delete)
-          </li>
-        </ul>
+        <table class="table is-hoverable">
+          <thead>
+            <th>Name</th>
+            <th>Remove</th>
+          </thead>
+          <tbody>
+            <existing-config v-for="config in configs" :config="config" :key="config.uuid" @removeSession="removeSessionFromList"></existing-config>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -21,10 +25,11 @@
 <script>
 import axios from 'axios'
 import NewConfigForm from '@/components/NewConfigForm'
+import ExistingConfig from '@/components/ExistingConfig'
 
 export default {
   name: 'settings',
-  components: { NewConfigForm },
+  components: { NewConfigForm, ExistingConfig },
   data () {
     return {
       configs: [],
@@ -43,6 +48,11 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+    removeSessionFromList (sessionUUID) {
+      this.configs = this.configs.filter(function (obj) {
+        return obj.uuid !== sessionUUID
+      })
     }
   }
 }
