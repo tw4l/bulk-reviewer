@@ -6,7 +6,10 @@
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
       <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
       <p><strong>Source type:</strong> {{ sourceType }}</p>
-      <button class="button" @click="toggleShowFileBrowser" v-if="redactionView === false" style="margin-top: 10px;">(+/-) Show/hide file browser</button>
+      <div v-if="redactionView === false">
+        <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
+        <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
+      </div>
     </div>
     <div class="column padded">
       <h5 class="title is-5" v-if="redactionView === false">Happy with current selection?</h5>
