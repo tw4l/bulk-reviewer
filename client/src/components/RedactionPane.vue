@@ -4,8 +4,8 @@
   </div>
   <div v-else>
     <!-- All files button -->
-    <div style="margin-bottom: 15px;">
-      <button v-if="fileInfo.uuid" class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
+    <div style="margin-bottom: 15px;" v-if="fileInfo.uuid">
+      <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
     </div>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
@@ -18,8 +18,6 @@
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
-      <p v-if="allClear"><strong>Status:</strong> Clear (no results to review)</p>
-      <p v-else><strong>Status:</strong> Under review</p>
       <p><strong>Results found:</strong> {{ featureCount }}</p>
       <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
       <button class="button is-danger" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
