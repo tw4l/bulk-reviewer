@@ -141,12 +141,11 @@
 import axios from 'axios'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
-import Alert from '@/components/Alert'
 
 export default {
   name: 'redaction-pane',
   props: [ 'currentlySelectedUUID' ],
-  components: { FeatureTypeMessage, Alert },
+  components: { FeatureTypeMessage },
   data () {
     return {
       fileInfo: {},
@@ -154,8 +153,6 @@ export default {
       features: [],
       errors: [],
       messagesOpen: false,
-      alertMessage: '',
-      showAlertMessage: false,
       loading: true,
       viewingFile: false,
       viewingCleared: false
@@ -197,8 +194,6 @@ export default {
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {
       if (newUUID !== '') {
-        // hide alert message from last file if existing
-        this.showAlertMessage = false
         // mark redaction pane as viewing single file
         this.viewingFile = true
         // update data shown to user
