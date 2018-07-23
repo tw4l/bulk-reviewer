@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading === true">
+  <div v-if="loading === true" class="loading">
     <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
   </div>
   <div v-else>
@@ -360,5 +360,10 @@ export default {
 <style>
 .cleared {
   color: green;
+}
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
