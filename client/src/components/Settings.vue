@@ -4,7 +4,7 @@
     <div class="columns">
       <div class="column is-two-thirds padded">
         <h4 class="title is-4">Create new Bulk Extractor profile</h4>
-        <new-config-form></new-config-form>
+        <new-config-form @refreshConfigList="getAllConfigs"></new-config-form>
       </div>
       <div class="column is-one-third padded">
         <h4 class="title is-4">Existing profiles</h4>

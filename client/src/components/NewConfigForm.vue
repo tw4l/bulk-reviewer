@@ -144,6 +144,7 @@ export default {
         .then(response => {
           console.log(response)
           this.showSuccess = true
+          this.$emit('refreshConfigList')
         })
         .catch(e => {
           this.errors.push(e)
