@@ -1,78 +1,80 @@
 <template>
-  <form enctype="multipart/form-data" id="new-config-form">
-    <!-- Errors -->
+  <div>
+    <!-- Form validation errors -->
     <alert :message="errorMessage" @hideMessage="hideErrorAlertMessage" v-show="errorMessage" class="is-danger"></alert>
     <!-- Form upload success -->
     <alert :message="successMessage" @hideMessage="hideSuccessAlertMessage" v-show="showSuccess" class="is-success"></alert>
-    <!-- Name -->
-    <div class="field">
-      <label class="label">Name</label>
-      <div class="control input-container">
-        <input class="input" type="text" name="name" v-model="name" placeholder="Name">
+    <form enctype="multipart/form-data" id="new-config-form">
+      <!-- Name -->
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control input-container">
+          <input class="input" type="text" name="name" v-model="name" placeholder="Name">
+        </div>
       </div>
-    </div>
-    <!-- Regex file upload -->
-    <div class="field">
-      <label class="label">Regular expressions file</label>
-      <div class="control">
-        <div class="file has-name">
-          <label class="file-label">
-            <input class="file-input" type="file" name="regex" v-on:change="onFileChange">
-            <span class="file-cta">
-              <span class="file-label">
-                Choose a file
+      <!-- Regex file upload -->
+      <div class="field">
+        <label class="label">Regular expressions file</label>
+        <div class="control">
+          <div class="file has-name">
+            <label class="file-label">
+              <input class="file-input" type="file" name="regex" v-on:change="onFileChange">
+              <span class="file-cta">
+                <span class="file-label">
+                  Choose a file
+                </span>
               </span>
-            </span>
-            <span class="file-name gray">{{ regexFileName }}</span>
+              <span class="file-name gray">{{ regexFileName }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Scanners -->
+      <div class="field">
+        <label class="label">Scanners</label>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="pii" default="true" v-model="pii">
+            PII (SSNs, credit cards, phone numbers, email addresses)
+          </label>
+        </div>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="web" v-model="web">
+            Web resources (URLs, domains, email/HTTP headers, HTTP logs)
+          </label>
+        </div>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="exif" v-model="exif">
+            EXIF and GPS metadata
           </label>
         </div>
       </div>
-    </div>
-    <!-- Scanners -->
-    <div class="field">
-      <label class="label">Scanners</label>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="pii" default="true" v-model="pii">
-          PII (SSNs, credit cards, phone numbers, email addresses)
-        </label>
+      <!-- SSN mode -->
+      <div class="field">
+        <div class="control">
+          <label class="label">SSN matching mode</label>
+          <div class="select">
+            <select name="ssn" v-model="ssnMode">
+              <option value="0">Strict ("SSN" label required, dashes required)</option>
+              <option value="1">Default (dashes only required)</option>
+              <option value="2">Permissive (no label or dashes required)</option>
+            </select>
+        </div>
       </div>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="web" v-model="web">
-          Web resources (URLs, domains, email/HTTP headers, HTTP logs)
-        </label>
       </div>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="exif" v-model="exif">
-          EXIF and GPS metadata
-        </label>
+      <!-- Buttons -->
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link" @click.prevent="processForm" :disabled="formSubmit">Submit</button>
+        </div>
+        <div class="control">
+          <button class="button is-text" @click.prevent="clearForm">Cancel</button>
+        </div>
       </div>
-    </div>
-    <!-- SSN mode -->
-    <div class="field">
-      <div class="control">
-        <label class="label">SSN matching mode</label>
-        <div class="select">
-          <select name="ssn" v-model="ssnMode">
-            <option value="0">Strict ("SSN" label required, dashes required)</option>
-            <option value="1">Default (dashes only required)</option>
-            <option value="2">Permissive (no label or dashes required)</option>
-          </select>
-      </div>
-    </div>
-    </div>
-    <!-- Buttons -->
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-link" @click.prevent="processForm" :disabled="formSubmit">Submit</button>
-      </div>
-      <div class="control">
-        <button class="button is-text" @click.prevent="clearForm">Cancel</button>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -116,10 +118,14 @@ export default {
       // disable submit button
       this.formSubmit = true
 
-      // validate that user entered a name
+      // form validation for name input
       if (!this.name) {
         this.errorMessage = 'Name value is required.'
-        this.clearForm()
+        this.formSubmit = false
+        return
+      } else if (this.name.length > 100) {
+        this.errorMessage = 'Name must be less than 100 characters.'
+        this.formSubmit = false
         return
       }
 
@@ -161,13 +167,13 @@ export default {
       this.web = false
       this.exif = false
       this.ssnMode = 1
+      this.errorMessage = ''
+      this.showSuccess = false
     },
-    hideErrorAlertMessage: function (e) {
-      event.preventDefault()
+    hideErrorAlertMessage: function () {
       this.errorMessage = ''
     },
-    hideSuccessAlertMessage: function (e) {
-      event.preventDefault()
+    hideSuccessAlertMessage: function () {
       this.showSuccess = false
     }
   }
@@ -177,5 +183,12 @@ export default {
 <style>
 .gray {
   color: #808080;
+}
+.input-container {
+     max-width: 500px;
+}
+.input-container.input,textarea {
+     width:100%;
+     display:block
 }
 </style>
