@@ -10,14 +10,13 @@
     <div class="column padded">
       <h5 class="title is-5" v-if="redactionView === false">Happy with current selection?</h5>
       <h5 class="title is-5" v-else>Want to make changes to current selection?</h5>
-      <button
-        class="button is-primary"
-        @click="toggleRedactionView"
-        v-if="redactionView === false">Move on to Reporting and Removal</button>
-      <button
-        class="button is-info"
-        @click="toggleRedactionView"
-        v-else>Return to Review</button>
+      <div v-if="redactionView === false">
+         <button class="button is-primary" @click="toggleRedactionView">Move on to Reporting and Removal</button>
+        <button class="button" @click="toggleShowFileBrowser">Show/hide file browser</button>
+      </div>
+      <div v-else>
+        <button class="button is-info" @click="toggleRedactionView">Return to Review</button>
+      </div>
     </div>
   </div>
   <hr>
@@ -35,24 +34,32 @@
     </ul>
   </div>
   <!-- Review -->
-  <div class="columns" v-else>
-    <div class="column padded">
-      <h3 class="title is-3">Review</h3>
-      <node-tree
-        :label="fileTree.label"
-        :nodes="fileTree.nodes"
+  <div v-else>
+    <div class="columns" v-if="showFileBrowser">
+      <div class="column padded">
+        <h3 class="title is-3">Review</h3>
+        <node-tree
+          :label="fileTree.label"
+          :nodes="fileTree.nodes"
+          :currentlySelectedUUID="currentlySelectedUUID"
+          :depth="0"
+          :uuid="fileTree.uuid"
+          :nodeIndex="0"
+          :allocated="fileTree.allocated"
+          :class="{ active: currentlySelectedUUID === fileTree.uuid }">
+        </node-tree>
+      </div>
+      <div class="column padded">
+        <redaction-pane
         :currentlySelectedUUID="currentlySelectedUUID"
-        :depth="0"
-        :uuid="fileTree.uuid"
-        :nodeIndex="0"
-        :allocated="fileTree.allocated"
-        :class="{ active: currentlySelectedUUID === fileTree.uuid }">
-      </node-tree>
+        @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
+      </div>
     </div>
-    <div class="column padded">
+    <div class="container" v-else>
+      <h3 class="title is-3">Review</h3>
       <redaction-pane
-      :currentlySelectedUUID="currentlySelectedUUID"
-      @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
+        :currentlySelectedUUID="currentlySelectedUUID"
+        @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
     </div>
   </div>
 </div>
@@ -75,7 +82,8 @@ export default {
       features: [],
       errors: [],
       currentlySelectedUUID: '',
-      redactionView: false
+      redactionView: false,
+      showFileBrowser: false
     }
   },
   created () {
@@ -158,6 +166,9 @@ export default {
     },
     toggleRedactionView: function () {
       this.redactionView = !this.redactionView
+    },
+    toggleShowFileBrowser: function () {
+      this.showFileBrowser = !this.showFileBrowser
     }
   },
   computed: {
