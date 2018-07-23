@@ -64,11 +64,11 @@ export default {
       return this.featureInfo.context.replace(/\\x[a-fA-F0-9]{2}/g, String.fromCharCode('$1'))
     },
     featureWithLineBreaks: function () {
-      // Add a space tag every 40 chars for narrow display
-      return this.funescapedFeature.replace(/(.{40})/g, '$1 ')
+      // Add a space every 40 chars for narrow display
+      return this.unescapedFeature.replace(/(.{40})/g, '$1 ')
     },
     contextWithLineBreaks: function () {
-      // Add a space tag every 40 chars for narrow display
+      // Add a space every 40 chars for narrow display
       return this.unescapedContext.replace(/(.{40})/g, '$1 ')
     }
   }
