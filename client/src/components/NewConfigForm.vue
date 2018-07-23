@@ -23,7 +23,7 @@
                 Choose a file
               </span>
             </span>
-            <span class="file-name">{{ regexFileName }}</span>
+            <span class="file-name gray">{{ regexFileName }}</span>
           </label>
         </div>
       </div>
@@ -175,4 +175,7 @@ export default {
 </script>
 
 <style>
+.gray {
+  color: #808080;
+}
 </style>
