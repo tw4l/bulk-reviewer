@@ -13,7 +13,8 @@
         </div>
         <individual-view-table
           :featureData="individualViewFilteredFeatureArray"
-          v-show="count > 0">
+          v-show="count > 0"
+          :showFileBrowser="showFileBrowser">
         </individual-view-table>
       </div>
       <div v-else>
@@ -25,7 +26,8 @@
           :fileData="bulkViewFilteredFeatureArray"
           :features="features"
           :featureType="featureType"
-          v-show="count > 0">
+          v-show="count > 0"
+          :showFileBrowser="showFileBrowser">
         </bulk-view-table>
       </div>
     </div>
@@ -39,7 +41,7 @@ import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
   name: 'feature-type-message',
-  props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'viewingCleared'],
+  props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'viewingCleared', 'showFileBrowser'],
   components: { IndividualViewTable, BulkViewTable },
   data () {
     return {

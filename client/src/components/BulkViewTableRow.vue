@@ -1,6 +1,7 @@
 <template>
   <tr>
-    <td>{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
+    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
+    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td>{{ fileInfo.count }}</td>
     <td>
       <button class="button is-danger" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
@@ -14,7 +15,7 @@ import bus from '../bus'
 
 export default {
   name: 'bulk-view-table-row',
-  props: [ 'fileInfo', 'features', 'featureType' ],
+  props: [ 'fileInfo', 'features', 'featureType', 'showFileBrowser' ],
   methods: {
     viewFile: function () {
       bus.$emit('viewFileFromBulkTable', this.fileInfo.file_uuid)

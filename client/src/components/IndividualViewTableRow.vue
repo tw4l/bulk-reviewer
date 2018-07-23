@@ -1,11 +1,20 @@
 <template>
   <tr :class="{ cleared: featureInfo.cleared === true }">
-    <td>{{ featureWithLineBreaks }}
+    <!-- Feature -->
+    <td v-if="showFileBrowser">{{ featureWithLineBreaks }}
       <button
         class="button is-small"
         v-clipboard:copy="featureInfo.feature">Copy</button>
     </td>
-    <td>{{ contextWithLineBreaks }}</td>
+    <td v-else>{{ featureInfo.feature }}
+      <button
+        class="button is-small"
+        v-clipboard:copy="featureInfo.feature">Copy</button>
+    </td>
+    <!-- Context -->
+    <td v-if="showFileBrowser">{{ contextWithLineBreaks }}</td>
+    <td v-else>{{ featureInfo.context }}</td>
+    <!-- Buttons -->
     <td v-if="featureInfo.cleared === false">
       <button class="button is-danger" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
@@ -20,7 +29,7 @@ import axios from 'axios'
 
 export default {
   name: 'individual-view-table-row',
-  props: [ 'featureInfo' ],
+  props: [ 'featureInfo', 'showFileBrowser' ],
   methods: {
     markCleared: function () {
       let featureUUID = this.featureInfo.uuid

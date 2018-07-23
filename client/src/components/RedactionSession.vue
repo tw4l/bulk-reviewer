@@ -35,8 +35,8 @@
   </div>
   <!-- Review -->
   <div v-else>
-    <div class="columns" v-if="showFileBrowser">
-      <div class="column padded">
+    <div class="columns">
+      <div class="column padded" v-if="showFileBrowser">
         <h3 class="title is-3">Review</h3>
         <node-tree
           :label="fileTree.label"
@@ -52,14 +52,9 @@
       <div class="column padded">
         <redaction-pane
         :currentlySelectedUUID="currentlySelectedUUID"
-        @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
+        @clearSelected="clearCurrentlySelectedUUID"
+        :showFileBrowser="showFileBrowser"></redaction-pane>
       </div>
-    </div>
-    <div class="container" v-else>
-      <h3 class="title is-3">Review</h3>
-      <redaction-pane
-        :currentlySelectedUUID="currentlySelectedUUID"
-        @clearSelected="clearCurrentlySelectedUUID"></redaction-pane>
     </div>
   </div>
 </div>

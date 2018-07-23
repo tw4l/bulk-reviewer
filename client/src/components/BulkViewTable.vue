@@ -13,7 +13,8 @@
         :key="f.uuid"
         :fileInfo="f"
         :features="features"
-        :featureType="featureType">
+        :featureType="featureType"
+        :showFileBrowser="showFileBrowser">
       </bulk-view-table-row>
     </tbody>
   </table>
@@ -25,7 +26,7 @@ import BulkViewTableRow from '@/components/BulkViewTableRow'
 export default {
   name: 'bulk-view-table',
   components: { BulkViewTableRow },
-  props: [ 'fileData', 'features', 'featureType' ],
+  props: [ 'fileData', 'features', 'featureType', 'showFileBrowser' ],
   methods: {
     compare: function (a, b) {
       // ensure that counts are ints before sorting

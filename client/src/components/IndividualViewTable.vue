@@ -11,7 +11,8 @@
       <individual-view-table-row
         v-for="f in featureData"
         :key="f.uuid"
-        :featureInfo="f">
+        :featureInfo="f"
+        :showFileBrowser="showFileBrowser">
       </individual-view-table-row>
     </tbody>
   </table>
@@ -23,7 +24,7 @@ import IndividualViewTableRow from '@/components/IndividualViewTableRow'
 export default {
   name: 'individual-view-table',
   components: { IndividualViewTableRow },
-  props: [ 'featureData' ]
+  props: [ 'featureData', 'showFileBrowser' ]
 }
 </script>
 

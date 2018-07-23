@@ -37,7 +37,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['ccn.txt'])"
@@ -46,7 +47,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['telephone.txt'])"
@@ -55,7 +57,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['email.txt'])"
@@ -64,7 +67,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
       <feature-type-message
@@ -74,7 +78,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5
       class="title is-5"
@@ -86,7 +91,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['domain.txt'])"
@@ -95,7 +101,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['rfc822.txt'])"
@@ -104,7 +111,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['httplogs.txt'])"
@@ -113,7 +121,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
       <feature-type-message
@@ -123,7 +132,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
         v-if="featureFileInArray(['exif.txt'])"
@@ -132,7 +142,8 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared">
+        :viewingCleared="viewingCleared"
+        :showFileBrowser="showFileBrowser">
       </feature-type-message>
   </div>
 </template>
@@ -144,7 +155,7 @@ import FeatureTypeMessage from '@/components/FeatureTypeMessage'
 
 export default {
   name: 'redaction-pane',
-  props: [ 'currentlySelectedUUID' ],
+  props: [ 'currentlySelectedUUID', 'showFileBrowser' ],
   components: { FeatureTypeMessage },
   data () {
     return {
