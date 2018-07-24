@@ -11,7 +11,7 @@
         <p class="subtitle is-6">{{ this.sessionUUID }}</p>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-danger" @click="deleteSession">Yes, delete</button>
+        <button class="button is-primary" @click="deleteSession">Yes, delete</button>
         <button class="button" @click="close">Cancel</button>
       </footer>
     </div>
