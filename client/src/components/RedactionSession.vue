@@ -77,7 +77,6 @@ export default {
       sessionInfo: {},
       files: [],
       fileTree: {},
-      features: [],
       errors: [],
       currentlySelectedUUID: '',
       redactionView: false,
@@ -116,13 +115,6 @@ export default {
         .then(response => {
           this.files = response.data
           this.fileTree = this.convertPathsToTree(this.files)
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/features/`)
-        .then(response => {
-          this.features = response.data
         })
         .catch(e => {
           this.errors.push(e)
