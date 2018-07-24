@@ -52,7 +52,7 @@
           :class="{ active: currentlySelectedUUID === fileTree.uuid }">
         </node-tree>
       </div>
-      <div class="column" :class="{ 'is-four-fifths': !showFileBrowser }">
+      <div class="column">
         <redaction-pane
         :currentlySelectedUUID="currentlySelectedUUID"
         @clearSelected="clearCurrentlySelectedUUID"
