@@ -1,7 +1,14 @@
 <template>
   <div class="notification" style="max-width: 500px;">
     <button class="delete" @click="hideNotification"></button>
-    {{ message }}
+    <div v-if="checkIfArray">
+      <ul>
+        <li v-for="m in message" :key="m">{{ m }}</li>
+      </ul>
+    </div>
+    <div v-else>
+      {{ message }}
+    </div>
   </div>
 </template>
 
@@ -10,8 +17,11 @@ export default {
   name: 'alert',
   props: [ 'message' ],
   methods: {
-    hideNotification () {
+    hideNotification: function () {
       this.$emit('hideMessage')
+    },
+    checkIfArray: function () {
+      return Array.isArray(this.message)
     }
   }
 }
