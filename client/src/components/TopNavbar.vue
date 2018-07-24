@@ -20,10 +20,16 @@
         </router-link>
         <!-- + New Session links open modal instead of routing -->
         <div class="navbar-item" v-if="!showNav">
-          <a class="button is-link is-inverted is-outlined is-rounded">+ New Session</a>
+          <a class="button is-link is-inverted is-outlined is-rounded">
+            <router-link to="/" class="newSessionButton">
+              + New Session
+            </router-link>
+          </a>
         </div>
         <a class="navbar-item" v-else>
+          <router-link class="navbar-item" to="/">
           <span>+ New Session</span>
+          </router-link>
         </a>
       </div>
     </div>
@@ -42,4 +48,10 @@ export default {
 </script>
 
 <style>
+.newSessionButton {
+  color: white !important;
+}
+.newSessionButton:hover {
+  color: #178B63 !important;
+}
 </style>
