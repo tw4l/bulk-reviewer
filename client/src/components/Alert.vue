@@ -19,7 +19,9 @@ export default {
   methods: {
     hideNotification: function () {
       this.$emit('hideMessage')
-    },
+    }
+  },
+  computed: {
     checkIfArray: function () {
       return Array.isArray(this.message)
     }

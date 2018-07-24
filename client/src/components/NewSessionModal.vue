@@ -156,12 +156,13 @@ export default {
       this.showSuccess = false
     },
     hideErrorAlertMessage: function () {
-      this.errorMessage = ''
+      this.errorMessages = []
     },
     hideSuccessAlertMessage: function () {
       this.showSuccess = false
     },
     close: function () {
+      this.clearForm()
       this.$emit('newSessionClose')
     }
   }
