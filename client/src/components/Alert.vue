@@ -1,7 +1,7 @@
 <template>
   <div class="notification" style="max-width: 500px;">
     <button class="delete" @click="hideNotification"></button>
-    <div v-if="checkIfArray">
+    <div v-if="checkIfArray === true">
       <ul>
         <li v-for="m in message" :key="m">- {{ m }}</li>
       </ul>

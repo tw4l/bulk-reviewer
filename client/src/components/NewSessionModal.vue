@@ -138,7 +138,6 @@ export default {
         .then(response => {
           console.log(response)
           this.showSuccess = true
-          this.clearForm()
         })
         .catch(e => {
           console.log(e)
