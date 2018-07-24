@@ -38,8 +38,8 @@
   </div>
   <!-- Review -->
   <div v-else>
-    <div class="columns">
-      <div class="column padded" v-if="showFileBrowser">
+    <div class="columns is-centered">
+      <div class="column" v-if="showFileBrowser">
         <h3 class="title is-3">Review</h3>
         <node-tree
           :label="fileTree.label"
@@ -52,7 +52,7 @@
           :class="{ active: currentlySelectedUUID === fileTree.uuid }">
         </node-tree>
       </div>
-      <div class="column padded">
+      <div class="column" :class="{ 'is-four-fifths': !showFileBrowser }">
         <redaction-pane
         :currentlySelectedUUID="currentlySelectedUUID"
         @clearSelected="clearCurrentlySelectedUUID"
