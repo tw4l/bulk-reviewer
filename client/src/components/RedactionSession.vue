@@ -4,8 +4,11 @@
   <div class="columns">
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
-      <p><strong>Source:</strong> {{ sessionInfo.source_path }}</p>
-      <p><strong>Source type:</strong> {{ sourceType }}</p>
+      <p class="subtitle is-6">
+        {{ sessionInfo.source_path }}
+        <font-awesome-icon icon="hdd" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
+        <font-awesome-icon icon="folder" v-else></font-awesome-icon>
+      </p>
       <div v-if="redactionView === false">
         <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
         <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
@@ -159,11 +162,6 @@ export default {
     },
     toggleShowFileBrowser: function () {
       this.showFileBrowser = !this.showFileBrowser
-    }
-  },
-  computed: {
-    sourceType: function () {
-      return this.sessionInfo.disk_image === true ? 'Disk image' : 'Directory'
     }
   }
 }
