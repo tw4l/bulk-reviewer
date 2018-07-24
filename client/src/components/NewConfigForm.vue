@@ -153,7 +153,7 @@ export default {
           this.$emit('refreshConfigList')
         })
         .catch(e => {
-          this.errors.push(e)
+          console.log(e)
         })
       // re-enable submit button
       this.formSubmit = false
