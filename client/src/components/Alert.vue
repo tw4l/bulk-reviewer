@@ -3,7 +3,7 @@
     <button class="delete" @click="hideNotification"></button>
     <div v-if="checkIfArray">
       <ul>
-        <li v-for="m in message" :key="m">{{ m }}</li>
+        <li v-for="m in message" :key="m">- {{ m }}</li>
       </ul>
     </div>
     <div v-else>
