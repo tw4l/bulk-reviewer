@@ -35,11 +35,15 @@ Start webpack dev server:
 
 ```
 cd client
-npm install
+npm install (required first time only)
 npm run dev
 ```
 
-Visit [localhost:8080](http://localhost:8080) in your browser
+Open a new terminal window/tab and start Electron GUI from "client" directory:
+
+```
+electron .
+```
 
 ### Tox
 
