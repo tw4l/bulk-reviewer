@@ -10,8 +10,8 @@
         <font-awesome-icon icon="folder" v-else></font-awesome-icon>
       </p>
       <div v-if="redactionView === false" style="margin-bottom: -25px;">
-        <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
-        <button class="button" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
+        <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
+        <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
       </div>
     </div>
     <div class="column padded">
