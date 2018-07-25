@@ -39,10 +39,7 @@ class BESession(models.Model):
         editable=False
     )
     name = models.CharField(max_length=100)
-    source_path = models.FilePathField(
-        path='/data/transfers/',
-        allow_folders=True
-    )
+    source_path = models.TextField()
     disk_image = models.BooleanField(default=False)
     be_config = models.ForeignKey(
         BEConfig,
