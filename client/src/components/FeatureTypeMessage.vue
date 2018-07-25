@@ -1,9 +1,12 @@
 <template>
   <div class="message">
-    <div class="message-header" @click="toggleMessageBody" style="align: left;">
-        {{ featureTypeLabel }} ({{ count }})
-      <font-awesome-icon icon="caret-down" v-if="showMessageBody"></font-awesome-icon>
-      <font-awesome-icon icon="caret-right" v-else></font-awesome-icon>
+    <div class="message-header" @click="toggleMessageBody" style="align: left;" v-if="showMessageBody">
+        (-) {{ featureTypeLabel }} ({{ count }})
+      <font-awesome-icon icon="caret-down"></font-awesome-icon>
+    </div>
+    <div class="message-header" @click="toggleMessageBody" style="align: left;" v-else>
+        (+) {{ featureTypeLabel }} ({{ count }})
+      <font-awesome-icon icon="caret-right"></font-awesome-icon>
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
