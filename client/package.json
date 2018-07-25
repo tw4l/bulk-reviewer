@@ -1,7 +1,7 @@
 {
-  "name": "BulkRedactor",
+  "name": "BulkReviewer",
   "version": "0.1.0",
-  "description": "Bulk Redactor frontend",
+  "description": "Bulk Reviewer frontend",
   "author": "Tim Walsh <timothyryanwalsh@gmail.com>",
   "private": true,
   "main": "elect.js",

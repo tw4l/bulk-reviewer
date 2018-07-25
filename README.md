@@ -1,8 +1,8 @@
-# Bulk Redactor
+# Bulk Reviewer
 
 **Work in progress.**
 
-![Bulk Redactor logo](https://github.com/timothyryanwalsh/bulk-redactor/blob/master/full-logo.jpg)
+![Bulk Reviewer logo](https://github.com/timothyryanwalsh/bulk-redactor/blob/master/full-logo.jpg)
 
 ## Development installation
 
