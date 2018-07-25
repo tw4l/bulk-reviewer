@@ -24,7 +24,7 @@
           <div class="field">
             <label class="label">Source</label>
             <div class="control input-container">
-              <input class="input" type="text" name="source" v-model="source" placeholder="/data/transfers/<source>">
+              <input class="input" type="text" name="source" v-model="source" placeholder="/path/to/source">
             </div>
           </div>
           <!-- Disk image -->
