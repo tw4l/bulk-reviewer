@@ -83,7 +83,7 @@ export default {
       errors: [],
       currentlySelectedUUID: '',
       redactionView: false,
-      showFileBrowser: false
+      showFileBrowser: true
     }
   },
   created () {
