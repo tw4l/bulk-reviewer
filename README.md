@@ -2,7 +2,7 @@
 
 **Work in progress.**
 
-![Bulk Redactor logo](https://github.com/timothyryanwalsh/bulk-redactor/blob/master/full-logo.png)
+![Bulk Redactor logo](https://github.com/timothyryanwalsh/bulk-redactor/blob/master/full-logo.jpg)
 
 ## Development installation
 
