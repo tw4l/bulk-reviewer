@@ -51,7 +51,7 @@ def run_bulk_extractor(be_session_uuid):
            '-x',
            'base16_lg',
            '-S',
-           'ssn_mode={}'.format(str(be_config.ssn_mode)),
+           'ssn_mode={}'.format(be_config.ssn_mode),
            '-S',
            'jpeg_carve_mode=0',
            transfer_source]
