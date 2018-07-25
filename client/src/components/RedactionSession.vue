@@ -4,7 +4,7 @@
   <div class="columns">
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
-      <p class="subtitle is-6">
+      <p class="subtitle is-6" style="margin-bottom: 0px;">
         {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-else></font-awesome-icon>
@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="column padded">
-      <h5 class="title is-5" v-if="redactionView === false">Happy with current selection?</h5>
-      <h5 class="title is-5" v-else>Want to make changes to current selection?</h5>
+      <h5 class="title is-5" style="margin-bottom: 10px;" v-if="redactionView === false">Happy with current selection?</h5>
+      <h5 class="title is-5" style="margin-bottom: 10px;" v-else>Want to make changes to current selection?</h5>
       <div v-if="redactionView === false">
          <button class="button is-primary" @click="toggleRedactionView">Move on to Reporting and Removal</button>
       </div>
