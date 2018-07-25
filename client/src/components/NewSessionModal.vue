@@ -56,7 +56,7 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" :disabled="formSubmit" @click.prevent="processForm">Create</button>
-        <button class="button" @click.prevent="clearForm">Cancel</button>
+        <button class="button" @click.prevent="clearForm">Clear</button>
       </footer>
     </div>
   </div>
