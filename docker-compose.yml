@@ -24,7 +24,7 @@ services:
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
-      - ./data:/data
+      - /Users:/Users
     ports:
       - '8000:8000'
     command: >
@@ -42,7 +42,7 @@ services:
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
-      - ./data:/data
+      - /Users:/Users
     command: celery -A server worker -l info
     depends_on:
       - rabbitmq
