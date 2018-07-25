@@ -2,7 +2,7 @@
   <tr>
     <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
-    <td>{{ fileInfo.count }}</td>
+    <td>{{ fileInfo.count }}<span v-if="containsClearedFeatures" style="color: #808080;">*</span></td>
     <td>
       <button class="button is-info" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
     </td>
@@ -37,9 +37,18 @@ export default {
       // Add a space tag every 60 chars for narrow display
       return this.fileInfo.filepath.replace(/(.{60})/g, '$1 ')
     },
+    featuresInFileByType: function () {
+      // filter features by source type and feature type
+      return this.features.filter(feature => feature.source_file === this.fileInfo.file_uuid && feature.feature_file === this.featureType)
+    },
     featuresToUpdateUUIDArray: function () {
-      let featuresInFileByType = this.features.filter(feature => feature.source_file === this.fileInfo.file_uuid && feature.feature_file === this.featureType)
-      return featuresInFileByType.map(feature => feature.uuid)
+      // return mapped array of UUIDs
+      return this.featuresInFileByType.map(feature => feature.uuid)
+    },
+    containsClearedFeatures: function () {
+      // return true if there are cleared features of this type in file
+      let clearedFeaturesArray = this.featuresInFileByType.filter(feature => feature.cleared === true)
+      return clearedFeaturesArray.length > 0
     }
   }
 }
