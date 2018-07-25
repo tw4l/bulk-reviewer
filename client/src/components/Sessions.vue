@@ -7,7 +7,7 @@
       <h3 class="title is-3">Sessions</h3>
       <button class="button is-primary is-outlined is-rounded" @click="showNewSessionModal = true">+ New Session</button>
       <br><br>
-      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" v-if="sessions.length > 0">
         <thead>
           <tr>
             <th>Name</th>
@@ -36,6 +36,7 @@
           </tr>
         </tbody>
       </table>
+      <h5 class="title is-5" v-else>Create a new session to get started!</h5>
     </div>
   </section>
 </template>
