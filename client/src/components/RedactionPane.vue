@@ -18,10 +18,11 @@
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
-      <p><strong>Results found:</strong> {{ featureCount }}</p>
-      <p><strong>Results remaining (not Ignored):</strong> {{ featuresNotClearedCount }}</p>
-      <button class="button is-primary" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Ignore all results</button>
-      <button class="button" @click="unclearAll" v-if="featuresClearedCount > 0">Reset all results</button>
+      <p><strong>Total:</strong> {{ featureCount }}</p>
+      <p><strong>Dismissed:</strong> {{ featuresClearedCount }}</p>
+      <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
+      <button class="button is-info" @click="unclearAll" v-if="featuresClearedCount > 0">Confirm all</button>
+      <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
     </div>
     <hr>
     <!-- Features grouped by type -->

@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faEyeSlash, faPen, faHdd } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faTimes, faPen, faHdd, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueClipboard from 'vue-clipboard2'
 
@@ -15,7 +15,7 @@ require('./assets/sass/main.scss')
 Vue.use(VueClipboard)
 
 // register fontawesome icons
-library.add(faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faEyeSlash, faPen, faHdd)
+library.add(faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faTimes, faPen, faHdd, faCheck)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false

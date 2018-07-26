@@ -4,13 +4,16 @@
 
 // Brand colors
 $purple: #201130;
+$light-purple: #4B0082;
+$lightest-purple: #9932CC;
 $green: #49AE8B;
 $dark-green: #178B63;
+$gray: #696969;
 
 
 // Override defaults
-$primary: $dark-green;
+$primary: $light-purple;
 $info: $green;
-$danger: $purple;
+$danger: $gray;
 
 @import '~bulma/bulma'

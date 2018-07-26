@@ -4,7 +4,7 @@
       <tr>
         <th>Matching text</th>
         <th>Context</th>
-        <th>Ignore</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>

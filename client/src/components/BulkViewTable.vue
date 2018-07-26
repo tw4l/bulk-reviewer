@@ -4,7 +4,7 @@
       <tr>
         <th>File</th>
         <th>Count</th>
-        <th>Ignore</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>

@@ -4,7 +4,8 @@
     <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td>{{ fileInfo.count }}<span v-if="containsClearedFeatures" style="color: #808080;">*</span></td>
     <td>
-      <button class="button is-info" @click="markCleared"><font-awesome-icon icon="eye-slash"></font-awesome-icon></button>
+      <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
+      <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
     </td>
   </tr>
 </template>
@@ -20,10 +21,21 @@ export default {
     viewFile: function () {
       bus.$emit('viewFileFromBulkTable', this.fileInfo.file_uuid)
     },
-    markCleared: function () {
+    markNotCleared: function () {
       // Batch update all features in this file with correct type as cleared
       let featuresToUpdate = this.featuresToUpdateUUIDArray
       axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    markCleared: function () {
+      // Batch update all features in this file with correct type as cleared
+      let featuresToUpdate = this.featuresToUpdateUUIDArray
+      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })

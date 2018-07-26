@@ -11,8 +11,8 @@
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
         <div style="float: right; padding-bottom: 15px;">
-          <button class="button" @click="resetAllResults">Reset all</button>
-          <button class="button is-primary" @click="ignoreAllIndividualResults" v-show="count > 0">Ignore all</button>
+          <button class="button is-info" @click="resetAllResults">Confirm all</button>
+          <button class="button" @click="ignoreAllIndividualResults" v-show="count > 0">Dismiss all</button>
         </div>
         <individual-view-table
           :featureData="individualViewFilteredFeatureArray"
@@ -22,8 +22,8 @@
       </div>
       <div v-else>
          <div style="float: right; padding-bottom: 15px;">
-          <button class="button" @click="resetAllResults">Reset all</button>
-          <button class="button is-primary" @click="ignoreAllBulkResults" v-show="count > 0">Ignore all</button>
+          <button class="button is-info" @click="resetAllResults">Confirm all</button>
+          <button class="button" @click="ignoreAllBulkResults" v-show="count > 0">Dismiss all</button>
         </div>
         <bulk-view-table
           :fileData="bulkViewFilteredFeatureArray"
