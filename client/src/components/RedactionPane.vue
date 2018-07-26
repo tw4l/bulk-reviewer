@@ -13,7 +13,7 @@
       <h4 class="title is-4" v-else>All results</h4>
       <label class="checkbox" v-if="featuresClearedCount > 0">
         <input type="checkbox" @click="toggleViewingCleared">
-        Show results I've marked as Ignore
+        Hide dismissed
       </label>
     </div>
     <!-- Metadata -->
@@ -164,7 +164,7 @@ export default {
       messagesOpen: false,
       loading: true,
       viewingFile: false,
-      viewingCleared: false
+      viewingCleared: true
     }
   },
   created () {
