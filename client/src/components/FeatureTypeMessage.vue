@@ -1,35 +1,33 @@
 <template>
   <div class="message">
     <div class="message-header" @click="toggleMessageBody" style="align: left;" v-if="showMessageBody">
-        (-) {{ featureTypeLabel }} ({{ count }})
+        (-) {{ featureTypeLabel }} ({{ featureTypeCountNotCleared }})
       <font-awesome-icon icon="caret-down"></font-awesome-icon>
     </div>
     <div class="message-header" @click="toggleMessageBody" style="align: left;" v-else>
-        (+) {{ featureTypeLabel }} ({{ count }})
+        (+) {{ featureTypeLabel }} ({{ featureTypeCountNotCleared }})
       <font-awesome-icon icon="caret-right"></font-awesome-icon>
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
         <div style="float: right; padding-bottom: 15px;">
           <button class="button is-info" @click="resetAllResults">Confirm all</button>
-          <button class="button" @click="ignoreAllIndividualResults" v-show="count > 0">Dismiss all</button>
+          <button class="button" @click="ignoreAllIndividualResults">Dismiss all</button>
         </div>
         <individual-view-table
-          :featureData="individualViewFilteredFeatureArray"
-          v-show="count > 0"
+          :featureData="filterByFeatureType"
           :showFileBrowser="showFileBrowser">
         </individual-view-table>
       </div>
       <div v-else>
          <div style="float: right; padding-bottom: 15px;">
           <button class="button is-info" @click="resetAllResults">Confirm all</button>
-          <button class="button" @click="ignoreAllBulkResults" v-show="count > 0">Dismiss all</button>
+          <button class="button" @click="ignoreAllBulkResults">Dismiss all</button>
         </div>
         <bulk-view-table
           :fileData="bulkViewFilteredFeatureArray"
           :features="features"
           :featureType="featureType"
-          v-show="count > 0"
           :showFileBrowser="showFileBrowser">
         </bulk-view-table>
       </div>
@@ -44,7 +42,7 @@ import BulkViewTable from '@/components/BulkViewTable'
 
 export default {
   name: 'feature-type-message',
-  props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'viewingCleared', 'showFileBrowser'],
+  props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'showFileBrowser'],
   components: { IndividualViewTable, BulkViewTable },
   data () {
     return {
@@ -104,21 +102,11 @@ export default {
     filterByFeatureTypeNotCleared () {
       return this.featuresNotCleared.filter(feature => feature['feature_file'] === this.featureType)
     },
-    individualViewFilteredFeatureArray () {
-      let arr = this.filterByFeatureTypeNotCleared
-      if (this.viewingCleared === true) {
-        arr = this.filterByFeatureType
-      }
-      return arr
-    },
     individualViewFilteredFeatureUUIDArray () {
-      return this.individualViewFilteredFeatureArray.map(f => f.uuid)
+      return this.filterByFeatureType.map(f => f.uuid)
     },
     bulkViewFilteredFeatureArray () {
-      let arr = this.filterByFeatureTypeNotCleared
-      if (this.viewingCleared === true) {
-        arr = this.filterByFeatureType
-      }
+      let arr = this.filterByFeatureType
       let checkedUUIDs = []
       let returnArr = []
       // create array of unique files with counts
@@ -135,13 +123,6 @@ export default {
     },
     bulkViewFilteredFeatureUUIDArray () {
       return this.filterByFeatureTypeNotCleared.map(f => f.uuid)
-    },
-    count () {
-      let count = this.featureTypeCountNotCleared
-      if (this.viewingCleared === true) {
-        count = this.featureTypeCount
-      }
-      return count
     },
     featureTypeLabel () {
       switch (this.featureType) {

@@ -26,7 +26,7 @@ export default {
         .catch(e => {
           console.log(e)
         })
-    },
+    }
   },
   computed: {
     unescapedFeature: function () {

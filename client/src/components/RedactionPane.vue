@@ -17,10 +17,6 @@
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
       <h4 class="title is-4" v-else>All results</h4>
-      <label class="checkbox" v-if="featuresClearedCount > 0">
-        <input type="checkbox" @click="toggleViewingCleared">
-        Hide dismissed
-      </label>
     </div>
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
@@ -42,7 +38,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -52,7 +47,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -62,7 +56,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -72,7 +65,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
@@ -83,7 +75,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5
@@ -96,7 +87,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -106,7 +96,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -116,7 +105,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -126,7 +114,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
     <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
@@ -137,7 +124,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
       <feature-type-message
@@ -147,7 +133,6 @@
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
-        :viewingCleared="viewingCleared"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
   </div>
@@ -172,7 +157,6 @@ export default {
       messagesOpen: false,
       loading: true,
       viewingFile: false,
-      viewingCleared: true,
       viewingDismissed: false
     }
   },
@@ -317,9 +301,6 @@ export default {
     },
     viewFile () {
       this.viewingFile = true
-    },
-    toggleViewingCleared () {
-      this.viewingCleared = !this.viewingCleared
     },
     toggleShowDismissed () {
       this.viewingDismissed = !this.viewingDismissed
