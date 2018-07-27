@@ -275,7 +275,7 @@ def create_redaction_log(redacted_set_uuid):
             feature_type = utils.user_friendly_feature_type(f.feature_file)
             # Write row
             writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
-    
+
     # Update db
     redacted_set.redaction_log = log_file
     redacted_set.save()

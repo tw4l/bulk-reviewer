@@ -45,7 +45,7 @@ def user_friendly_feature_type(feature_file):
     elif feature_file == 'httplogs.txt':
         return 'HTTP log'
     elif feature_file == 'gps.txt':
-       return 'GPS data'
+        return 'GPS data'
     elif feature_file == 'exif.txt':
         return 'EXIF metadata'
     else:
