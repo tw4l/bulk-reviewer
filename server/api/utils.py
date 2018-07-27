@@ -20,6 +20,38 @@ def time_to_int(str_time):
     return dt
 
 
+def user_friendly_feature_type(feature_file):
+    """
+    Return user-friendly feature type value for
+    corresponding feature file. If no such label
+    exists, return name of feature file.
+    """
+    if feature_file == 'pii.txt':
+        return 'Social Security Number'
+    elif feature_file == 'ccn.txt':
+        return 'Credit card number'
+    elif feature_file == 'telephone.txt':
+        return 'Phone number'
+    elif feature_file == 'email.txt':
+        return 'Email address'
+    elif feature_file == 'lightgrep.txt':
+        return 'Regular expression'
+    elif feature_file == 'url.txt':
+        return 'URL'
+    elif feature_file == 'domain.txt':
+        return 'Domain'
+    elif feature_file == 'rfc822.txt':
+        return 'Email/HTTP header (RFC822)'
+    elif feature_file == 'httplogs.txt':
+        return 'HTTP log'
+    elif feature_file == 'gps.txt':
+       return 'GPS data'
+    elif feature_file == 'exif.txt':
+        return 'EXIF metadata'
+    else:
+        return feature_file
+
+
 def carve_files(redacted_set_uuid, out_dir):
     """
     Carve allocated or all files from disk image

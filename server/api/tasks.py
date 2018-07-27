@@ -4,6 +4,7 @@ from celery.utils.log import get_task_logger
 from .models import BESession, File, Feature, RedactedSet
 from . import utils
 
+import csv
 import magic
 import os
 import shutil
@@ -245,32 +246,36 @@ def create_redaction_log(redacted_set_uuid):
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
-    # Write log file
-    log_name = redacted_set.name + '_redaction_log.txt'
+    # Write log file of redacted features
+    log_name = redacted_set.name + '_to_redact.csv'
     log_file = os.path.join(log_dir, log_name)
-    with open(log_file, 'w') as log:
+    with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         # Write header
-        log.write('Bulk Redactor Redaction Log\n\n')
-        log.write('Session Information:\n')
-        log.write('-------------------\n')
-        log.write('Session name: {}\n'.format(redacted_set.be_session.name))
-        log.write('Session UUID: {}\n'.format(str(redacted_set.be_session.uuid)))
-        log.write('Redacted set name: {}\n'.format(redacted_set.name))
-        log.write('Redacted Set UUID: {}\n'.format(str(redacted_set.uuid)))
-        log.write('Source files: {}\n'.format(redacted_set.be_session.source_path))
-        log.write('Disk image?: {}\n'.format(str(redacted_set.be_session.disk_image)))
-        log.write('Bulk Extractor configuration: {}\n'.format(redacted_set.be_session.be_config.name))
-        log.write('Bulk Extractor configuration UUID: {}\n'.format(str(redacted_set.be_session.be_config.uuid)))
-        log.write('\n\n')
+        writer.writerow(['Source file', 'Match type', 'Match text', 'Context', 'Note'])
         # Write lines for Features marked as redacted
-        log.write('Features marked for redaction:\n')
-        log.write('--------------------------\n')
         redacted_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(cleared=False)
-        if not redacted_features:
-            log.write('No features marked for redaction.')
-        log.write('Feature file\tFeature\tContext\tSource file\tNote\n')
         for f in redacted_features:
-            log.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(f.feature_file, f.feature, f.context, f.source_file.filepath, f.note))
+            # Human-friendly feature type
+            feature_type = utils.user_friendly_feature_type(f.feature_file)
+            # Write row
+            writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
+
+    # Write log file of dismissed features
+    log_name = redacted_set.name + '_dismissed.csv'
+    log_file = os.path.join(log_dir, log_name)
+    with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
+        # Write header
+        writer.writerow(['Source file', 'Match type', 'Match text', 'Context', 'Note'])
+        # Write lines for Features marked as cleared
+        dismissed_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(cleared=True)
+        for f in dismissed_features:
+            # Human-friendly feature type
+            feature_type = utils.user_friendly_feature_type(f.feature_file)
+            # Write row
+            writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
+    
     # Update db
     redacted_set.redaction_log = log_file
     redacted_set.save()
