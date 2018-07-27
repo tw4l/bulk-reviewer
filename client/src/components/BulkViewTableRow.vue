@@ -2,7 +2,8 @@
   <tr>
     <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
     <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
-    <td>{{ fileInfo.count }}<span v-if="containsClearedFeatures" style="color: #808080;">*</span></td>
+    <td v-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
+    <td v-else>{{ fileInfo.count }}</td>
     <td>
       <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
       <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
@@ -61,6 +62,10 @@ export default {
       // return true if there are cleared features of this type in file
       let clearedFeaturesArray = this.featuresInFileByType.filter(feature => feature.cleared === true)
       return clearedFeaturesArray.length > 0
+    },
+    featuresNotClearedCount: function () {
+      // return count of objects in featuresInFileByType where cleared === false
+      return this.featuresInFileByType.filter(feature => feature.cleared === false).length
     }
   }
 }
