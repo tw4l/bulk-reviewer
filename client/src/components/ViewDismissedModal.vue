@@ -13,7 +13,7 @@
               <th>File</th>
               <th>Text</th>
               <th>Context</th>
-              <th>Remove</th>
+              <th>Undo</th>
             </tr>
           </thead>
           <tbody>

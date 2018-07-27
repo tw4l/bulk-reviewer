@@ -3,18 +3,30 @@
     <td>{{ featureInfo.source_filepath }}</td>
     <td>{{ unescapedFeature }}</td>
     <td>{{ unescapedContext }}</td>
-    <td><button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button></td>
+    <td><button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button></td>
   </tr>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'dismissed-table-row',
   props: [ 'featureInfo' ],
   methods: {
     markCleared: function () {
       alert('Not yet implemented!')
-    }
+    },
+    markNotCleared: function () {
+      let featureUUID = this.featureInfo.uuid
+      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
   },
   computed: {
     unescapedFeature: function () {

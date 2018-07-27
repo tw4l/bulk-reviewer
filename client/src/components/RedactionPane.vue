@@ -25,7 +25,7 @@
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p><strong>Total:</strong> {{ featureCount }}</p>
-      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <button class="button is-small" @click="toggleShowDismissed">View</button></p>
+      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed">View</button></span></p>
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
       <button class="button is-info" @click="unclearAll" v-if="featuresClearedCount > 0">Confirm all</button>
       <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
