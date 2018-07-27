@@ -2,17 +2,15 @@
 
 @import '~bulma/sass/utilities/initial-variables';
 
-// Brand colors
-$purple: #201130;
-$light-purple: #4B0082;
-$lightest-purple: #9932CC;
+// Custom colors
+$dark-blue: #35495e;
 $green: #49AE8B;
 $dark-green: #178B63;
 $gray: #696969;
 
 
 // Override defaults
-$primary: $light-purple;
+$primary: $dark-blue;
 $info: $green;
 $danger: $gray;
 
