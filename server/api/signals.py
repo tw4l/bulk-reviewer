@@ -42,7 +42,9 @@ def redacted_session_post_save(sender, instance, **kwargs):
     # Run redaction after creation only, not after updates
     if kwargs['created']:
         # Create log
-        tasks.create_redaction_log.delay(instance.pk)
+        redacted_set = instance
+        be_session_uuid = str(instance.be_session.uuid)
+        tasks.create_csv_reports.delay(be_session_uuid)
         # Create redacted set
         if instance.redaction_type == 1:
             tasks.redact_remove_files.delay(instance.pk)

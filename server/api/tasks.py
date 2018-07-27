@@ -236,25 +236,27 @@ def update_features(features, cleared):
 
 
 @shared_task
-def create_redaction_log(redacted_set_uuid):
+def create_csv_reports(be_session_uuid):
 
     # Set variables
-    redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
+    be_session = BESession.objects.get(pk=be_session_uuid)
 
     # Create output directory
-    log_dir = '/data/logs/'
+    log_dir = os.path.join(settings.MEDIA_ROOT,
+                           'csv_reports',
+                           be_session_uuid)
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
     # Write log file of redacted features
-    log_name = redacted_set.name + '_to_redact.csv'
+    log_name = be_session.name + '_to_redact.csv'
     log_file = os.path.join(log_dir, log_name)
     with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         # Write header
         writer.writerow(['Source file', 'Match type', 'Match text', 'Context', 'Note'])
         # Write lines for Features marked as redacted
-        redacted_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(cleared=False)
+        redacted_features = Feature.objects.filter(source_file__be_session=be_session_uuid).filter(cleared=False)
         for f in redacted_features:
             # Human-friendly feature type
             feature_type = utils.user_friendly_feature_type(f.feature_file)
@@ -262,23 +264,19 @@ def create_redaction_log(redacted_set_uuid):
             writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
 
     # Write log file of dismissed features
-    log_name = redacted_set.name + '_dismissed.csv'
+    log_name = be_session.name + '_dismissed.csv'
     log_file = os.path.join(log_dir, log_name)
     with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         # Write header
         writer.writerow(['Source file', 'Match type', 'Match text', 'Context', 'Note'])
         # Write lines for Features marked as cleared
-        dismissed_features = Feature.objects.filter(source_file__be_session=redacted_set.be_session).filter(cleared=True)
+        dismissed_features = Feature.objects.filter(source_file__be_session=be_session_uuid).filter(cleared=True)
         for f in dismissed_features:
             # Human-friendly feature type
             feature_type = utils.user_friendly_feature_type(f.feature_file)
             # Write row
             writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
-
-    # Update db
-    redacted_set.redaction_log = log_file
-    redacted_set.save()
 
 
 @shared_task
