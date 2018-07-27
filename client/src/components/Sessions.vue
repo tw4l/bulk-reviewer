@@ -25,6 +25,7 @@
                 v-if="session.processing_complete">
                 <button class="button is-info">Go to session</button>
               </router-link>
+              <button class="button is-danger" disabled v-else-if="session.processing_failure">Error!</button>
               <button class="button is-info" disabled v-else>
                 <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
               </button>
