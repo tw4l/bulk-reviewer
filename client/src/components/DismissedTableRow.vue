@@ -1,6 +1,7 @@
 <template>
   <tr>
     <td>{{ featureInfo.source_filepath }}</td>
+    <td>{{ featureTypeLabel }}</td>
     <td>{{ unescapedFeature }}</td>
     <td>{{ unescapedContext }}</td>
     <td><button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button></td>
@@ -34,6 +35,34 @@ export default {
     },
     unescapedContext: function () {
       return this.featureInfo.context.replace(/\\x[a-fA-F0-9]{2}/g, String.fromCharCode('$1'))
+    },
+    featureTypeLabel () {
+      switch (this.featureInfo.feature_file) {
+        case 'pii.txt':
+          return 'SSN'
+        case 'ccn.txt':
+          return 'Credit card'
+        case 'telephone.txt':
+          return 'Phone'
+        case 'email.txt':
+          return 'Email'
+        case 'lightgrep.txt':
+          return 'Regex'
+        case 'url.txt':
+          return 'URL'
+        case 'domain.txt':
+          return 'Domain'
+        case 'rfc822.txt':
+          return 'RFC822'
+        case 'httplogs.txt':
+          return 'HTTP log'
+        case 'gps.txt':
+          return 'GPS'
+        case 'exif.txt':
+          return 'EXIF'
+        default:
+          return this.featureInfo.feature_file
+      }
     }
   }
 }

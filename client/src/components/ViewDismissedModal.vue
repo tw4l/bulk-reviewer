@@ -11,6 +11,7 @@
           <thead>
             <tr>
               <th>File</th>
+              <th>Type</th>
               <th>Text</th>
               <th>Context</th>
               <th>Undo</th>
