@@ -3,6 +3,12 @@
     <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
   </div>
   <div v-else>
+    <!-- View dismissed modal -->
+    <view-dismissed-modal
+      v-show="viewingDismissed"
+      @viewDismissedClose="viewingDismissed = false"
+      :featuresCleared="featuresCleared">
+    </view-dismissed-modal>
     <!-- All files button -->
     <div style="margin-bottom: 15px;" v-if="fileInfo.uuid">
       <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
@@ -19,7 +25,7 @@
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p><strong>Total:</strong> {{ featureCount }}</p>
-      <p><strong>Dismissed:</strong> {{ featuresClearedCount }}</p>
+      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <button class="button is-small" @click="toggleShowDismissed">View</button></p>
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
       <button class="button is-info" @click="unclearAll" v-if="featuresClearedCount > 0">Confirm all</button>
       <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
@@ -151,11 +157,12 @@
 import axios from 'axios'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
+import ViewDismissedModal from '@/components/ViewDismissedModal'
 
 export default {
   name: 'redaction-pane',
   props: [ 'currentlySelectedUUID', 'showFileBrowser' ],
-  components: { FeatureTypeMessage },
+  components: { FeatureTypeMessage, ViewDismissedModal },
   data () {
     return {
       fileInfo: {},
@@ -165,7 +172,8 @@ export default {
       messagesOpen: false,
       loading: true,
       viewingFile: false,
-      viewingCleared: true
+      viewingCleared: true,
+      viewingDismissed: false
     }
   },
   created () {
@@ -312,6 +320,9 @@ export default {
     },
     toggleViewingCleared () {
       this.viewingCleared = !this.viewingCleared
+    },
+    toggleShowDismissed () {
+      this.viewingDismissed = !this.viewingDismissed
     }
   },
   computed: {
