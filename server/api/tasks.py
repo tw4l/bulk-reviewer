@@ -38,9 +38,9 @@ def run_bulk_extractor(be_session_uuid):
            '-x',
            'email_lg',
            '-x',
-           'gps',
+           'gps_lg',
            '-x',
-           'find',
+           'lightgrep',
            '-x',
            'windirs',
            '-x',
@@ -63,7 +63,7 @@ def run_bulk_extractor(be_session_uuid):
         cmd.insert(2, be_config.regex_file.path)
     if be_config.pii_scanners is False:
         cmd.insert(7, '-x')
-        cmd.insert(8, 'accts_lg')
+        cmd.insert(8, 'accts')
     if be_config.web_scanners is False:
         cmd.insert(7, '-x')
         cmd.insert(8, 'net')
@@ -73,7 +73,7 @@ def run_bulk_extractor(be_session_uuid):
         cmd.insert(7, '-x')
         cmd.insert(8, 'exif')
         cmd.insert(7, '-x')
-        cmd.insert(8, 'gps_lg')
+        cmd.insert(8, 'gps')
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
