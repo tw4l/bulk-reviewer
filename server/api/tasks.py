@@ -302,8 +302,10 @@ def redact_remove_files(redacted_set_uuid):
 
     # Create output directories
     session_output = '/data/redacted/' + redacted_set.name
-    if not os.path.exists(session_output):
-        os.makedirs(session_output)
+    # Overwrite path if exists
+    if os.path.exists(session_output):
+        shutil.rmtree(session_output)
+    os.makedirs(session_output)
     to_redact_dir = os.path.join(session_output, 'to_redact')
     os.makedirs(to_redact_dir)
 
