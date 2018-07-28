@@ -287,16 +287,25 @@ def redact_remove_files(redacted_set_uuid):
     transfer_source = redacted_set.be_session.source_path
     disk_image = redacted_set.be_session.disk_image
     dfxml = redacted_set.be_session.dfxml_path
+    be_session_uuid = str(redacted_set.be_session.uuid)
 
     # Create temp working space
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-    working_dir = os.path.join(temp_dir, redacted_set.name)
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir)
+    os.makedirs(temp_dir)
+    working_dir = os.path.join(temp_dir, 'clean')
     # Only create output dir for disk images
     if disk_image:
         if not os.path.exists(working_dir):
             os.makedirs(working_dir)
+
+    # Create output directories
+    session_output = '/data/redacted/' + redacted_set.name
+    if not os.path.exists(session_output):
+        os.makedirs(session_output)
+    to_redact_dir = os.path.join(session_output, 'to_redact')
+    os.makedirs(to_redact_dir)
 
     # Carve and/or copy set of files to temporary working directory
     if disk_image:
@@ -321,34 +330,37 @@ def redact_remove_files(redacted_set_uuid):
     # Build list of files to remove from working dir, including
     # all files with at least one feature not marked cleared
     redacted_list = list()
-    # Include files where any features have been marked for redaction
     files_with_redacted_features = File.objects.distinct().filter(be_session=redacted_set.be_session).filter(features__cleared=False)
     for f in files_with_redacted_features:
         if f.filepath not in redacted_list:
             redacted_list.append(f.filepath)
 
-    # Remove files in redacted_list from working dir
+    # Move files in redacted_list to to_redact_dir
     for f in redacted_list:
         filepath = os.path.join(working_dir, f)
         try:
-            os.remove(filepath)
+            shutil.move(filepath, to_redact_dir)
         except Exception as e:
-            logger.error("Error deleting file {0} from working directory for redacted set {1}. Error: {2}".format(filepath, redacted_set_uuid, e))
+            logger.error("Error moving file {0} from working directory for redacted set {1}. Error: {2}".format(filepath, redacted_set_uuid, e))
             redacted_set.processing_failure = True
             redacted_set.save()
             return
 
-    # Move redacted set to data/redacted
-    if not os.path.exists('/data/redacted/'):
-        os.makedirs('/data/redacted/')
+    # Move clean files to clean_dir
     try:
-        redacted_dir = '/data/redacted/' + redacted_set.name
-        shutil.move(working_dir, redacted_dir)
+        shutil.move(working_dir, session_output)
     except Exception:
-        logger.error("Error moving redacted set to {}".format(redacted_dir))
+        logger.error("Error moving redacted set to {}".format(session_output))
         redacted_set.processing_failure = True
         redacted_set.save()
         return
+
+    # Copy CSV reports to output dir
+    csv_reports_dir = os.path.join(settings.MEDIA_ROOT,
+                                   'csv_reports',
+                                   be_session_uuid)
+    target_dir = os.path.join(session_output, 'reports')
+    shutil.copytree(csv_reports_dir, target_dir)
 
     # Mark as completed in database
     redacted_set.processing_complete = True
