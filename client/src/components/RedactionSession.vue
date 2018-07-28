@@ -9,38 +9,18 @@
         <font-awesome-icon icon="hdd" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-else></font-awesome-icon>
       </p>
-      <div v-if="redactionView === false" style="margin-bottom: -25px;">
-        <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
-        <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
-      </div>
+      <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
+      <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
     </div>
     <div class="column padded">
-      <h5 class="title is-5" style="margin-bottom: 10px;" v-if="redactionView === false">Happy with current selection?</h5>
-      <h5 class="title is-5" style="margin-bottom: 10px;" v-else>Want to make changes to current selection?</h5>
-      <div v-if="redactionView === false">
-         <button class="button is-primary" @click="toggleRedactionView">Reporting/Removal</button>
-      </div>
-      <div v-else>
-        <button class="button is-primary is-outlined" @click="toggleRedactionView">Return to Review</button>
-      </div>
+      <h5 class="title is-5">Happy with current selection?</h5>
+      <button class="button is-primary is-outlined" @click="downloadReports">Download CSV reports</button>
+      <button class="button is-primary" @click="exportFiles">Export files</button>
     </div>
   </div>
   <hr>
-  <!-- Redaction -->
-  <div class="padded" v-if="redactionView === true">
-    <h3 class="title is-3">Reporting and Removal</h3>
-    <h4 class="title is-4">Reporting</h4>
-    <button class="button is-primary is-outlined">Download results CSV</button>
-    <br><br>
-    <h4 class="title is-4">Redaction</h4>
-    <ul>
-      <li>- Remove files</li>
-      <li>- Redact bytes from disk image</li>
-      <li>- Use manual redaction workflow tracker</li>
-    </ul>
-  </div>
   <!-- Review -->
-  <div v-else>
+  <div>
     <div class="columns is-centered">
       <div class="column" v-if="showFileBrowser">
         <h3 class="title is-3">Review</h3>
@@ -82,7 +62,6 @@ export default {
       fileTree: {},
       errors: [],
       currentlySelectedUUID: '',
-      redactionView: false,
       showFileBrowser: true
     }
   },
@@ -157,11 +136,14 @@ export default {
         this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
       }
     },
-    toggleRedactionView: function () {
-      this.redactionView = !this.redactionView
-    },
     toggleShowFileBrowser: function () {
       this.showFileBrowser = !this.showFileBrowser
+    },
+    downloadReports: function () {
+      alert('Not yet implemented!')
+    },
+    exportFiles: function () {
+      alert('Not yet implemented!')
     }
   }
 }
