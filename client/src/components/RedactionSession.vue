@@ -15,10 +15,12 @@
     <div class="column padded">
       <h5 class="title is-5">Happy with current selection?</h5>
       <button class="button is-primary is-outlined" @click="downloadReports">Download CSV reports</button>
-      <button class="button is-primary" @click="exportFiles">Export files</button>
+      <button class="button is-primary" @click="showExportFiles">Export files</button>
     </div>
   </div>
   <hr>
+  <!-- Export files modal -->
+  <export-files-modal v-show="showExportFilesModal" :sessionInfo="sessionInfo" @close="showExportFilesModal = false"></export-files-modal>
   <!-- Review -->
   <div>
     <div class="columns is-centered">
@@ -47,14 +49,15 @@
 </template>
 
 <script>
-import NodeTree from './NodeTree'
-import RedactionPane from './RedactionPane'
+import ExportFilesModal from '@/components/ExportFilesModal'
+import NodeTree from '@/components/NodeTree'
+import RedactionPane from '@/components/RedactionPane'
 import axios from 'axios'
 import bus from '../bus'
 
 export default {
   name: 'session',
-  components: { NodeTree, RedactionPane },
+  components: { NodeTree, RedactionPane, ExportFilesModal },
   data () {
     return {
       sessionInfo: {},
@@ -62,7 +65,8 @@ export default {
       fileTree: {},
       errors: [],
       currentlySelectedUUID: '',
-      showFileBrowser: true
+      showFileBrowser: true,
+      showExportFilesModal: false
     }
   },
   created () {
@@ -143,8 +147,8 @@ export default {
       let uuid = this.$route.params.uuid
       window.open(`http://127.0.0.1:8000/api/session/${uuid}/csv_reports/`)
     },
-    exportFiles: function () {
-      alert('Not yet implemented!')
+    showExportFiles: function () {
+      this.showExportFilesModal = !this.showExportFilesModal
     }
   }
 }
