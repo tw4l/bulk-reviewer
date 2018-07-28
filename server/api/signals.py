@@ -11,7 +11,7 @@ def update_feature_status_listeners(sender, instance, **kwargs):
     # Send message only on update, not on create
     if not kwargs['created']:
         # Send update to client when Feature is modified in a given Session
-        group_name = 'bulk-redactor'
+        group_name = 'features'
 
         message = {
             'uuid': str(instance.uuid),
@@ -47,3 +47,24 @@ def redacted_session_post_save(sender, instance, **kwargs):
         # Create redacted set
         if instance.redaction_type == 1:
             tasks.redact_remove_files.delay(instance.pk)
+    
+    # Send update to client when Redacted Set is saved/updated
+    else:
+        group_name = 'redacted-sets'
+
+        message = {
+            'uuid': str(instance.uuid),
+            'name': instance.name,
+            'complete': instance.processing_complete,
+            'failure': instance.processing_failure,
+        }
+
+        channel_layer = channels.layers.get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'send_message',
+                'message': message
+            }
+        )

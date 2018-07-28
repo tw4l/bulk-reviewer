@@ -10,7 +10,7 @@
         <!-- Form validation errors -->
         <alert :message="errorMessages" @hideMessage="hideErrorAlertMessage" v-show="errorMessages.length > 0" class="is-danger"></alert>
         <!-- Form upload success -->
-        <alert :message="successMessage" @hideMessage="hideSuccessAlertMessage" v-show="showSuccess" class="is-success"></alert>
+        <alert :message="processingMessage" @hideMessage="hideProcessingAlertMessage" v-show="showProcessing"></alert>
         <!-- Form -->
         <form id="export-files-form">
           <!-- Name -->
@@ -42,9 +42,11 @@ export default {
     return {
       name: '',
       formSubmit: false,
+      processingComplete: false,
+      processingFailure: false,
       errorMessages: [],
-      successMessage: 'Success!',
-      showSuccess: false
+      showProcessing: false,
+      processingMessage: 'Request successfully submitted. Currently processing.'
     }
   },
   methods: {
@@ -78,25 +80,24 @@ export default {
       // POST form
       axios.post(`http://127.0.0.1:8000/api/redacted_set/add/`, data)
         .then(response => {
-          console.log(response)
-          this.showSuccess = true
+          this.requestUUID = response.data.uuid
+          this.showProcessing = true
+          this.formSubmit = false
         })
         .catch(e => {
           console.log(e)
         })
-
-      // re-enable submit button
-      this.formSubmit = false
     },
     clearForm: function () {
       this.formSubmit = false
+      this.showProcessing = false
       this.name = ''
     },
     hideErrorAlertMessage: function () {
       this.errorMessages = []
     },
-    hideSuccessAlertMessage: function () {
-      this.showSuccess = false
+    hideProcessingAlertMessage: function () {
+      this.showProcessing = false
     }
   }
 }

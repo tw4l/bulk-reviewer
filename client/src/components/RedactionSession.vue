@@ -53,6 +53,7 @@ import ExportFilesModal from '@/components/ExportFilesModal'
 import NodeTree from '@/components/NodeTree'
 import RedactionPane from '@/components/RedactionPane'
 import axios from 'axios'
+import ReconnectingWebsocket from 'reconnectingwebsocket'
 import bus from '../bus'
 
 export default {
@@ -79,6 +80,20 @@ export default {
   mounted () {
     bus.$on('viewFileFromBulkTable', this.updateCurrentlySelectedUUID)
     bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
+
+    // Pop up warning when redacted set is complete or failed
+    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/redacted-sets/')
+    ws.onmessage = function (message) {
+      let data = JSON.parse(message.data)
+      let complete = data.message.complete
+      let failure = data.message.failure
+      let redactedSetName = data.message.name
+      if (complete === true) {
+        alert(`Export ${redactedSetName} ready at /data/redacted.`)
+      } else if (failure === true) {
+        alert(`Export ${redactedSetName} failed.`)
+      }
+    }
   },
   methods: {
     clearCurrentlySelectedUUID () {
