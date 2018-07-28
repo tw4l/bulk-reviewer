@@ -1,7 +1,14 @@
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+
+import os
+import zipfile
+from io import BytesIO
 
 from . import models
 from . import serializers
@@ -124,3 +131,42 @@ class ListRedactedSetBySession(generics.ListAPIView):
         """
         be_session = self.kwargs['pk']
         return models.RedactedSet.objects.filter(be_session=be_session)
+
+
+def download_csv_reports(request, pk):
+    # Get session
+    be_session = get_object_or_404(models.BESession, pk=pk)
+    # Generate reports and wait for result
+    output = tasks.create_csv_reports.delay(str(be_session.uuid))
+    res = output.get()
+    # Calculate filenames to include in zip
+    dismissed_file = be_session.name + '_dismissed.csv'
+    dismissed_fpath = os.path.join(settings.MEDIA_ROOT,
+                                   'csv_reports',
+                                   str(pk),
+                                   dismissed_file)
+    redact_file = be_session.name + '_to_redact.csv'
+    redact_fpath = os.path.join(settings.MEDIA_ROOT,
+                                'csv_reports',
+                                str(pk),
+                                redact_file)
+    filenames = [dismissed_fpath, redact_fpath]
+    # Zip folder and filename
+    zip_subdir = str(pk)
+    zip_filename = "{}.zip".format(zip_subdir)
+    # Open BytesIO to grab in-memory ZIP contents
+    zip_io = BytesIO()
+    # Write zip file contents
+    with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as zf:
+        for fpath in filenames:
+            # Calculate path for file in zip
+            fdir, fname = os.path.split(fpath)
+            zip_path = os.path.join(zip_subdir, fname)
+            # Add file, at correct path
+            zf.write(fpath, zip_path)
+    # Grab zip file from in-memory, make response with correct headers
+    response = HttpResponse(zip_io.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(zip_filename)
+    response['Content-Length'] = zip_io.tell()
+    # Return response
+    return response

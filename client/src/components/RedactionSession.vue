@@ -140,7 +140,8 @@ export default {
       this.showFileBrowser = !this.showFileBrowser
     },
     downloadReports: function () {
-      alert('Not yet implemented!')
+      let uuid = this.$route.params.uuid
+      window.open(`http://127.0.0.1:8000/api/session/${uuid}/csv_reports/`)
     },
     exportFiles: function () {
       alert('Not yet implemented!')
