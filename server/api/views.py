@@ -138,7 +138,7 @@ def download_csv_reports(request, pk):
     be_session = get_object_or_404(models.BESession, pk=pk)
     # Generate reports and wait for result
     output = tasks.create_csv_reports.delay(str(be_session.uuid))
-    res = output.get()
+    output.get()
     # Calculate filenames to include in zip
     dismissed_file = be_session.name + '_dismissed.csv'
     dismissed_fpath = os.path.join(settings.MEDIA_ROOT,
