@@ -17,7 +17,7 @@ urlpatterns = [
     path('session/<uuid:pk>/redacted_sets/', views.ListRedactedSetBySession.as_view()),
     path('session/<uuid:pk>/csv_reports/', views.download_csv_reports),
     path('session/', views.ListBESession.as_view()),
-    path('redacted_set/add', views.CreateRedactedSet.as_view()),
+    path('redacted_set/add/', views.CreateRedactedSet.as_view()),
     path('redacted_set/<uuid:pk>/', views.DetailRedactedSet.as_view()),
     path('redacted_set/', views.ListRedactedSet.as_view()),
     path('batch_feature_update/', views.UpdateFeatureList.as_view()),
