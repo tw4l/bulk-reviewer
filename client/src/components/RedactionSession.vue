@@ -1,7 +1,7 @@
 <template>
 <div class="padded">
   <!-- Header -->
-  <div class="columns">
+  <div class="columns" style="margin-bottom: -35px;">
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
       <p class="subtitle is-6" style="margin-bottom: 0px;">
