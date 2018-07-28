@@ -129,8 +129,7 @@ class RedactedSet(models.Model):
         editable=False
     )
     name = models.CharField(
-        max_length=100,
-        unique=True
+        max_length=100
     )
     redaction_type = models.IntegerField(
         choices=REDACTION_CHOICES,
