@@ -46,7 +46,7 @@ export default {
       processingFailure: false,
       errorMessages: [],
       showProcessing: false,
-      processingMessage: 'Request successfully submitted. Currently processing.'
+      processingMessage: 'Request successfully submitted. Bulk Reviewer will alert you when export is ready.'
     }
   },
   methods: {
