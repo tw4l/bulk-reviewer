@@ -8,18 +8,12 @@
 
 (requires Docker CE and Docker-Compose)
 
-### Run init_default.sh script
+### Clone repository to local machine
 
 ```
-chmod u+x init_default.sh
-./init_default.sh
+git clone https://github.com/timothyryanwalsh/bulk-reviewer.git
+cd bulk-reviewer
 ```
-
-This script creates a `data` directory which is mounted in the Docker containers as a volume. The `data` directory is intended for user data, and contains three sub-folders:
-
-* `data/transfers/`: A location for users to place disk images and directories to scan.
-* `data/logs/`: Where Bulk Redactor writes redaction logs.
-* `data/redacted/`: Where Bulk Redactor writes redacted files and disk images.
 
 ### Start containers
 
@@ -31,19 +25,22 @@ The first time you do this, it will take a while (on my laptop, around 10 minute
 
 ### Frontend
 
+```
+cd client
+```
+Install node_modules (required first time only):
+
+```
+npm install
+```
+
 Start webpack dev server:
 
 ```
-cd client
-npm install (required first time only)
 npm run dev
 ```
 
-Open a new terminal window/tab and start Electron GUI from "client" directory:
-
-```
-electron .
-```
+Open [127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ### Tox
 
