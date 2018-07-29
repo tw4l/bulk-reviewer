@@ -32,7 +32,8 @@
       :currentlySelectedUUID="currentlySelectedUUID"
       :uuid="node.uuid"
       :isDir="node.isDir"
-      :allocated="node.allocated">
+      :allocated="node.allocated"
+      :fileTreeReady="fileTreeReady">
     </node-tree>
   </div>
 </template>
@@ -41,7 +42,7 @@
 import bus from '../bus'
 
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'fileTreeReady' ],
   data () {
     return {
       showChildren: false,
@@ -66,6 +67,13 @@ export default {
     },
     updateSelected: function () {
       bus.$emit('updateSelected', this.uuid)
+    }
+  },
+  watch: {
+    fileTreeReady: function (newValue, oldValue) {
+      if (newValue === true && this.label === 'Session') {
+        this.showChildren = true
+      }
     }
   }
 }

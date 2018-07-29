@@ -34,6 +34,7 @@
           :uuid="fileTree.uuid"
           :nodeIndex="0"
           :allocated="fileTree.allocated"
+          :fileTreeReady="fileTreeReady"
           :class="{ active: currentlySelectedUUID === fileTree.uuid }">
         </node-tree>
       </div>
@@ -64,6 +65,7 @@ export default {
       sessionInfo: {},
       files: [],
       fileTree: {},
+      fileTreeReady: false,
       errors: [],
       currentlySelectedUUID: '',
       showFileBrowser: true,
@@ -89,7 +91,7 @@ export default {
       let failure = data.message.failure
       let redactedSetName = data.message.name
       if (complete === true) {
-        alert(`Export ${redactedSetName} ready at /data/redacted.`)
+        alert(`File export ready at "/data/redacted/${redactedSetName}".`)
       } else if (failure === true) {
         alert(`Export ${redactedSetName} failed.`)
       }
@@ -133,6 +135,7 @@ export default {
 
         this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated)
       }
+      this.fileTreeReady = true
       return rootNode
     },
     buildNodeRecursive: function (node, path, index, uuid, allocated) {
