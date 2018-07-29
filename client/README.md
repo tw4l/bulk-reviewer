@@ -1,6 +1,6 @@
 # client
 
-> Bulk Redactor frontend
+> Bulk Reviewer frontend
 
 ## Build Setup
 
