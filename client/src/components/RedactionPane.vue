@@ -15,7 +15,7 @@
     </div>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
-      <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }}</h4>
+      <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
     <!-- Metadata -->
@@ -146,7 +146,7 @@ import ViewDismissedModal from '@/components/ViewDismissedModal'
 
 export default {
   name: 'redaction-pane',
-  props: [ 'currentlySelectedUUID', 'showFileBrowser' ],
+  props: [ 'sessionInfo', 'currentlySelectedUUID', 'showFileBrowser' ],
   components: { FeatureTypeMessage, ViewDismissedModal },
   data () {
     return {
@@ -346,6 +346,10 @@ export default {
     filePathWithLineBreaks () {
       // Add <br> tag every 100 chars for narrow display
       return this.fileInfo.filepath.replace(/(.{100})/g, '$1<br>')
+    },
+    fullFilepath () {
+      var path = require('path')
+      return "'" + path.join(this.sessionInfo.source_path, this.fileInfo.filepath) + "'"
     }
   }
 }

@@ -40,6 +40,7 @@
       </div>
       <div class="column">
         <redaction-pane
+        :sessionInfo="sessionInfo"
         :currentlySelectedUUID="currentlySelectedUUID"
         @clearSelected="clearCurrentlySelectedUUID"
         :showFileBrowser="showFileBrowser"></redaction-pane>
