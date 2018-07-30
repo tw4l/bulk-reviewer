@@ -45,6 +45,7 @@
 <script>
 import axios from 'axios'
 import bus from '../bus'
+import ReconnectingWebsocket from 'reconnectingwebsocket'
 import NewSessionModal from '@/components/NewSessionModal'
 import DeleteModalButton from '@/components/DeleteModalButton'
 
@@ -59,18 +60,21 @@ export default {
     }
   },
   created () {
+    // get session array on initialization
     this.getSessions()
-
-    setInterval(function () {
-      this.getSessions()
-    }.bind(this), 10000)
-
-    // delete session on receipt of message
-    // from DeleteSessionModal
+  },
+  mounted () {
+    // Update sessions whenever Session model post_save signal sends ws
+    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/sessions/')
+    let self = this
+    ws.onmessage = function (message) {
+      self.getSessions()
+    }
+    // Remove session from list on receipt of event from bus
     bus.$on('deleteSession', this.removeSession)
   },
   methods: {
-    getSessions () {
+    getSessions: function () {
       axios.get(`http://127.0.0.1:8000/api/session`)
         .then(response => {
           this.sessions = response.data
@@ -79,8 +83,13 @@ export default {
           this.errors.push(e)
         })
     },
-    removeSession (sessionToDeleteUUID) {
+    removeSession: function (sessionToDeleteUUID) {
       this.sessions = this.sessions.filter(session => session.uuid !== sessionToDeleteUUID)
+    }
+  },
+  computed: {
+    sessionsUUIDs: function () {
+      return this.sessions.map(session => session.uuid)
     }
   }
 }

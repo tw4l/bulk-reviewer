@@ -36,6 +36,26 @@ def be_session_post_save(sender, instance, **kwargs):
     if kwargs['created']:
         tasks.run_bulk_extractor.delay(instance.pk)
 
+    # Send message to sessions group after every save
+    group_name = 'sessions'
+
+    message = {
+        'uuid': str(instance.uuid),
+        'name': instance.name,
+        'complete': instance.processing_complete,
+        'failure': instance.processing_failure,
+    }
+
+    channel_layer = channels.layers.get_channel_layer()
+
+    async_to_sync(channel_layer.group_send)(
+        group_name,
+        {
+            'type': 'send_message',
+            'message': message
+        }
+    )
+
 
 @receiver(post_save, sender=RedactedSet)
 def redacted_session_post_save(sender, instance, **kwargs):
