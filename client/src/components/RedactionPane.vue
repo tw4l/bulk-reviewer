@@ -67,11 +67,11 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['lightgrep.txt'])">User-supplied regular expressions</h5>
+    <h5 class="title is-5" v-if="featureFileInArray(['find.txt'])">User-supplied regular expressions</h5>
       <feature-type-message
-        v-if="featureFileInArray(['lightgrep.txt'])"
-        :key="'lightgrep.txt'"
-        :featureType="'lightgrep.txt'"
+        v-if="featureFileInArray(['find.txt'])"
+        :key="'find.txt'"
+        :featureType="'find.txt'"
         :features="features"
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"

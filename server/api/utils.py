@@ -34,7 +34,7 @@ def user_friendly_feature_type(feature_file):
         return 'Phone number'
     elif feature_file == 'email.txt':
         return 'Email address'
-    elif feature_file == 'lightgrep.txt':
+    elif feature_file == 'find.txt':
         return 'Regular expression'
     elif feature_file == 'url.txt':
         return 'URL'

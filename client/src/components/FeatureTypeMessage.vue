@@ -134,7 +134,7 @@ export default {
           return 'Phone numbers'
         case 'email.txt':
           return 'Email addresses'
-        case 'lightgrep.txt':
+        case 'find.txt':
           return 'Regular expressions'
         case 'url.txt':
           return 'URLs'
