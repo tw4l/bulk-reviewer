@@ -254,14 +254,14 @@ def create_csv_reports(be_session_uuid):
     with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         # Write header
-        writer.writerow(['Source file', 'Match type', 'Match text', 'Context', 'Note'])
+        writer.writerow(['Source file', 'mimetype', 'Match type', 'Match text', 'Context', 'Note'])
         # Write lines for Features marked as redacted
         redacted_features = Feature.objects.filter(source_file__be_session=be_session_uuid).filter(cleared=False)
         for f in redacted_features:
             # Human-friendly feature type
             feature_type = utils.user_friendly_feature_type(f.feature_file)
             # Write row
-            writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
+            writer.writerow([f.source_file.filepath, f.source_file.mime_type, feature_type, f.feature, f.context, f.note])
 
     # Write log file of dismissed features
     log_name = be_session.name + '_dismissed.csv'
