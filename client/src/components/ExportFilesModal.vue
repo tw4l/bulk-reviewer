@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     close: function () {
+      this.clearForm()
       this.$emit('close')
     },
     processForm: function () {
