@@ -15,7 +15,7 @@
         <form id="export-files-form">
           <!-- Name -->
           <div class="field">
-            <label class="label">Name</label>
+            <label class="label">Give your export folder a name:</label>
             <div class="control input-container">
               <input class="input" type="text" name="name" v-model="name" placeholder="Name">
             </div>
@@ -92,6 +92,9 @@ export default {
     clearForm: function () {
       this.formSubmit = false
       this.showProcessing = false
+      this.processingComplete = false
+      this.processingFailure = false
+      this.errorMessages = []
       this.name = ''
     },
     hideErrorAlertMessage: function () {
