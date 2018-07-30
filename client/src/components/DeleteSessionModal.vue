@@ -20,6 +20,7 @@
 
 <script>
 import axios from 'axios'
+import bus from '../bus'
 
 export default {
   name: 'delete-session-modal',
@@ -36,6 +37,7 @@ export default {
       axios.delete(`http://127.0.0.1:8000/api/session/${this.sessionUUID}/`)
         .then(response => {
           console.log(response)
+          bus.$emit('deleteSession', this.sessionUUID)
         })
         .catch(e => {
           this.errors.push(e)

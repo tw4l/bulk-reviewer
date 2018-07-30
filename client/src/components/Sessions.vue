@@ -44,6 +44,7 @@
 
 <script>
 import axios from 'axios'
+import bus from '../bus'
 import NewSessionModal from '@/components/NewSessionModal'
 import DeleteModalButton from '@/components/DeleteModalButton'
 
@@ -63,6 +64,10 @@ export default {
     setInterval(function () {
       this.getSessions()
     }.bind(this), 10000)
+
+    // delete session on receipt of message
+    // from DeleteSessionModal
+    bus.$on('deleteSession', this.removeSession)
   },
   methods: {
     getSessions () {
@@ -73,6 +78,9 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+    removeSession (sessionToDeleteUUID) {
+      this.sessions = this.sessions.filter(session => session.uuid !== sessionToDeleteUUID)
     }
   }
 }
