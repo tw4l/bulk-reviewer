@@ -10,7 +10,7 @@ Bulk Reviewer is a review and reporting application built in [Django](https://ww
 
 Bulk Reviewer is intended to help librarians, archivists, and others to identify, review, and remove sensitive files in digital archives. Initial development occurred while the author, Tim Walsh, was a 2018 Summer Fellow at the [Library Innovation Lab](https://lil.law.harvard.edu) at Harvard University. The application is currently under active development, and is still in the exploratory/prototype phase.
 
-Interested in getting involved? Send me a message at [timothyryanwalsh /at/ gmail /dot/ com](mailto:timothyryanwalsh@gmail.com).
+Interested in getting involved? [Get in touch](mailto:timothyryanwalsh@gmail.com)!
 
 ## Development installation
 
