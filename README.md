@@ -6,7 +6,7 @@
 
 ## Development installation
 
-(requires Docker CE and Docker-Compose)
+Requires [Docker CE](https://www.docker.com/community-edition) and [Docker-Compose](https://docs.docker.com/compose/).
 
 ### Clone repository to local machine
 
@@ -14,6 +14,17 @@
 git clone https://github.com/timothyryanwalsh/bulk-reviewer.git
 cd bulk-reviewer
 ```
+
+### Configure docker-compose volumes
+
+The current configuration for sharing data between the host development machine and the `server` and `worker` Docker containers assumes a macOS development environment. Development in Linux or Windows may require changing the volume configuration to be appropriate for the local machine:
+
+```
+- /Users:/Users
+- /Volumes:/Volumes
+```
+
+These two volumes are used only for giving the `worker` and `server` containers access to data to scan with bulk_extractor. For development on Linux or Windows, change these two volumes for the `worker` and `server` containers in `docker-compose.yml` to appropriate values such as `- /home:/home` (Linux) or `- C:\Users:/Users` (Windows).
 
 ### Start containers
 
@@ -23,7 +34,7 @@ docker-compose up -d
 
 The first time you do this, it will take a while (on my laptop, around 10 minutes). Much of this time is spent installing dependencies for and then building bulk_extractor.
 
-### Frontend
+### Start frontend development server
 
 ```
 cd client
@@ -39,6 +50,8 @@ Start webpack dev server:
 ```
 npm run dev
 ```
+
+### Open application in browser
 
 Open [127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
