@@ -9,10 +9,6 @@
       @viewDismissedClose="viewingDismissed = false"
       :featuresCleared="featuresCleared">
     </view-dismissed-modal>
-    <!-- All files button -->
-    <div style="margin-bottom: 15px;" v-if="fileInfo.uuid">
-      <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>All results</button>
-    </div>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
@@ -141,6 +137,7 @@
 
 <script>
 import axios from 'axios'
+import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
 import ViewDismissedModal from '@/components/ViewDismissedModal'
@@ -193,6 +190,9 @@ export default {
         }
       }
     }
+
+    // Listen for returnToSessionFeatures from RedactionSession
+    bus.$on('returnToSessionFeatures', this.returnToSessionFeatures)
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {

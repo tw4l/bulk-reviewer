@@ -26,6 +26,11 @@
     <div class="columns is-centered">
       <div class="column" v-if="showFileBrowser">
         <h3 class="title is-3">Review</h3>
+        <!-- All files button -->
+        <div style="margin-bottom: 15px;" v-if="currentlySelectedUUID !== ''">
+          <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
+        </div>
+        <!-- Filetree -->
         <node-tree
           :label="fileTree.label"
           :nodes="fileTree.nodes"
@@ -168,6 +173,9 @@ export default {
     },
     showExportFiles: function () {
       this.showExportFilesModal = !this.showExportFilesModal
+    },
+    returnToSessionFeatures: function () {
+      bus.$emit('returnToSessionFeatures')
     }
   }
 }
