@@ -14,7 +14,7 @@ Interested in getting involved? [Get in touch](mailto:timothyryanwalsh@gmail.com
 
 ## Development installation
 
-Requires [Docker CE](https://www.docker.com/community-edition) and [Docker-Compose](https://docs.docker.com/compose/).
+Requires [Docker CE](https://www.docker.com/community-edition) and [Docker-Compose](https://docs.docker.com/compose/). A powerful machine with plenty of cores and RAM to spare is recommended, as bulk_extractor, Daphne (Django ASGI server), and the Webpack dev server collectively use a lot of resources.
 
 ### Clone repository to local machine
 
@@ -61,7 +61,7 @@ npm run dev
 
 ### Open application in browser
 
-Open [127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
+Open [127.0.0.1:8080](http://127.0.0.1:8080) in your browser.
 
 ### Tox
 
