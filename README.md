@@ -32,7 +32,7 @@ The current configuration for sharing data between the host development machine 
 - /Volumes:/Volumes
 ```
 
-These two volumes are used only for giving the `worker` and `server` containers access to data to scan with bulk_extractor. For development on Linux or Windows, change these two volumes for the `worker` and `server` containers in `docker-compose.yml` to appropriate values such as `- /home:/home` (Linux) or `- C:\Users:/Users` (Windows).
+These two volumes are used only for giving the `worker` and `server` containers access to data to scan with bulk_extractor. For development on Linux or Windows, change these two volumes for the `worker` and `server` containers in `docker-compose.yml` to appropriate values such as `- /home:/home` (Linux) or `- C:\Users:/Users` (Windows) - this will determine which directories/files are accessible to Bulk Reviewer from the host machine.
 
 ### Start containers
 
