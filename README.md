@@ -1,8 +1,6 @@
 ![Bulk Reviewer logo](https://github.com/timothyryanwalsh/bulk-reviewer/blob/master/docs/assets/img/full-logo.png)
 
-## About
-
-### Identify, review, and remove sensitive files.
+## Identify, review, and remove sensitive files.
 
 Bulk Reviewer is intended to help librarians, archivists, and others to identify, review, and remove sensitive files in directories and disk images, built in [Django](https://www.djangoproject.com/), [Django Rest Framework](http://www.django-rest-framework.org/), [Django Channels](https://channels.readthedocs.io/en/latest/), and [Vue.js](https://vuejs.org/). It scans directories and disk images for personally identifying information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and presents results in a review dashboard, enabling easier detection and dismissal of false positives. Bulk Reviewer provides the ability to generate CSV reports about inputs as well as the ability to export files from directories and disk images, separating problematic files from those that are free of sensitive information.
 
