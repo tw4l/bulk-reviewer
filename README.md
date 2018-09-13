@@ -1,5 +1,3 @@
-# Bulk Reviewer
-
 ![Bulk Reviewer logo](https://github.com/timothyryanwalsh/bulk-reviewer/blob/master/docs/assets/img/full-logo.png)
 
 ## About
