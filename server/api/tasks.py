@@ -229,10 +229,9 @@ def run_bulk_extractor(be_session_uuid):
 
 @shared_task
 def update_features(features, cleared):
-    for feature in features:
-        instance = Feature.objects.get(uuid=feature)
-        instance.cleared = cleared
-        instance.save()
+    for f in Feature.objects.filter(pk__in=features):
+        f.cleared = cleared
+        f.save()  # call save to trigger post_save signal
 
 
 @shared_task
