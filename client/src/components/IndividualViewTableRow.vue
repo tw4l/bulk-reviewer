@@ -1,5 +1,5 @@
 <template>
-  <tr :class="{ cleared: featureInfo.cleared === true }">
+  <tr :class="{ dismissed: featureInfo.cleared === true }">
     <!-- Feature -->
     <td v-if="showFileBrowser">{{ featureWithLineBreaks }}
       <button
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style>
-.cleared {
-  color: #808080;
+.dismissed {
+  color: #8c8c8c;
 }
 </style>
