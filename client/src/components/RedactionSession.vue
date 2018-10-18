@@ -132,7 +132,7 @@ export default {
     // create fileTree from files JSON
     convertPathsToTree: function (files) {
       // Build the node structure
-      const rootNode = {label: 'Session', nodes: []}
+      const rootNode = { label: 'Session', nodes: [] }
 
       for (let file of files) {
         let path = file['filepath']
