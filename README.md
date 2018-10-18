@@ -10,7 +10,7 @@ Interested in getting involved? [Get in touch](mailto:tim.walsh@concordia.ca)!
 
 ## Development installation
 
-Requires [Docker CE](https://www.docker.com/community-edition) and [Docker-Compose](https://docs.docker.com/compose/). A powerful machine with plenty of cores and RAM to spare is recommended, as bulk_extractor, Daphne (Django ASGI server), and the Webpack dev server collectively use a lot of resources.
+Requires [Docker CE](https://www.docker.com/community-edition), [Docker-Compose](https://docs.docker.com/compose/), and [Vue CLI 3](https://cli.vuejs.org/). A powerful machine with plenty of cores and RAM to spare is recommended, as bulk_extractor, Daphne (Django ASGI server), and the Webpack dev server collectively use a lot of resources.
 
 ### Clone repository to local machine
 
@@ -52,7 +52,7 @@ npm install
 Start webpack dev server:
 
 ```
-npm run dev
+npm run serve
 ```
 
 ### Open application in browser
