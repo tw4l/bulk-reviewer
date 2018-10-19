@@ -64,4 +64,4 @@ Open [127.0.0.1:8080](http://127.0.0.1:8080) in your browser.
 To run Tox/flake8 locally, create a `/usr/share/bulk_extractor` (Linux) or `/usr/local/share/bulk_extractor` (macOS) directory and move the helper scripts in the `server/bulk_extractor` directory into it. This will place required Python DFXML libraries into their expected paths; otherwise you may encounter module import errors.
 
 ## Logo design
-[Bailey McGinn]
+[Bailey McGinn](https://baileymcginn.com/)
