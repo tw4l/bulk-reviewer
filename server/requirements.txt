@@ -11,3 +11,4 @@ pytz==2018.4
 python-magic==0.4.15
 flake8
 tox
+psycopg2
