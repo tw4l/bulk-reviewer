@@ -5,8 +5,10 @@
     <td v-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
     <td v-else>{{ fileInfo.count }}</td>
     <td>
-      <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
-      <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
+      <div class="buttons">
+        <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
+        <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
+      </div>
     </td>
   </tr>
 </template>

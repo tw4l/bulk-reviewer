@@ -22,9 +22,11 @@
       <p><strong>Total:</strong> {{ featureCount }}</p>
       <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed">View</button></span></p>
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
-      <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)">Reset</button>
-      <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)">Confirm all</button>
-      <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
+      <div class="buttons">
+        <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)">Reset</button>
+        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)">Confirm all</button>
+        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
+      </div>
     </div>
     <hr>
     <!-- Features grouped by type -->

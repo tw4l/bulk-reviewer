@@ -14,8 +14,10 @@
     </div>
     <div class="column padded">
       <h5 class="title is-5">Happy with current selection?</h5>
-      <button class="button is-primary is-outlined" @click="downloadReports">Download CSV reports</button>
-      <button class="button is-primary" @click="showExportFiles">Export files</button>
+      <div class="buttons">
+        <button class="button is-primary is-outlined" @click="downloadReports">Download CSV reports</button>
+        <button class="button is-primary" @click="showExportFiles">Export files</button>
+      </div>
     </div>
   </div>
   <hr>

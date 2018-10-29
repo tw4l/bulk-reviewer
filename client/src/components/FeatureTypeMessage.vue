@@ -10,7 +10,7 @@
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
-        <div style="float: right; padding-bottom: 15px;">
+        <div class="buttons" style="float: right; padding-bottom: 15px;">
           <button class="button is-info" @click="resetAllResults">Confirm all</button>
           <button class="button" @click="ignoreAllIndividualResults">Dismiss all</button>
         </div>
@@ -20,7 +20,7 @@
         </individual-view-table>
       </div>
       <div v-else>
-         <div style="float: right; padding-bottom: 15px;">
+         <div class="buttons" style="float: right; padding-bottom: 15px;">
           <button class="button is-info" @click="resetAllResults">Confirm all</button>
           <button class="button" @click="ignoreAllBulkResults">Dismiss all</button>
         </div>
