@@ -1,6 +1,10 @@
 version: '3'
 
 services:
+
+  db:
+    image: postgres
+    restart: always
   
   redis:
     image: redis:latest
@@ -36,6 +40,7 @@ services:
     depends_on:
       - rabbitmq
       - redis
+      - db
   
   worker:
     build:
@@ -51,3 +56,4 @@ services:
     depends_on:
       - rabbitmq
       - redis
+      - db
