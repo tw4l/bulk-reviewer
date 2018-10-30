@@ -174,6 +174,9 @@ def parse_feature_file(feature_file, be_session_uuid):
             # Ignore commented lines
             if line.startswith(('#')):
                 continue
+            # Ignore blank lines
+            if not line.strip():
+                continue
 
             # Parse and clean up tab-separated lines
             DELIMITER = '\U0010001c'
@@ -220,6 +223,9 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
             # Ignore commented lines
             if line.startswith(('#')):
                 continue
+            # Ignore blank lines
+            if not line.strip():
+                continue
 
             # Parse tab-separated lines
             try:
@@ -259,7 +265,7 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                 # Update db
                 Feature.objects.create(
                     feature_file=os.path.basename(feature_file).replace('annotated_', ''),
-                    offset=int(offset),
+                    offset=offset,
                     feature=feature,
                     context=context,
                     source_file=matching_file
