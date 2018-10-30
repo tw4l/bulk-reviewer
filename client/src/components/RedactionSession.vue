@@ -13,9 +13,10 @@
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
     </div>
     <div class="column padded">
-      <h5 class="title is-5">Happy with current selection?</h5>
       <div class="buttons">
         <button class="button is-primary is-outlined" @click="downloadReports">Download CSV reports</button>
+        <button class="button is-primary is-outlined" @click="downloadDFXML">Download DFXML</button>
+        <button class="button is-primary is-outlined" @click="downloadBulkExtractorReports">Download bulk_extractor reports</button>
         <button class="button is-primary" @click="showExportFiles">Export files</button>
       </div>
     </div>
@@ -172,6 +173,14 @@ export default {
     downloadReports: function () {
       let uuid = this.$route.params.uuid
       window.open(`http://127.0.0.1:8000/api/session/${uuid}/csv_reports/`)
+    },
+    downloadDFXML: function () {
+      let uuid = this.$route.params.uuid
+      window.open(`http://127.0.0.1:8000/api/session/${uuid}/dfxml/`)
+    },
+    downloadBulkExtractorReports: function () {
+      let uuid = this.$route.params.uuid
+      window.open(`http://127.0.0.1:8000/api/session/${uuid}/bulk_extractor_reports/`)
     },
     showExportFiles: function () {
       this.showExportFilesModal = !this.showExportFilesModal

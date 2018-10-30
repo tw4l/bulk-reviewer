@@ -152,7 +152,7 @@ def download_csv_reports(request, pk):
                                 redact_file)
     filenames = [dismissed_fpath, redact_fpath]
     # Zip folder and filename
-    zip_subdir = str(pk)
+    zip_subdir = "{}_csv_reports".format(str(pk))
     zip_filename = "{}.zip".format(zip_subdir)
     # Open BytesIO to grab in-memory ZIP contents
     zip_io = BytesIO()
@@ -170,3 +170,60 @@ def download_csv_reports(request, pk):
     response['Content-Length'] = zip_io.tell()
     # Return response
     return response
+
+
+def download_dfxml(request, pk):
+    # Get session
+    be_session = get_object_or_404(models.BESession, pk=pk)
+    # Generate reports and wait for result
+    file_path = os.path.join(settings.MEDIA_ROOT,
+                             'dfxml',
+                             '{}_dfxml.xml'.format(str(pk)))
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="text/xml")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+
+
+def download_be_reports(request, pk):
+    # Get session
+    be_session = get_object_or_404(models.BESession, pk=pk)
+    # Get filenames for zip file
+    filenames = list()
+    feature_files_path = os.path.join(settings.MEDIA_ROOT,
+                                      'feature_files',
+                                      str(pk)) 
+    for root, dirs, files in os.walk(feature_files_path):
+        for f in files:
+            if not f.startswith('_'):
+                filenames.append(os.path.join(root, f))
+    # Add annotated feature files for disk images
+    if be_session.disk_image is True:
+        annotated_path = os.path.join(settings.MEDIA_ROOT,
+                                      'annotated_feature_files',
+                                      str(pk))
+        for root, dirs, files in os.walk(annotated_path):
+            for f in files:
+                if not f.startswith('_'):
+                    filenames.append(os.path.join(root, f))
+    # Zip folder and filename
+    zip_subdir = "{}_be_reports".format(str(pk))
+    zip_filename = "{}.zip".format(zip_subdir)
+    # Open BytesIO to grab in-memory ZIP contents
+    zip_io = BytesIO()
+    # Write zip file contents
+    with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as zf:
+        for fpath in filenames:
+            # Calculate path for file in zip
+            fdir, fname = os.path.split(fpath)
+            zip_path = os.path.join(zip_subdir, fname)
+            # Add file, at correct path
+            zf.write(fpath, zip_path)
+    # Grab zip file from in-memory, make response with correct headers
+    response = HttpResponse(zip_io.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(zip_filename)
+    response['Content-Length'] = zip_io.tell()
+    # Return response
+    return response
+

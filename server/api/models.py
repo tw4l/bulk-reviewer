@@ -97,10 +97,7 @@ class Feature(models.Model):
     )
     feature_file = models.CharField(max_length=50)
     forensic_path = models.TextField(blank=True)
-    offset = models.IntegerField(
-        null=True,
-        blank=True
-    )
+    offset = models.TextField(blank=True)
     feature = models.TextField(blank=True)
     context = models.TextField(blank=True)
     note = models.TextField(blank=True)
