@@ -9,6 +9,7 @@
     <button
       class="button"
       @click="showDeleteSessionModal = true"
+      style="margin-left: 5px;"
       ><font-awesome-icon icon="trash-alt"></font-awesome-icon></button>
   </span>
 </template>
