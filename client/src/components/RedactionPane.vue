@@ -14,7 +14,7 @@
       <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
     </div>
     <div style="margin-bottom: 15px;">
-      <h4 class="title is-4" v-if="fileInfo.filepath">{{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
+      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
     <!-- Metadata -->
