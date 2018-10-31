@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="session in sessions" :key="session.uuid">
+            <tr v-for="session in paginatedSessions" :key="session.uuid">
               <td><strong>{{ session.name }}</strong></td>
               <td>{{ session.uuid }}</td>
               <td>
