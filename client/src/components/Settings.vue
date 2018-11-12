@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 import NewConfigForm from '@/components/NewConfigForm'
 import ExistingConfig from '@/components/ExistingConfig'
 

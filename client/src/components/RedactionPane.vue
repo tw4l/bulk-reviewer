@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 
 export default {
   name: 'dismissed-table-row',

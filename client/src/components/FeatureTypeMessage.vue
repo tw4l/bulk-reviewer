@@ -38,7 +38,7 @@
 <script>
 import IndividualViewTable from '@/components/IndividualViewTable'
 import BulkViewTable from '@/components/BulkViewTable'
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 
 export default {
   name: 'feature-type-message',

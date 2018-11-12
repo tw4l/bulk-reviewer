@@ -62,7 +62,7 @@
 import ExportFilesModal from '@/components/ExportFilesModal'
 import NodeTree from '@/components/NodeTree'
 import RedactionPane from '@/components/RedactionPane'
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import bus from '../bus'
 

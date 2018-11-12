@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 import Alert from '@/components/Alert'
 
 export default {

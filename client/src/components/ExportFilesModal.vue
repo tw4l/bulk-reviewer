@@ -32,7 +32,7 @@
 
 <script>
 import Alert from '@/components/Alert'
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 
 export default {
   name: 'export-files-modal',

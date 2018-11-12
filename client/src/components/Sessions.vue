@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import NewSessionModal from '@/components/NewSessionModal'

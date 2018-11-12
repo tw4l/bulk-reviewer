@@ -20,7 +20,7 @@
 
 <script>
 import bus from '../bus'
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 
 export default {
   name: 'delete-session-modal',

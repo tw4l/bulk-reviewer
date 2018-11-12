@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {HTTP} from '../api'
+import { HTTP } from '../api'
 
 export default {
   name: 'individual-view-table-row',
