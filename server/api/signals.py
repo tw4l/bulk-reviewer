@@ -68,7 +68,7 @@ def redacted_session_post_save(sender, instance, **kwargs):
 
         # Create file/report export
         if instance.redaction_type == 1:
-            tasks.redact_remove_files.delay(instance.pk)
+            tasks.export_files.delay(instance.pk)
 
     # Send update to client when Redacted Set is saved/updated
     else:

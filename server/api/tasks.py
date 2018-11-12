@@ -5,6 +5,7 @@ from .models import BESession, File, Feature, RedactedSet
 from . import utils
 
 import csv
+import datetime
 import magic
 import os
 import shutil
@@ -279,7 +280,7 @@ def create_csv_reports(be_session_uuid):
 
 
 @shared_task
-def redact_remove_files(redacted_set_uuid):
+def export_files(redacted_set_uuid):
 
     # Set variables
     redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
@@ -287,6 +288,7 @@ def redact_remove_files(redacted_set_uuid):
     disk_image = redacted_set.be_session.disk_image
     dfxml = redacted_set.be_session.dfxml_path
     be_session_uuid = str(redacted_set.be_session.uuid)
+    be_session = BESession.objects.get(pk=be_session_uuid)
 
     # Create temp working space
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
@@ -299,8 +301,11 @@ def redact_remove_files(redacted_set_uuid):
         if not os.path.exists(working_dir):
             os.makedirs(working_dir)
 
-    # Create output directories
-    session_output = '/data/redacted/' + redacted_set.name
+    # Create export directory and save as RedactedSet name
+    export_name = be_session.name + '-' + datetime.datetime.now().strftime('%Y-%m-%d-%H.%M.%S')
+    redacted_set.name = export_name
+    redacted_set.save()
+    session_output = '/data/exports/' + export_name
     # Overwrite path if exists
     if os.path.exists(session_output):
         shutil.rmtree(session_output)
