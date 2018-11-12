@@ -21,7 +21,7 @@
           <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
         </button>
         <button class="button is-success" :disabled="formSubmit" @click.prevent="processForm" v-else>Create</button>
-        <button class="button" @click.prevent="clearForm">Clear</button>
+        <button class="button" @click.prevent="close">Cancel</button>
       </footer>
     </div>
 </div>
