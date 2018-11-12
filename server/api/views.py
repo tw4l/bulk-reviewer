@@ -173,8 +173,6 @@ def download_csv_reports(request, pk):
 
 
 def download_dfxml(request, pk):
-    # Get session
-    be_session = get_object_or_404(models.BESession, pk=pk)
     # Generate reports and wait for result
     file_path = os.path.join(settings.MEDIA_ROOT,
                              'dfxml',
@@ -193,7 +191,7 @@ def download_be_reports(request, pk):
     filenames = list()
     feature_files_path = os.path.join(settings.MEDIA_ROOT,
                                       'feature_files',
-                                      str(pk)) 
+                                      str(pk))
     for root, dirs, files in os.walk(feature_files_path):
         for f in files:
             if not f.startswith('_'):
@@ -226,4 +224,3 @@ def download_be_reports(request, pk):
     response['Content-Length'] = zip_io.tell()
     # Return response
     return response
-
