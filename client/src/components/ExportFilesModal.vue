@@ -13,7 +13,7 @@
         <alert :message="processingMessage" @hideMessage="hideProcessingAlertMessage" v-show="showProcessing"></alert>
         <!-- Form -->
         <form id="export-files-form">
-          <p>Create an export containing: a directory of clean files; a directory of files containing confirmed sensitive information to redact, restrict, or remove; and a directory of CSV reports.</p>
+          <p>Create an export containing a directory of clean files, a directory of files containing confirmed sensitive information to redact/restrict/remove, and a directory of CSV reports.</p>
         </form>
       </section>
       <footer class="modal-card-foot">
