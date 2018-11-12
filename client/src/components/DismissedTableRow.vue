@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {HTTP} from '../api'
 
 export default {
   name: 'dismissed-table-row',
@@ -20,7 +20,7 @@ export default {
     },
     markNotCleared: function () {
       let featureUUID = this.featureInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`feature/${featureUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })

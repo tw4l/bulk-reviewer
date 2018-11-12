@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {HTTP} from '../api'
 import Alert from '@/components/Alert'
 import NewConfigForm from '@/components/NewConfigForm'
 
@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     getConfigs: function () {
-      axios.get(`http://127.0.0.1:8000/api/config/`)
+      HTTP.get(`config/`)
         .then(response => {
           this.configs = response.data
         })
@@ -143,7 +143,7 @@ export default {
       data.append('be_config', this.selectedConfig)
 
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/session/add/`, data)
+      HTTP.post(`session/add/`, data)
         .then(response => {
           console.log(response)
           this.showSuccess = true

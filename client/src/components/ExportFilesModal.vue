@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Alert from '@/components/Alert'
+import {HTTP} from '../api'
 
 export default {
   name: 'export-files-modal',
@@ -79,7 +79,7 @@ export default {
       data.append('be_session', this.sessionInfo.uuid)
 
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/redacted_set/add/`, data)
+      HTTP.post(`redacted_set/add/`, data)
         .then(response => {
           this.requestUUID = response.data.uuid
           this.showProcessing = true

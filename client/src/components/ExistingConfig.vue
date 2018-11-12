@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {HTTP} from '../api'
 
 export default {
   name: 'existing-config',
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     deleteConfig: function () {
-      axios.delete(`http://127.0.0.1:8000/api/config/${this.config.uuid}/`)
+      HTTP.delete(`config/${this.config.uuid}/`)
         .then(response => {
           console.log(response)
           this.$emit('removeSession', this.config.uuid)

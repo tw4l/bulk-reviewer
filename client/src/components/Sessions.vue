@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {HTTP} from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import NewSessionModal from '@/components/NewSessionModal'
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     getSessions: function () {
-      axios.get(`http://127.0.0.1:8000/api/session`)
+      HTTP.get(`session/`)
         .then(response => {
           this.sessions = response.data
         })
