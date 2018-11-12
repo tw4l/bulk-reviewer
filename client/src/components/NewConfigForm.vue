@@ -67,7 +67,7 @@
       <!-- Buttons -->
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-primary" @click.prevent="processForm" :disabled="formSubmit">Submit</button>
+          <button class="button is-primary" @click.prevent="processForm" :disabled="formSubmit">Save profile</button>
         </div>
         <div class="control">
           <button class="button is-text" @click.prevent="clearForm">Cancel</button>
