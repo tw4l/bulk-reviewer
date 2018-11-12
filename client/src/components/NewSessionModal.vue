@@ -42,7 +42,7 @@
           <!-- Bulk Extractor profile -->
           <div class="field">
             <label class="label">Bulk Extractor profile</label>
-            <button class="button default" @click.prevent="toggleNewConfig" v-if="newConfig == false">Create new profile</button>
+            <button class="button is-info" @click.prevent="toggleNewConfig" v-if="newConfig == false">Create new profile</button>
             <button class="button default" @click.prevent="toggleNewConfig" v-else>(Close new profile menu)</button>
             <div style="margin: 10px 20px 10px 10px; padding: 10px; border: solid 1px;" v-show="newConfig">
               <p><em>Enter and save new profile, and then select it from the list below.</em></p>
