@@ -68,7 +68,7 @@ export default {
       errors: [],
       showNewSessionModal: false,
       startIndex: 0,
-      pageCount: 5
+      pageCount: 10
     }
   },
   created () {
