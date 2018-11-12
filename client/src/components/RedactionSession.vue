@@ -62,7 +62,7 @@
 import ExportFilesModal from '@/components/ExportFilesModal'
 import NodeTree from '@/components/NodeTree'
 import RedactionPane from '@/components/RedactionPane'
-import axios from 'axios'
+import { HTTP } from '../api'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import bus from '../bus'
 
@@ -116,14 +116,14 @@ export default {
     getData () {
       // api calls to add data
       let uuid = this.$route.params.uuid
-      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/`)
+      HTTP.get(`session/${uuid}/`)
         .then(response => {
           this.sessionInfo = response.data
         })
         .catch(e => {
           this.errors.push(e)
         })
-      axios.get(`http://127.0.0.1:8000/api/session/${uuid}/files/`)
+      HTTP.get(`session/${uuid}/files/`)
         .then(response => {
           this.files = response.data
           this.fileTree = this.convertPathsToTree(this.files)

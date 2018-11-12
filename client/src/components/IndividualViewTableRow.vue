@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { HTTP } from '../api'
 
 export default {
   name: 'individual-view-table-row',
@@ -33,7 +33,7 @@ export default {
   methods: {
     markCleared: function () {
       let featureUUID = this.featureInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`feature/${featureUUID}/`, { 'cleared': true }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })
@@ -43,7 +43,7 @@ export default {
     },
     markNotCleared: function () {
       let featureUUID = this.featureInfo.uuid
-      axios.patch(`http://127.0.0.1:8000/api/feature/${featureUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`feature/${featureUUID}/`, { 'cleared': false }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })

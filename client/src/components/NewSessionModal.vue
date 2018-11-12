@@ -42,6 +42,13 @@
           <!-- Bulk Extractor profile -->
           <div class="field">
             <label class="label">Bulk Extractor profile</label>
+            <button class="button is-info" @click.prevent="toggleNewConfig" v-if="newConfig == false">Create new profile</button>
+            <button class="button default" @click.prevent="toggleNewConfig" v-else>(Close new profile menu)</button>
+            <div style="margin: 10px 20px 10px 10px; padding: 10px; border: solid 1px;" v-show="newConfig">
+              <p><em>Enter and save new profile, and then select it from the list below.</em></p>
+              <new-config-form @refreshConfigList="getConfigs"></new-config-form>
+            </div>
+            <p style="margin-top: 10px;">Select existing profile:</p>
             <div class="control">
               <div class="select">
                 <select name="selectedConfig" v-model="selectedConfig">
@@ -63,12 +70,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { HTTP } from '../api'
 import Alert from '@/components/Alert'
+import NewConfigForm from '@/components/NewConfigForm'
 
 export default {
   name: 'new-session-modal',
-  components: { Alert },
+  components: { Alert, NewConfigForm },
   data () {
     return {
       formSubmit: false,
@@ -79,7 +87,8 @@ export default {
       configs: [],
       selectedConfig: null,
       successMessage: 'Success!',
-      showSuccess: false
+      showSuccess: false,
+      newConfig: false
     }
   },
   created () {
@@ -87,7 +96,7 @@ export default {
   },
   methods: {
     getConfigs: function () {
-      axios.get(`http://127.0.0.1:8000/api/config/`)
+      HTTP.get(`config/`)
         .then(response => {
           this.configs = response.data
         })
@@ -134,7 +143,7 @@ export default {
       data.append('be_config', this.selectedConfig)
 
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/session/add/`, data)
+      HTTP.post(`session/add/`, data)
         .then(response => {
           console.log(response)
           this.showSuccess = true
@@ -161,9 +170,16 @@ export default {
     hideSuccessAlertMessage: function () {
       this.showSuccess = false
     },
+    toggleNewConfig: function () {
+      this.newConfig = !this.newConfig
+    },
     close: function () {
-      this.clearForm()
       this.$emit('newSessionClose')
+    }
+  },
+  computed: {
+    firstConfig () {
+      return this.configs[0]
     }
   }
 }

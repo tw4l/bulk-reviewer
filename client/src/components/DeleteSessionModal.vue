@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import bus from '../bus'
+import { HTTP } from '../api'
 
 export default {
   name: 'delete-session-modal',
@@ -34,7 +34,7 @@ export default {
     },
     deleteSession: function () {
       this.close()
-      axios.delete(`http://127.0.0.1:8000/api/session/${this.sessionUUID}/`)
+      HTTP.delete(`session/${this.sessionUUID}/`)
         .then(response => {
           console.log(response)
           bus.$emit('deleteSession', this.sessionUUID)

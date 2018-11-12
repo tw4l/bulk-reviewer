@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { HTTP } from '../api'
 import bus from '../bus'
 
 export default {
@@ -27,7 +27,7 @@ export default {
     markNotCleared: function () {
       // Batch update all features in this file with correct type as cleared
       let featuresToUpdate = this.featuresToUpdateUUIDArray
-      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })
@@ -38,7 +38,7 @@ export default {
     markCleared: function () {
       // Batch update all features in this file with correct type as cleared
       let featuresToUpdate = this.featuresToUpdateUUIDArray
-      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })

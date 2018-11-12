@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { HTTP } from '../api'
 import NewConfigForm from '@/components/NewConfigForm'
 import ExistingConfig from '@/components/ExistingConfig'
 
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getAllConfigs () {
-      axios.get(`http://127.0.0.1:8000/api/config`)
+      HTTP.get(`config/`)
         .then(response => {
           this.configs = response.data
         })

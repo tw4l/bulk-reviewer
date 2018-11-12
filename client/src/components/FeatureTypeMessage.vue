@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import IndividualViewTable from '@/components/IndividualViewTable'
 import BulkViewTable from '@/components/BulkViewTable'
+import { HTTP } from '../api'
 
 export default {
   name: 'feature-type-message',
@@ -56,7 +56,7 @@ export default {
     ignoreAllIndividualResults: function () {
       // Batch update all features in this file with correct type as cleared
       let featuresToUpdate = this.individualViewFilteredFeatureUUIDArray
-      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })
@@ -67,7 +67,7 @@ export default {
     ignoreAllBulkResults: function () {
       // Batch update all features in this file with correct type as cleared
       let featuresToUpdate = this.bulkViewFilteredFeatureUUIDArray
-      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`batch_feature_update/`, { 'cleared': true, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })
@@ -77,7 +77,7 @@ export default {
     },
     resetAllResults: function () {
       let featuresToUpdate = this.filterByFeatureTypeCleared
-      axios.patch(`http://127.0.0.1:8000/api/batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
+      HTTP.patch(`batch_feature_update/`, { 'cleared': false, 'feature_list': featuresToUpdate }, { headers: { 'Content-Type': 'application/json' } })
         .then(response => {
           console.log(response)
         })

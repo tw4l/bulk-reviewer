@@ -67,7 +67,7 @@
       <!-- Buttons -->
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-primary" @click.prevent="processForm" :disabled="formSubmit">Submit</button>
+          <button class="button is-primary" @click.prevent="processForm" :disabled="formSubmit">Save profile</button>
         </div>
         <div class="control">
           <button class="button is-text" @click.prevent="clearForm">Cancel</button>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { HTTP } from '../api'
 import Alert from '@/components/Alert'
 
 export default {
@@ -146,7 +146,7 @@ export default {
       }
 
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/config/add/`, data, config)
+      HTTP.post(`config/add/`, data, config)
         .then(response => {
           console.log(response)
           this.showSuccess = true

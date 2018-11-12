@@ -13,17 +13,14 @@
         <alert :message="processingMessage" @hideMessage="hideProcessingAlertMessage" v-show="showProcessing"></alert>
         <!-- Form -->
         <form id="export-files-form">
-          <!-- Name -->
-          <div class="field">
-            <label class="label">Give your export folder a name:</label>
-            <div class="control input-container">
-              <input class="input" type="text" name="name" v-model="name" placeholder="Name">
-            </div>
-          </div>
+          <p>Create an export containing a directory of clean files, a directory of files containing confirmed sensitive information to redact or restrict, and a directory of CSV reports.</p>
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" :disabled="formSubmit" @click.prevent="processForm">Create</button>
+        <button class="button is-info" disabled v-if="formSubmit == true">
+          <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
+        </button>
+        <button class="button is-success" :disabled="formSubmit" @click.prevent="processForm" v-else>Create</button>
         <button class="button" @click.prevent="clearForm">Clear</button>
       </footer>
     </div>
@@ -31,8 +28,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Alert from '@/components/Alert'
+import { HTTP } from '../api'
 
 export default {
   name: 'export-files-modal',
@@ -40,7 +37,6 @@ export default {
   components: { Alert },
   data () {
     return {
-      name: '',
       formSubmit: false,
       processingComplete: false,
       processingFailure: false,
@@ -58,28 +54,12 @@ export default {
       // disable submit button
       this.formSubmit = true
 
-      // form validation
-      let formValidation = true
-      if (!this.name) {
-        this.errorMessages.push('Name value is required.')
-        formValidation = false
-      }
-      if (this.name.length > 100) {
-        this.errorMessages.push('Name must be less than 100 characters.')
-        formValidation = false
-      }
-      if (formValidation === false) {
-        this.formSubmit = false
-        return
-      }
-
       // set data
       let data = new FormData()
-      data.append('name', this.name)
       data.append('be_session', this.sessionInfo.uuid)
 
       // POST form
-      axios.post(`http://127.0.0.1:8000/api/redacted_set/add/`, data)
+      HTTP.post(`redacted_set/add/`, data)
         .then(response => {
           this.requestUUID = response.data.uuid
           this.showProcessing = true
@@ -95,7 +75,6 @@ export default {
       this.processingComplete = false
       this.processingFailure = false
       this.errorMessages = []
-      this.name = ''
     },
     hideErrorAlertMessage: function () {
       this.errorMessages = []
