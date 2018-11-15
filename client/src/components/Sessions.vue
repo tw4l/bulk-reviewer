@@ -32,7 +32,8 @@
                 </button>
                 <delete-modal-button
                   :sessionUUID="session.uuid"
-                  :sessionName="session.name">
+                  :sessionName="session.name"
+                  v-tooltip="'Delete'">
                 </delete-modal-button>
               </td>
             </tr>
