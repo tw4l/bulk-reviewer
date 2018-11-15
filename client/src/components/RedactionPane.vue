@@ -27,10 +27,10 @@
     <!-- Metadata -->
     <div style="margin-bottom: 15px;">
       <p><strong>Total:</strong> {{ featureCount }}</p>
-      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed">View</button></span></p>
+      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed" v-tooltip="'Review results dismissed as false positives'">View</button></span></p>
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
       <div class="buttons">
-        <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)">Reset</button>
+        <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)" v-tooltip="'Reset session to original state'">Reset</button>
         <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
         <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
       </div>
