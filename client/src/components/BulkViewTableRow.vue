@@ -6,8 +6,8 @@
     <td v-else>{{ fileInfo.count }}</td>
     <td>
       <div class="buttons">
-        <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
-        <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
+        <button class="button is-info" @click="markCleared" v-tooltip="'Confirm all results in this file as sensitive'"><font-awesome-icon icon="check"></font-awesome-icon></button>
+        <button class="button" @click="markNotCleared" v-tooltip="'Dismiss all results in this file as false positives'"><font-awesome-icon icon="times"></font-awesome-icon></button>
       </div>
     </td>
   </tr>

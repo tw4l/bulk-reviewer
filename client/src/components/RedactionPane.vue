@@ -16,7 +16,7 @@
     </view-dismissed-modal>
     <!-- Context -->
     <div style="margin-bottom: 15px;" v-if="currentlySelectedUUID !== ''">
-      <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
+      <button class="button" @click="returnToSessionFeatures" v-tooltip="'Change context to view results for all files in source'"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
     </div>
     <div style="margin-bottom: 15px;">
       <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>

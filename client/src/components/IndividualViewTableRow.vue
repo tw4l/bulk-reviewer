@@ -16,10 +16,10 @@
     <td v-else>{{ unescapedContext }}</td>
     <!-- Buttons -->
     <td v-if="featureInfo.cleared === false">
-      <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
+      <button class="button is-info" @click="markCleared" v-tooltip="'Dismiss result as false positive'"><font-awesome-icon icon="check"></font-awesome-icon></button>
     </td>
     <td v-else>
-      <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
+      <button class="button" @click="markNotCleared" v-tooltip="'Confirm result as sensitive'"><font-awesome-icon icon="times"></font-awesome-icon></button>
     </td>
   </tr>
 </template>
