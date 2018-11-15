@@ -21,7 +21,7 @@
     </view-dismissed-modal>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
-      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
+      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath" v-tooltip="'Copy this file\'s full filepath to the clipboard'">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
     <!-- Metadata -->

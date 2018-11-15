@@ -1,7 +1,7 @@
 <template>
   <tr>
-    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
-    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
+    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
+    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
     <td v-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
     <td v-else>{{ fileInfo.count }}</td>
     <td>

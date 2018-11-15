@@ -4,12 +4,14 @@
     <td v-if="showFileBrowser">{{ featureWithLineBreaks }}
       <button
         class="button is-small"
-        v-clipboard:copy="featureInfo.feature">Copy</button>
+        v-clipboard:copy="featureInfo.feature"
+        v-tooltip="'Copy the matching text to the clipboard'">Copy</button>
     </td>
     <td v-else>{{ unescapedFeature }}
       <button
         class="button is-small"
-        v-clipboard:copy="featureInfo.feature">Copy</button>
+        v-clipboard:copy="featureInfo.feature"
+        v-tooltip="'Copy the matching text to the clipboard'">Copy</button>
     </td>
     <!-- Context -->
     <td v-if="showFileBrowser">{{ contextWithLineBreaks }}</td>
