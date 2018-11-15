@@ -17,6 +17,7 @@
     "npm": "^6.1.0",
     "reconnectingwebsocket": "^1.0.0",
     "uuid": "^3.3.2",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.17",
     "vue-clipboard2": "^0.2.1",
     "vue-router": "^3.0.1"

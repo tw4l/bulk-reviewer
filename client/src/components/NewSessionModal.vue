@@ -46,7 +46,7 @@
             <button class="button default" @click.prevent="toggleNewConfig" v-else>(Close new profile menu)</button>
             <div style="margin: 10px 20px 10px 10px; padding: 10px; border: solid 1px;" v-show="newConfig">
               <p><em>Enter and save new profile, and then select it from the list below.</em></p>
-              <new-config-form @refreshConfigList="getConfigs"></new-config-form>
+              <new-config-form @refreshConfigList="getConfigs" @formSaved="toggleNewConfig"></new-config-form>
             </div>
             <p style="margin-top: 10px;">Select existing profile:</p>
             <div class="control">

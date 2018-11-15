@@ -3,6 +3,16 @@
     <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
   </div>
   <div v-else>
+    <!-- Sticky context box (sticky to bottom) -->
+    <div class="box sticky">
+      <div v-if="fileInfo.filename">
+        <p><strong>Currently viewing:</strong> {{ fileInfo.filename }}</p>
+        <button class="button is-success" @click="returnToSessionFeatures" v-tooltip="'Return context to all files in Session'">Show all Session results</button>
+      </div>
+      <div v-else>
+        <p><strong>Currently viewing:</strong> All Session results</p>
+      </div>
+    </div>
     <!-- View dismissed modal -->
     <view-dismissed-modal
       v-show="viewingDismissed"
@@ -10,11 +20,8 @@
       :featuresCleared="featuresCleared">
     </view-dismissed-modal>
     <!-- Context -->
-    <div style="margin-bottom: 15px;" v-if="currentlySelectedUUID !== ''">
-      <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
-    </div>
     <div style="margin-bottom: 15px;">
-      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath">Copy path</button></h4>
+      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath" v-tooltip="'Copy this file\'s full filepath to the clipboard'">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
     <!-- Metadata -->
@@ -24,8 +31,8 @@
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
       <div class="buttons">
         <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)">Reset</button>
-        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)">Confirm all</button>
-        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
+        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
       </div>
     </div>
     <hr>
@@ -362,8 +369,13 @@ export default {
 </script>
 
 <style>
-.cleared {
-  color: green;
+.sticky{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 10px;
+  overflow: hidden;
+  z-index: 100;
 }
 .loading {
   display: flex;

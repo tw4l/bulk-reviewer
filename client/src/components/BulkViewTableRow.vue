@@ -1,13 +1,13 @@
 <template>
   <tr>
-    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile">View</button></td>
-    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile">View</button></td>
+    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
+    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
     <td v-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
     <td v-else>{{ fileInfo.count }}</td>
     <td>
       <div class="buttons">
-        <button class="button is-info" @click="markCleared"><font-awesome-icon icon="check"></font-awesome-icon></button>
-        <button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button>
+        <button class="button is-info" @click="markCleared" v-tooltip="'Confirm all results in this file as sensitive'"><font-awesome-icon icon="check"></font-awesome-icon></button>
+        <button class="button" @click="markNotCleared" v-tooltip="'Dismiss all results in this file as false positives'"><font-awesome-icon icon="times"></font-awesome-icon></button>
       </div>
     </td>
   </tr>

@@ -6,10 +6,10 @@
       <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
       <p class="subtitle is-6" style="margin-bottom: 0px;">
         {{ sessionInfo.source_path }}
-        <font-awesome-icon icon="hdd" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
-        <font-awesome-icon icon="folder" v-else></font-awesome-icon>
+        <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
+        <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'" v-else></font-awesome-icon>
       </p>
-      <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser" >Hide file browser</button>
+      <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser">Hide file browser</button>
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
     </div>
     <div class="column padded">
@@ -31,7 +31,7 @@
         <h3 class="title is-3">Review</h3>
         <!-- All files button -->
         <div style="margin-bottom: 15px;" v-if="currentlySelectedUUID !== ''">
-          <button class="button" @click="returnToSessionFeatures"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
+          <button class="button" @click="returnToSessionFeatures" v-tooltip="'Change context to view results for all files in source'"><font-awesome-icon icon="level-up-alt" class="fa-fw"></font-awesome-icon>Show all Session results</button>
         </div>
         <!-- Filetree -->
         <node-tree

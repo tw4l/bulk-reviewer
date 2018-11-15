@@ -11,8 +11,8 @@
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
       <div v-if="viewingFile === true">
         <div class="buttons" style="float: right; padding-bottom: 15px;">
-          <button class="button is-info" @click="resetAllResults">Confirm all</button>
-          <button class="button" @click="ignoreAllIndividualResults">Dismiss all</button>
+          <button class="button is-info" @click="resetAllResults" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+          <button class="button" @click="ignoreAllIndividualResults" v-tooltip="'Dismiss all results as false positives'">Dismiss all</button>
         </div>
         <individual-view-table
           :featureData="filterByFeatureType"
@@ -21,8 +21,8 @@
       </div>
       <div v-else>
          <div class="buttons" style="float: right; padding-bottom: 15px;">
-          <button class="button is-info" @click="resetAllResults">Confirm all</button>
-          <button class="button" @click="ignoreAllBulkResults">Dismiss all</button>
+          <button class="button is-info" @click="resetAllResults" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+          <button class="button" @click="ignoreAllBulkResults" v-tooltip="'Dismiss all results as false positives'">Dismiss all</button>
         </div>
         <bulk-view-table
           :fileData="bulkViewFilteredFeatureArray"
