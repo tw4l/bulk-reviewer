@@ -164,6 +164,8 @@ export default {
       sleep(1000).then(() => {
         this.$emit('formSaved')
       })
+      // clear form
+      this.clearForm()
     },
     clearForm: function () {
       this.formSubmit = false
