@@ -157,6 +157,13 @@ export default {
         })
       // re-enable submit button
       this.formSubmit = false
+      // wait 1 second and then send signal to parent component to close form
+      const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+      }
+      sleep(1000).then(() => {
+        this.$emit('formSaved')
+      })
     },
     clearForm: function () {
       this.formSubmit = false
