@@ -3,6 +3,11 @@
     <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
   </div>
   <div v-else>
+    <!-- Sticky context box (sticky to bottom) -->
+    <div class="box sticky">
+      <p v-if="fileInfo.filename"><strong>Currently viewing:</strong> {{ fileInfo.filename }}</p>
+      <p v-else><strong>Currently viewing:</strong> All Session results</p>
+    </div>
     <!-- View dismissed modal -->
     <view-dismissed-modal
       v-show="viewingDismissed"
@@ -362,8 +367,13 @@ export default {
 </script>
 
 <style>
-.cleared {
-  color: green;
+.sticky{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 10px;
+  overflow: hidden;
+  z-index: 100;
 }
 .loading {
   display: flex;
