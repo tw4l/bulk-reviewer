@@ -2,7 +2,7 @@
   <tr>
     <td>{{ config.name }}</td>
     <td>
-      <button class="button is-small" @click="deleteConfig">
+      <button class="button is-small" @click="deleteConfig" v-tooltip="'Delete profile'">
         <font-awesome-icon icon="trash-alt"></font-awesome-icon>
       </button>
     </td>
