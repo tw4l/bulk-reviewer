@@ -20,6 +20,9 @@ server/media/
 # user data
 data/
 
+# postgres data
+postgres-data/
+
 # vuejs
 client/node_modules/
 client/dist/
