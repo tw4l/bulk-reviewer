@@ -7,12 +7,14 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faTimes, faPen, faHdd, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueClipboard from 'vue-clipboard2'
+import VTooltip from 'v-tooltip'
 
 // sass/css
 require('./assets/sass/main.scss')
 
-// use VueClipboard
+// use VueClipboard and VTooltip
 Vue.use(VueClipboard)
+Vue.use(VTooltip)
 
 // register fontawesome icons
 library.add(faCaretDown, faCaretRight, faFolder, faFolderOpen, faFile, faTrashAlt, faSpinner, faLevelUpAlt, faTimes, faPen, faHdd, faCheck)
