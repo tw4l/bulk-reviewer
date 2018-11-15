@@ -29,8 +29,8 @@
       <p><strong>Remaining:</strong> {{ featuresNotClearedCount }}</p>
       <div class="buttons">
         <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)">Reset</button>
-        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)">Confirm all</button>
-        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)">Dismiss all</button>
+        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
       </div>
     </div>
     <hr>
