@@ -22,7 +22,7 @@ def run_bulk_extractor(be_session_uuid):
     stoplist_zip = '/usr/share/bulk_extractor/stoplists.zip'
     stoplist_dir = '/usr/share/bulk_extractor/stoplists'
     if not os.path.isdir(stoplist_dir):
-        with zipfile.ZipFile(stoplist_zip,"r") as zip_ref:
+        with zipfile.ZipFile(stoplist_zip, 'r') as zip_ref:
             zip_ref.extractall('/usr/share/bulk_extractor/')
 
     # Set variables
