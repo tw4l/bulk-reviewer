@@ -14,6 +14,9 @@ venv/
 server/*.sqlite3
 server/*.sqlite3-journal
 
+# extracted stoplists
+server/bulk_extractor/stoplists/
+
 # media
 server/media/
 

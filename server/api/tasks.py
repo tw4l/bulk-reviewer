@@ -10,12 +10,20 @@ import magic
 import os
 import shutil
 import subprocess
+import zipfile
 
 logger = get_task_logger(__name__)
 
 
 @shared_task
 def run_bulk_extractor(be_session_uuid):
+
+    # Make sure stoplists are extracted
+    stoplist_zip = '/usr/share/bulk_extractor/stoplists.zip'
+    stoplist_dir = '/usr/share/bulk_extractor/stoplists'
+    if not os.path.isdir(stoplist_dir):
+        with zipfile.ZipFile(stoplist_zip,"r") as zip_ref:
+            zip_ref.extractall('/usr/share/bulk_extractor/')
 
     # Set variables
     be_session = BESession.objects.get(pk=be_session_uuid)
@@ -34,6 +42,16 @@ def run_bulk_extractor(be_session_uuid):
     cmd = ['bulk_extractor',
            '-o',
            feature_files_path,
+           '-w',
+           '/usr/share/bulk_extractor/stoplists/combined-url.txt',
+           '-w',
+           '/usr/share/bulk_extractor/stoplists/combined-email.txt',
+           '-w',
+           '/usr/share/bulk_extractor/stoplists/combined-telephone.txt',
+           '-w',
+           '/usr/share/bulk_extractor/stoplists/combined-ccn.txt',
+           '-w',
+           '/usr/share/bulk_extractor/stoplists/domain.txt',
            '-x',
            'accts_lg',
            '-x',
@@ -58,23 +76,23 @@ def run_bulk_extractor(be_session_uuid):
            'jpeg_carve_mode=0',
            transfer_source]
     if not disk_image:
-        cmd.insert(25, '-R')
+        cmd.insert(35, '-R')
     if be_config.regex_file:
         cmd.insert(1, '-F')
         cmd.insert(2, be_config.regex_file.path)
     if be_config.pii_scanners is False:
-        cmd.insert(7, '-x')
-        cmd.insert(8, 'accts')
+        cmd.insert(17, '-x')
+        cmd.insert(18, 'accts')
     if be_config.web_scanners is False:
-        cmd.insert(7, '-x')
-        cmd.insert(8, 'net')
-        cmd.insert(7, '-x')
-        cmd.insert(8, 'httplogs')
+        cmd.insert(17, '-x')
+        cmd.insert(18, 'net')
+        cmd.insert(17, '-x')
+        cmd.insert(18, 'httplogs')
     if be_config.exif_gps_scanners is False:
-        cmd.insert(7, '-x')
-        cmd.insert(8, 'exif')
-        cmd.insert(7, '-x')
-        cmd.insert(8, 'gps')
+        cmd.insert(17, '-x')
+        cmd.insert(18, 'exif')
+        cmd.insert(17, '-x')
+        cmd.insert(18, 'gps')
 
     # Run bulk_extractor via subprocess and update model if successful
     try:
@@ -180,6 +198,9 @@ def run_bulk_extractor(be_session_uuid):
                 continue
             # Skip json
             if "json" in feature_file:
+                continue
+            # Skip stoplist results
+            if "_stopped" in feature_file:
                 continue
             # Skip web-related feature files if web scanners disabled
             if be_config.web_scanners is False:
