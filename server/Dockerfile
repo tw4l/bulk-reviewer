@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y python3 python3-pip
 
-# Install lightgrep and bulk_extractor
+# Install lightgrep, bulk_extractor, and textract dependencies
 RUN apt-get update && apt-get install -y \
   git \
   gcc \
@@ -23,7 +23,26 @@ RUN apt-get update && apt-get install -y \
   libicu-dev \
   libtool \
   sleuthkit \
-&& rm -rf /var/lib/apt/lists/*
+  libxml2-dev \
+  libxslt1-dev \
+  python-dev \
+  antiword \
+  unrtf \
+  poppler-utils \
+  pstotext \
+  tesseract-ocr \
+  flac \
+  ffmpeg \
+  lame \
+  libmad0 \
+  libsox-fmt-mp3 \
+  sox \
+  libjpeg-dev \
+  swig \
+  zlib1g-dev \
+  default-jdk \
+  wget \
+  && rm -rf /var/lib/apt/lists/*
 
 # Get bulk_extractor and non-packaged dependencies
 RUN git clone --recursive https://www.github.com/simsong/bulk_extractor.git
@@ -49,6 +68,15 @@ WORKDIR /src
 
 COPY . /src
 
+# Install python dependencies
 RUN pip3 install -r requirements.txt
+
+# Install English-language spaCy models
+RUN python3 -m spacy download en
+
+# Install Apache Tika
+RUN mkdir /usr/share/tika && \
+    cd /usr/share/tika && \
+    wget http://apache.mirror.iweb.ca/tika/tika-app-1.19.1.jar
 
 EXPOSE 8000

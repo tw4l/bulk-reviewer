@@ -35,6 +35,7 @@ def be_session_post_save(sender, instance, **kwargs):
     # Run bulk_extractor after creation only, not after updates
     if kwargs['created']:
         tasks.run_bulk_extractor.delay(instance.pk)
+        # tasks.lexicons_nlp.delay(instance.pk)
 
     # Send message to sessions group after every save
     group_name = 'sessions'

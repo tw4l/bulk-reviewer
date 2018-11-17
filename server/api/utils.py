@@ -1,6 +1,7 @@
-from .models import BESession, File, Feature, RedactedSet
+from .models import BESession, File, Feature, NamedEntity, RedactedSet
 import datetime
 import os
+import spacy
 import subprocess
 import sys
 import time
@@ -166,6 +167,46 @@ def parse_dfxml_to_db(be_session_uuid):
         # Save file metadata to model
         new_file.__dict__.update(file_info)
         new_file.save()
+
+
+def get_named_entities(be_session_uuid):
+    files = File.objects.filter(be_session=be_session_uuid)
+    be_session = BESession.objects.get(pk=be_session_uuid)
+    source_path = be_session.source_path
+    # Load NLP model
+    nlp = spacy.load('en')
+    # Loop through files
+    for f in files:
+        fpath = os.path.join(source_path, f.filepath)
+        print('Filepath: {}'.format(fpath))
+        try:
+            # Extract text with Tika
+            tmp_file = "/usr/share/tika/extracted.txt"
+            tika_cmd = 'cd /usr/share/tika && java -jar tika-app-1.19.1.jar -t "{0}" > extracted.txt'.format(fpath)
+            subprocess.call(tika_cmd, shell=True)
+            # Extract text from output file
+            file = open(tmp_file, 'r')
+            extracted_text = file.read().strip()
+            file.close()
+            os.remove(tmp_file)
+            # Parse text for named entities
+            doc = nlp(extracted_text)
+            # Loop through entities and write to db
+            for ent in doc.ents:
+                print("Entity: {} - {}".format(ent.text, ent.label_))
+                # Find matching file
+                matching_file = File.objects.get(uuid=f.uuid)
+                # Filter named entities by type
+                types_to_save = ('PERSON', 'NORP')
+                # Update db
+                if ent.label_ in types_to_save:
+                    NamedEntity.objects.create(
+                        text=str(ent.text),
+                        label=str(ent.label_),
+                        source_file=matching_file
+                    )
+        except Exception:
+            print("No entities found for {}.".format(fpath))
 
 
 def parse_feature_file(feature_file, be_session_uuid):

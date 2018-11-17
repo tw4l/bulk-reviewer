@@ -12,3 +12,4 @@ python-magic==0.4.15
 flake8
 tox
 psycopg2
+spacy

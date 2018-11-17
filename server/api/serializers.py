@@ -18,6 +18,15 @@ class FeatureSerializer(serializers.ModelSerializer):
                   'source_filepath')
 
 
+class NamedEntitySerializer(serializers.ModelSerializer):
+    source_filepath = serializers.CharField(source='source_file.filepath')
+
+    class Meta:
+        model = models.NamedEntity
+        fields = ('uuid', 'text', 'label', 'source_file',
+                  'source_filepath')
+
+
 class BEConfigSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BEConfig

@@ -1,7 +1,7 @@
 from django.conf import settings
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from .models import BESession, File, Feature, RedactedSet
+from .models import BESession, File, Feature, NamedEntity, RedactedSet
 from . import utils
 
 import csv
@@ -247,6 +247,10 @@ def run_bulk_extractor(be_session_uuid):
             # Parse file and write features into db
             utils.parse_feature_file(ff_abspath, be_session_uuid)
 
+    # Get named entities
+    if be_session.named_entity_extraction is True:
+        utils.get_named_entities(be_session_uuid)
+
     # Mark processing as complete in db
     be_session.processing_complete = True
     be_session.save()
@@ -301,6 +305,20 @@ def create_csv_reports(be_session_uuid):
             feature_type = utils.user_friendly_feature_type(f.feature_file)
             # Write row
             writer.writerow([f.source_file.filepath, feature_type, f.feature, f.context, f.note])
+
+    # Write log of named entities
+    if be_session.named_entity_extraction is True:
+        log_name = be_session.name + '_namedentities.csv'
+        log_file = os.path.join(log_dir, log_name)
+        with open(log_file, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
+            # Write header
+            writer.writerow(['Source file', 'Named entity', 'Label'])
+            # Write lines for Features marked as cleared
+            named_entities = NamedEntity.objects.filter(source_file__be_session=be_session_uuid)
+            for n in named_entities:
+                # Write row
+                writer.writerow([n.source_file.filepath, n.text, n.label])
 
 
 @shared_task

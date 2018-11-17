@@ -39,6 +39,13 @@
               </div>
             </div>
           </div>
+          <!-- Named Entity extraction -->
+          <div class="field">
+            <label class="checkbox">
+              <input type="checkbox" v-model="namedEntities">
+              Extract Named Entities (directories only)
+            </label>
+          </div>
           <!-- Bulk Extractor profile -->
           <div class="field">
             <label class="label">Bulk Extractor profile</label>
@@ -86,6 +93,7 @@ export default {
       diskImage: false,
       configs: [],
       selectedConfig: null,
+      namedEntities: false,
       successMessage: 'Success!',
       showSuccess: false,
       newConfig: false
@@ -140,6 +148,7 @@ export default {
       } else {
         data.append('disk_image', false)
       }
+      data.append('named_entity_extraction', this.namedEntities)
       data.append('be_config', this.selectedConfig)
 
       // POST form
@@ -160,6 +169,7 @@ export default {
       this.name = ''
       this.source = ''
       this.diskImage = false
+      this.namedEntities = false
       this.selectedConfig = null
       this.errorMessages = []
       this.showSuccess = false
