@@ -233,6 +233,9 @@ def run_bulk_extractor(be_session_uuid):
             # Skip json
             if "json" in feature_file:
                 continue
+            # Skip stoplist results
+            if "_stopped" in feature_file:
+                continue
             # Skip web-related feature files if web scanners disabled
             if be_config.web_scanners is False:
                 if "url" in feature_file:
