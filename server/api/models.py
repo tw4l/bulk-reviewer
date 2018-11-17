@@ -113,24 +113,6 @@ class Feature(models.Model):
         return('{0}: {1}'.format(str(self.uuid), self.feature))
 
 
-class NamedEntity(models.Model):
-    uuid = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-    text = models.TextField(blank=True)
-    label = models.CharField(max_length=50, blank=True)
-    source_file = models.ForeignKey(
-        File,
-        related_name="entities",
-        on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        return('{0}: {1}'.format(str(self.uuid), self.name))
-
-
 class RedactedSet(models.Model):
     REDACTION_CHOICES = (
         (0, 'Log only'),

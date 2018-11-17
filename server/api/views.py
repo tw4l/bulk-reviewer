@@ -76,30 +76,6 @@ class DetailFeature(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.FeatureSerializer
 
 
-class ListNamedEntities(generics.ListAPIView):
-    serializer_class = serializers.NamedEntitySerializer
-
-    def get_queryset(self):
-        """
-        This view should return a list of all the features for
-        the file as determined by the UUID portion of the URL.
-        """
-        source_file = self.kwargs['pk']
-        return models.NamedEntity.objects.filter(source_file=source_file)
-
-
-class ListNamedEntitiesBySession(generics.ListAPIView):
-    serializer_class = serializers.NamedEntitySerializer
-
-    def get_queryset(self):
-        """
-        This view should return a list of all the features for
-        the session as determined by the UUID portion of the URL.
-        """
-        session = self.kwargs['pk']
-        return models.NamedEntity.objects.filter(source_file__be_session=session)
-
-
 class CreateBEConfig(generics.CreateAPIView):
     queryset = models.BEConfig.objects.all()
     serializer_class = serializers.BEConfigSerializer
@@ -175,14 +151,6 @@ def download_csv_reports(request, pk):
                                 str(pk),
                                 redact_file)
     filenames = [dismissed_fpath, redact_fpath]
-    # Add named entity file to filenames if NLP was run
-    if be_session.named_entity_extraction is True:
-        named_entity_file = be_session.name + '_namedentities.csv'
-        named_entity_fpath = os.path.join(settings.MEDIA_ROOT,
-                                        'csv_reports',
-                                        str(pk),
-                                        named_entity_file)
-        filenames.append(named_entity_fpath)
     # Zip folder and filename
     zip_subdir = "{}_csv_reports".format(str(pk))
     zip_filename = "{}.zip".format(zip_subdir)

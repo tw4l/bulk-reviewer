@@ -6,7 +6,6 @@ from . import views
 urlpatterns = [
     path('file/<uuid:pk>/', views.DetailFile.as_view()),
     path('file/<uuid:pk>/features/', views.ListFeature.as_view()),
-    path('file/<uuid:pk>/entities/', views.ListNamedEntities.as_view()),
     path('feature/<uuid:pk>/', views.DetailFeature.as_view()),
     path('config/add/', views.CreateBEConfig.as_view()),
     path('config/<uuid:pk>/', views.DetailBEConfig.as_view()),
@@ -15,7 +14,6 @@ urlpatterns = [
     path('session/<uuid:pk>/', views.DetailBESession.as_view()),
     path('session/<uuid:pk>/files/', views.ListFile.as_view()),
     path('session/<uuid:pk>/features/', views.ListFeatureBySession.as_view()),
-    path('session/<uuid:pk>/entities/', views.ListNamedEntitiesBySession.as_view()),
     path('session/<uuid:pk>/redacted_sets/', views.ListRedactedSetBySession.as_view()),
     path('session/<uuid:pk>/csv_reports/', views.download_csv_reports),
     path('session/<uuid:pk>/dfxml/', views.download_dfxml),

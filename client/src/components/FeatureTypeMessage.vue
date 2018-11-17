@@ -148,6 +148,10 @@ export default {
           return 'GPS data'
         case 'exif.txt':
           return 'EXIF metadata'
+        case 'PERSON':
+          return 'Person'
+        case 'NORP':
+          return 'Nationalities or religious or political groups'
         default:
           return this.featureType
       }

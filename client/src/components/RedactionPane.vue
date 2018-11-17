@@ -144,6 +144,25 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
+    <h5 class="title is-5" v-if="featureFileInArray(['PERSON', 'NORP'])">Named entities</h5>
+      <feature-type-message
+        v-if="featureFileInArray(['PERSON'])"
+        :key="'PERSON'"
+        :featureType="'PERSON'"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
+        :viewingFile="viewingFile"
+        :showFileBrowser="showFileBrowser">
+      </feature-type-message>
+      <feature-type-message
+        v-if="featureFileInArray(['NORP'])"
+        :key="'NORP'"
+        :featureType="'NORP'"
+        :features="features"
+        :featuresNotCleared="featuresNotCleared"
+        :viewingFile="viewingFile"
+        :showFileBrowser="showFileBrowser">
+      </feature-type-message>
   </div>
 </template>
 
@@ -163,6 +182,7 @@ export default {
       fileInfo: {},
       sessionFeatures: [],
       features: [],
+      entities: [],
       errors: [],
       messagesOpen: false,
       loading: true,
@@ -172,6 +192,7 @@ export default {
   },
   created () {
     this.getAllSessionFeatures()
+    this.getAllNamedEntities()
   },
   mounted () {
     // Update features using websocket messages
@@ -273,6 +294,17 @@ export default {
       })
       return returnValue
     },
+    // return true if any feature files in input array are in this.entityTypeArray
+    namedEntityInArray (arrayOfEntities) {
+      let returnValue = false
+      let self = this
+      arrayOfEntities.forEach(function (entity) {
+        if (self.entityTypeArray.includes(entity)) {
+          returnValue = true
+        }
+      })
+      return returnValue
+    },
     getAllSessionFeatures () {
       // retrieve data
       this.loading = true
@@ -292,6 +324,16 @@ export default {
       this.viewingFile = false
       // clear currentlySelectedUUID
       this.$emit('clearSelected')
+    },
+    getAllNamedEntities () {
+      let apiCall = this.$route.path + '/entities/'
+      HTTP.get(`${apiCall}`)
+        .then(response => {
+          this.entities = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     },
     returnToSessionFeatures () {
       // mark redaction pane as viewing session

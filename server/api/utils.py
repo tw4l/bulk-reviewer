@@ -1,4 +1,4 @@
-from .models import BESession, File, Feature, NamedEntity, RedactedSet
+from .models import BESession, File, Feature, RedactedSet
 import datetime
 import os
 import spacy
@@ -200,9 +200,9 @@ def get_named_entities(be_session_uuid):
                 types_to_save = ('PERSON', 'NORP')
                 # Update db
                 if ent.label_ in types_to_save:
-                    NamedEntity.objects.create(
-                        text=str(ent.text),
-                        label=str(ent.label_),
+                    Feature.objects.create(
+                        feature=str(ent.text),
+                        feature_file=str(ent.label_),
                         source_file=matching_file
                     )
         except Exception:
