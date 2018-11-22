@@ -193,7 +193,11 @@ def get_named_entities(be_session_uuid):
             doc = nlp(extracted_text)
             # Loop through entities and write to db
             for ent in doc.ents:
+                # Print to terminal for debugging
                 print("Entity: {} - {}".format(ent.text, ent.label_))
+                # Skip if blank
+                if ent.text.strip() == '':
+                    continue
                 # Find matching file
                 matching_file = File.objects.get(uuid=f.uuid)
                 # Filter named entities by type
