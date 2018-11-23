@@ -3,7 +3,7 @@
     <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
         <tr>
-          <th>Matching text</th>
+          <th>Text</th>
           <th>Context</th>
           <th>Status</th>
         </tr>
