@@ -250,12 +250,18 @@ def parse_feature_file(feature_file, be_session_uuid):
                     print("Matching file not found for", filepath)
                     continue
 
-                # Update db
+                # Update db, marking feature as cleared if non-critical
+                ff_basename = os.path.basename(feature_file)
+                non_critical = True
+                if ff_basename in ('pii.txt', 'ccn.txt'):
+                    non_critical = False
+
                 Feature.objects.create(
-                    feature_file=os.path.basename(feature_file),
+                    feature_file=ff_basename,
                     forensic_path=forensic_path,
                     feature=feature,
                     context=context,
+                    cleared=non_critical,
                     source_file=matching_file
                 )
             except Exception:
@@ -307,13 +313,20 @@ def parse_annotated_feature_file(feature_file, be_session_uuid):
                         matching_file = unallocated_placeholder
                         print("Creating <unallocated space> placeholder for unmatched feature")
 
-                # Update db
+                # Update db, marking feature as cleared if non-critical
+                ff_basename = os.path.basename(feature_file).replace('annotated_', '')
+                non_critical = True
+                if ff_basename in ('pii.txt', 'ccn.txt'):
+                    non_critical = False
+
                 Feature.objects.create(
-                    feature_file=os.path.basename(feature_file).replace('annotated_', ''),
+                    feature_file=ff_basename,
                     offset=offset,
                     feature=feature,
                     context=context,
+                    cleared=non_critical,
                     source_file=matching_file
                 )
+
             except Exception:
                 print("Error reading line in feature file", feature_file)
