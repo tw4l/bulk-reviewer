@@ -207,6 +207,7 @@ def get_named_entities(be_session_uuid):
                     Feature.objects.create(
                         feature=str(ent.text),
                         feature_file=str(ent.label_),
+                        cleared=True,
                         source_file=matching_file
                     )
         except Exception:
