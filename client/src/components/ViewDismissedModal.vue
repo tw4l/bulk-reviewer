@@ -1,7 +1,7 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background" @click="close"></div>
-    <div class="modal-card largeModal">
+    <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Dismissed results</p>
         <button class="delete" aria-label="close" @click="close">X</button>
@@ -40,9 +40,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.largeModal {
-  width: 90%;
-}
-</style>
