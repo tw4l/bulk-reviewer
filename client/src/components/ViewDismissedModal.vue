@@ -18,9 +18,15 @@
             </tr>
           </thead>
           <tbody>
-            <dismissed-table-row v-for="f in featuresCleared" :featureInfo="f" :key="f.uuid"></dismissed-table-row>
+            <dismissed-table-row v-for="f in paginatedFeaturesCleared" :featureInfo="f" :key="f.uuid"></dismissed-table-row>
           </tbody>
         </table>
+        <!-- Pagination -->
+        <div class="buttons has-addons">
+          <button class="button" @click="decrementStartIndex" :disabled="firstPage">Previous</button>
+          <button class="button" disabled>{{ currentPage }} of {{ numberOfPages }}</button>
+          <button class="button" @click="incrementStartIndex" :disabled="lastPage">Next</button>
+        </div>
       </section>
     </div>
 </div>
@@ -33,9 +39,44 @@ export default {
   name: 'view-dismissed-modal',
   components: { DismissedTableRow },
   props: [ 'featuresCleared' ],
+  data () {
+    return {
+      startIndex: 0,
+      pageCount: 25
+    }
+  },
   methods: {
     close: function () {
       this.$emit('viewDismissedClose')
+    },
+    resetStartIndex () {
+      this.startIndex = 0
+    },
+    incrementStartIndex () {
+      this.startIndex += this.pageCount
+    },
+    decrementStartIndex () {
+      this.startIndex -= this.pageCount
+    }
+  },
+  computed: {
+    paginatedFeaturesCleared () {
+      return this.featuresCleared.slice(this.startIndex, this.startIndex + this.pageCount)
+    },
+    numberOfPages () {
+      return Math.ceil(this.featuresCleared.length / this.pageCount)
+    },
+    currentPage () {
+      return this.startIndex === 0 ? 1 : Math.ceil(this.startIndex / this.pageCount) + 1
+    },
+    moreThanOnePage () {
+      return this.numberOfPages > 1
+    },
+    firstPage () {
+      return this.currentPage === 1
+    },
+    lastPage () {
+      return this.currentPage >= this.numberOfPages
     }
   }
 }
