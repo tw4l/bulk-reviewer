@@ -8,7 +8,7 @@
       <div v-if="fileInfo.filename">
         <p><strong>Currently viewing:</strong> {{ fileInfo.filename }}</p>
         <button class="button is-success" @click="returnToSessionFeatures" v-tooltip="'Return context to all files in Session'">Show all Session results</button>
-        <button class="button is-small"
+        <button class="is-small"
           @click="toggleContextMenu"
           v-tooltip="'Hide context menu'"
           style="float: right;">
@@ -17,7 +17,7 @@
       </div>
       <div v-else>
         <p><strong>Currently viewing:</strong> All Session results</p>
-       <button class="button is-small"
+       <button class="is-small"
           @click="toggleContextMenu"
           v-tooltip="'Hide context menu'"
           style="float: right;">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="box sticky" v-else>
-      <button class="button is-small"
+      <button class="is-small"
         @click="toggleContextMenu"
         v-tooltip="'Expand context menu'">
         +
