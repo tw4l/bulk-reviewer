@@ -61,7 +61,7 @@
       v-if="featureFileInArray(['pii.txt', 'ccn.txt'])"
       style="margin-bottom: 15px;">
       Critical
-      <font-awesome-icon icon="question-circle" v-tooltip="'These results are considered critical and are set to be removed by default. Please review the results and dismiss any false positives you find.'"></font-awesome-icon>
+      <font-awesome-icon icon="question-circle" v-tooltip="'Critical results are considered high risk and are set to be removed by default. Please review the results and dismiss any false positives you find.'"></font-awesome-icon>
     </h4>
       <feature-type-message-critical
         v-if="featureFileInArray(['pii.txt'])"
@@ -86,7 +86,7 @@
       v-if="featureFileInArray(['telephone.txt', 'email.txt', 'find.txt', 'url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt', 'gps.txt', 'exif.txt', 'PERSON', 'NORP'])"
       style="margin-bottom: 15px;">
     To review
-    <font-awesome-icon icon="question-circle" v-tooltip="'These results are considered non-critical and are not set to be removed by default. Please review the results and mark any problematic results for removal with the Confirm button.'"></font-awesome-icon>
+    <font-awesome-icon icon="question-circle" v-tooltip="'Non-critical results are not set to be removed by default. Please review the results and mark any sensitive results you find for removal with the Confirm button.'"></font-awesome-icon>
     </h4>
       <feature-type-message
         v-if="featureFileInArray(['telephone.txt'])"
