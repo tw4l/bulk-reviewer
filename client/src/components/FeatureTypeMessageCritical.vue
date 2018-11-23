@@ -1,12 +1,11 @@
 <template>
   <div class="message">
     <div class="message-header" @click="toggleMessageBody" style="align: left;" v-if="showMessageBody">
-        (-) {{ featureTypeLabel }} (total: {{ featureTypeCount }}, confirmed sensitive: {{ featureTypeCountNotCleared }})
-        <span></span>
+        (-) {{ featureTypeLabel }} ({{ featureTypeCountNotCleared }})
       <font-awesome-icon icon="caret-down"></font-awesome-icon>
     </div>
     <div class="message-header" @click="toggleMessageBody" style="align: left;" v-else>
-        (+) {{ featureTypeLabel }} (total: {{ featureTypeCount }}, confirmed sensitive: {{ featureTypeCountNotCleared }})
+        (+) {{ featureTypeLabel }} ({{ featureTypeCountNotCleared }})
       <font-awesome-icon icon="caret-right"></font-awesome-icon>
     </div>
     <div class="message-body" v-show="showMessageBody" style="word-wrap: break-word; padding-bottom: 50px;">
@@ -30,7 +29,7 @@
           :features="features"
           :featureType="featureType"
           :showFileBrowser="showFileBrowser"
-          :critical="false">
+          :critical="true">
         </bulk-view-table>
       </div>
     </div>
@@ -43,7 +42,7 @@ import BulkViewTable from '@/components/BulkViewTable'
 import { HTTP } from '../api'
 
 export default {
-  name: 'feature-type-message',
+  name: 'feature-type-message-critical',
   props: ['featureType', 'features', 'featuresNotCleared', 'viewingFile', 'showFileBrowser'],
   components: { IndividualViewTable, BulkViewTable },
   data () {
@@ -132,28 +131,6 @@ export default {
           return 'Social Security Numbers'
         case 'ccn.txt':
           return 'Credit card numbers'
-        case 'telephone.txt':
-          return 'Phone numbers'
-        case 'email.txt':
-          return 'Email addresses'
-        case 'find.txt':
-          return 'Regular expressions'
-        case 'url.txt':
-          return 'URLs'
-        case 'domain.txt':
-          return 'Domains'
-        case 'rfc822.txt':
-          return 'Email/HTTP headers (RFC822)'
-        case 'httplogs.txt':
-          return 'HTTP logs'
-        case 'gps.txt':
-          return 'GPS data'
-        case 'exif.txt':
-          return 'EXIF metadata'
-        case 'PERSON':
-          return 'Person'
-        case 'NORP':
-          return 'Nationalities or religious or political groups'
         default:
           return this.featureType
       }

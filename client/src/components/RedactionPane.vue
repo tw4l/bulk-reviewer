@@ -56,10 +56,14 @@
     </div>
     <hr>
     <!-- Features grouped by type -->
-    <h5
-    class="title is-5"
-    v-if="featureFileInArray(['pii.txt', 'ccn.txt', 'telephone.txt', 'email.txt'])">Personally Identifiable Information</h5>
-      <feature-type-message
+    <h4
+      class="title is-4"
+      v-if="featureFileInArray(['pii.txt', 'ccn.txt'])"
+      style="margin-bottom: 15px;">
+      Critical
+      <font-awesome-icon icon="question-circle" v-tooltip="'These results are considered critical and are set to be removed by default. Please review the results and dismiss any false positives you find.'"></font-awesome-icon>
+    </h4>
+      <feature-type-message-critical
         v-if="featureFileInArray(['pii.txt'])"
         :key="'pii.txt'"
         :featureType="'pii.txt'"
@@ -67,8 +71,8 @@
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
-      </feature-type-message>
-      <feature-type-message
+      </feature-type-message-critical>
+      <feature-type-message-critical
         v-if="featureFileInArray(['ccn.txt'])"
         :key="'ccn.txt'"
         :featureType="'ccn.txt'"
@@ -76,7 +80,14 @@
         :featuresNotCleared="featuresNotCleared"
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
-      </feature-type-message>
+      </feature-type-message-critical>
+    <h4
+      class="title is-4"
+      v-if="featureFileInArray(['telephone.txt', 'email.txt', 'find.txt', 'url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt', 'gps.txt', 'exif.txt', 'PERSON', 'NORP'])"
+      style="margin-bottom: 15px;">
+    To review
+    <font-awesome-icon icon="question-circle" v-tooltip="'These results are considered non-critical and are not set to be removed by default. Please review the results and mark any problematic results for removal with the Confirm button.'"></font-awesome-icon>
+    </h4>
       <feature-type-message
         v-if="featureFileInArray(['telephone.txt'])"
         :key="'telephone.txt'"
@@ -95,7 +106,6 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['find.txt'])">User-supplied regular expressions</h5>
       <feature-type-message
         v-if="featureFileInArray(['find.txt'])"
         :key="'find.txt'"
@@ -105,9 +115,6 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
-    <h5
-      class="title is-5"
-      v-if="featureFileInArray(['url.txt', 'domain.txt', 'rfc822.txt', 'httplogs.txt'])">Web resources</h5>
       <feature-type-message
         v-if="featureFileInArray(['url.txt'])"
         :key="'url.txt'"
@@ -144,7 +151,6 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['gps.txt', 'exif.txt'])">Geolocation and EXIF metadata</h5>
       <feature-type-message
         v-if="featureFileInArray(['gps.txt'])"
         :key="'gps.txt'"
@@ -163,7 +169,6 @@
         :viewingFile="viewingFile"
         :showFileBrowser="showFileBrowser">
       </feature-type-message>
-    <h5 class="title is-5" v-if="featureFileInArray(['PERSON', 'NORP'])">Named entities</h5>
       <feature-type-message
         v-if="featureFileInArray(['PERSON'])"
         :key="'PERSON'"
@@ -190,12 +195,13 @@ import { HTTP } from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
+import FeatureTypeMessageCritical from '@/components/FeatureTypeMessageCritical'
 import ViewDismissedModal from '@/components/ViewDismissedModal'
 
 export default {
   name: 'redaction-pane',
   props: [ 'sessionInfo', 'currentlySelectedUUID', 'showFileBrowser' ],
-  components: { FeatureTypeMessage, ViewDismissedModal },
+  components: { FeatureTypeMessage, FeatureTypeMessageCritical, ViewDismissedModal },
   data () {
     return {
       fileInfo: {},

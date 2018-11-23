@@ -2,7 +2,11 @@
   <tr>
     <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
     <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
-    <td v-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
+    <!-- Non-critical -->
+    <td v-if="critical == false">{{ fileInfo.count }} (to remove: {{ featuresNotClearedCount }})</td>
+    <!-- Contains dismissed features -->
+    <td v-else-if="containsClearedFeatures">{{ featuresNotClearedCount }} <span style="color: #808080;">(of {{ fileInfo.count }})</span></td>
+    <!-- Critical and no features dismissed -->
     <td v-else>{{ fileInfo.count }}</td>
     <td>
       <div class="buttons">
@@ -19,7 +23,7 @@ import bus from '../bus'
 
 export default {
   name: 'bulk-view-table-row',
-  props: [ 'fileInfo', 'features', 'featureType', 'showFileBrowser' ],
+  props: [ 'fileInfo', 'features', 'featureType', 'showFileBrowser', 'critical' ],
   methods: {
     viewFile: function () {
       bus.$emit('viewFileFromBulkTable', this.fileInfo.file_uuid)

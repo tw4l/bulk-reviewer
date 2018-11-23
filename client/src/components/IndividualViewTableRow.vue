@@ -31,7 +31,7 @@ import { HTTP } from '../api'
 
 export default {
   name: 'individual-view-table-row',
-  props: [ 'featureInfo', 'showFileBrowser' ],
+  props: [ 'featureInfo', 'showFileBrowser', 'critical' ],
   methods: {
     markCleared: function () {
       let featureUUID = this.featureInfo.uuid

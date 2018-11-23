@@ -15,7 +15,8 @@
           :fileInfo="f"
           :features="features"
           :featureType="featureType"
-          :showFileBrowser="showFileBrowser">
+          :showFileBrowser="showFileBrowser"
+          :critical="critical">
         </bulk-view-table-row>
       </tbody>
     </table>
@@ -34,7 +35,7 @@ import BulkViewTableRow from '@/components/BulkViewTableRow'
 export default {
   name: 'bulk-view-table',
   components: { BulkViewTableRow },
-  props: [ 'fileData', 'features', 'featureType', 'showFileBrowser' ],
+  props: [ 'fileData', 'features', 'featureType', 'showFileBrowser', 'critical' ],
   data () {
     return {
       startIndex: 0,
