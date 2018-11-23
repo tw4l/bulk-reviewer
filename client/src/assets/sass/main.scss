@@ -8,13 +8,9 @@ $green: #49AE8B;
 $dark-green: #178B63;
 $gray: #696969;
 
-
 // Override defaults
 $primary: $dark-blue;
 $info: $green;
 $danger: $gray;
-
-// Modal width
-$modal-content-width: 800px;
 
 @import '~bulma/bulma'
