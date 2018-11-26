@@ -180,7 +180,7 @@ def download_dfxml(request, pk):
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="text/xml")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            response['Content-Disposition'] = 'inline; filename={}'.format(os.path.basename(file_path))
             return response
 
 
