@@ -207,7 +207,6 @@ export default {
       fileInfo: {},
       sessionFeatures: [],
       features: [],
-      entities: [],
       errors: [],
       messagesOpen: false,
       loading: true,
@@ -218,7 +217,6 @@ export default {
   },
   created () {
     this.getAllSessionFeatures()
-    this.getAllNamedEntities()
   },
   mounted () {
     // Update features using websocket messages
@@ -233,19 +231,23 @@ export default {
       let featureToUpdateCleared = data.message.cleared
       let featureToUpdateNote = data.message.note
       // update features
-      for (let i = 0, numFeatures = self.features.length; i < numFeatures; i++) {
-        if (self.features[i].uuid === featureToUpdateUUID) {
-          self.features[i].cleared = featureToUpdateCleared
-          self.features[i].note = featureToUpdateNote
-          break
+      let featuresIndex = self.features.findIndex(x => x.uuid === featureToUpdateUUID)
+      if (featuresIndex !== -1) {
+        try {
+          self.features[featuresIndex].cleared = featureToUpdateCleared
+          self.features[featuresIndex].note = featureToUpdateNote
+        } catch (error) {
+          console.log(error)
         }
       }
       // update sessionFeatures
-      for (let i = 0, numFeatures = self.sessionFeatures.length; i < numFeatures; i++) {
-        if (self.sessionFeatures[i].uuid === featureToUpdateUUID) {
-          self.sessionFeatures[i].cleared = featureToUpdateCleared
-          self.sessionFeatures[i].note = featureToUpdateNote
-          break
+      let sessionFeaturesIndex = self.sessionFeatures.findIndex(x => x.uuid === featureToUpdateUUID)
+      if (sessionFeaturesIndex !== -1) {
+        try {
+          self.sessionFeatures[sessionFeaturesIndex].cleared = featureToUpdateCleared
+          self.sessionFeatures[sessionFeaturesIndex].note = featureToUpdateNote
+        } catch (error) {
+          console.log(error)
         }
       }
     }
@@ -320,17 +322,6 @@ export default {
       })
       return returnValue
     },
-    // return true if any feature files in input array are in this.entityTypeArray
-    namedEntityInArray (arrayOfEntities) {
-      let returnValue = false
-      let self = this
-      arrayOfEntities.forEach(function (entity) {
-        if (self.entityTypeArray.includes(entity)) {
-          returnValue = true
-        }
-      })
-      return returnValue
-    },
     getAllSessionFeatures () {
       // retrieve data
       this.loading = true
@@ -350,16 +341,6 @@ export default {
       this.viewingFile = false
       // clear currentlySelectedUUID
       this.$emit('clearSelected')
-    },
-    getAllNamedEntities () {
-      let apiCall = this.$route.path + '/entities/'
-      HTTP.get(`${apiCall}`)
-        .then(response => {
-          this.entities = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
     },
     returnToSessionFeatures () {
       // mark redaction pane as viewing session
