@@ -19,6 +19,17 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - server
+    command: nginx -g 'daemon off';
   
   server:
     build:
