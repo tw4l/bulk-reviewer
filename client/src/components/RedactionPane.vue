@@ -43,16 +43,17 @@
       <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath" v-tooltip="'Copy this file\'s full filepath to the clipboard'">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
-    <!-- Metadata -->
+    <!-- Feature counts -->
     <div style="margin-bottom: 15px;">
       <p><strong>Total results:</strong> {{ featureCount }}</p>
       <p><strong>Confirmed sensitive:</strong> {{ featuresNotClearedCount }}</p>
       <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed" v-tooltip="'Review results dismissed as false positives'">View</button></span></p>
-      <div class="buttons">
-        <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)" v-tooltip="'Reset session to original state'">Reset</button>
-        <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
-        <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
-      </div>
+    </div>
+    <!-- Action buttons -->
+    <div class="buttons">
+      <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)" v-tooltip="'Reset session to original state'">Reset</button>
+      <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+      <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
     </div>
     <hr>
     <!-- Features grouped by type -->
