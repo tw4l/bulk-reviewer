@@ -80,6 +80,7 @@ class File(models.Model):
         blank=True
     )
     allocated = models.BooleanField(default=True)
+    verified = models.BooleanField(default=False)
     be_session = models.ForeignKey(
         BESession,
         related_name="files",

@@ -40,11 +40,21 @@
     </view-dismissed-modal>
     <!-- Context -->
     <div style="margin-bottom: 15px;">
-      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <button class="button is-small" v-clipboard:copy="fullFilepath" v-tooltip="'Copy this file\'s full filepath to the clipboard'">Copy path</button></h4>
+      <h4 class="title is-4" v-if="fileInfo.filepath">File: {{ filePathWithLineBreaks }} <span v-if="fileInfo.verified === true" style="margin-right: 5px; color: green;" v-tooltip="'This file is verified (all results reviewed)'"><font-awesome-icon icon="check"></font-awesome-icon></span> <button class="button is-small" v-clipboard:copy="fullFilepath" v-tooltip="'Copy this file\'s full filepath to the clipboard'">Copy path</button></h4>
       <h4 class="title is-4" v-else>All results</h4>
     </div>
-    <!-- Feature counts -->
+    <!-- Verified status and Feature counts -->
     <div style="margin-bottom: 15px;">
+      <!-- Verified -->
+      <div v-if="viewingFile === true" style="margin-bottom: 15px;">
+        <div v-if="fileInfo.verified === false">
+          <button class="button is-primary" @click="verifyFile" v-tooltip="'Mark file as verified (all results reviewed by end user)'">Verify file</button>
+        </div>
+        <div v-else>
+          <button class="button" @click="unverifyFile" v-tooltip="'Mark file as not verified (still requiring end user review)'">Unverify file</button>
+        </div>
+      </div>
+      <!-- Counts -->
       <p><strong>Total results:</strong> {{ featureCount }}</p>
       <p><strong>Confirmed sensitive:</strong> {{ featuresNotClearedCount }}</p>
       <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed" v-tooltip="'Review results dismissed as false positives'">View</button></span></p>
@@ -253,6 +263,39 @@ export default {
       }
     }
 
+    // Update source_file_verified of features when a file is modified
+    let filews = new ReconnectingWebsocket('ws://localhost:8000/ws/files/')
+    filews.onmessage = function (message) {
+      let data = JSON.parse(message.data)
+      // get data from websocket message
+      let updateFileUUID = data.message.uuid
+      let verifiedStatus = data.message.verified
+      // update Features linked to this file
+      for (let i = 0; i < self.features.length; i++) {
+        // check if file uuid matches
+        if (self.features[i].source_file === updateFileUUID) {
+          try {
+            // update feature verified status
+            self.features[i].source_file_verified = verifiedStatus
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
+      // update sessionFeatures linked to this file
+      for (let i = 0; i < self.sessionFeatures.length; i++) {
+        // check if file uuid matches
+        if (self.sessionFeatures[i].source_file === updateFileUUID) {
+          try {
+            // update feature verified status
+            self.sessionFeatures[i].source_file_verified = verifiedStatus
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
+    }
+
     // Listen for returnToSessionFeatures from RedactionSession
     bus.$on('returnToSessionFeatures', this.returnToSessionFeatures)
   },
@@ -370,6 +413,38 @@ export default {
     },
     toggleContextMenu () {
       this.viewingContext = !this.viewingContext
+    },
+    verifyFile () {
+      // Set file status to verified
+      let fileUUID = this.fileInfo.uuid
+      HTTP.patch(`file/${fileUUID}/`, { 'verified': true }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          this.updateFileStatus()
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    unverifyFile () {
+      // Set file status to verified
+      let fileUUID = this.fileInfo.uuid
+      HTTP.patch(`file/${fileUUID}/`, { 'verified': false }, { headers: { 'Content-Type': 'application/json' } })
+        .then(response => {
+          this.updateFileStatus()
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    updateFileStatus () {
+      let fileUUID = this.fileInfo.uuid
+      HTTP.get(`file/${fileUUID}/`)
+        .then(response => {
+          this.fileInfo = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     }
   },
   computed: {

@@ -10,12 +10,13 @@ class FileSerializer(serializers.ModelSerializer):
 
 class FeatureSerializer(serializers.ModelSerializer):
     source_filepath = serializers.CharField(source='source_file.filepath')
+    source_file_verified = serializers.BooleanField(source='source_file.verified')
 
     class Meta:
         model = models.Feature
         fields = ('uuid', 'feature_file', 'forensic_path', 'offset',
                   'feature', 'context', 'note', 'cleared', 'source_file',
-                  'source_filepath')
+                  'source_filepath', 'source_file_verified')
 
 
 class BEConfigSerializer(serializers.ModelSerializer):
