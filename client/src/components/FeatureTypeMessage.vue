@@ -117,8 +117,9 @@ export default {
           let filepath = e.source_filepath
           let fileUUID = e.source_file
           let count = arr.filter(function (obj) { return obj.source_file === fileUUID }).length
+          let verified = e.source_file_verified
           checkedUUIDs.push(fileUUID)
-          returnArr.push({ 'filepath': filepath, 'file_uuid': fileUUID, 'count': count })
+          returnArr.push({ 'filepath': filepath, 'file_uuid': fileUUID, 'count': count, 'verified': verified })
         }
       })
       return returnArr

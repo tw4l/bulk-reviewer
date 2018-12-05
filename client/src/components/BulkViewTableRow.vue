@@ -1,7 +1,7 @@
 <template>
   <tr>
-    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
-    <td v-else>{{ fileInfo.filepath }}  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
+    <td v-if="showFileBrowser">{{ filepathWithLineBreaks }} <span v-if="fileInfo.verified === true" style="margin-right: 5px; color: green;" v-tooltip="'This file is verified (all results reviewed)'"><font-awesome-icon icon="check"></font-awesome-icon></span>  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
+    <td v-else>{{ fileInfo.filepath }} <span v-if="fileInfo.verified === true" style="margin-right: 5px; color: green;" v-tooltip="'This file is verified (all results reviewed)'"><font-awesome-icon icon="check"></font-awesome-icon></span>  <button class="button is-small" @click="viewFile" v-tooltip="'Change context to view results for this file'">View</button></td>
     <!-- Non-critical -->
     <td v-if="critical == false">{{ fileInfo.count }} (to remove: {{ featuresNotClearedCount }})</td>
     <!-- Contains dismissed features -->
