@@ -10,7 +10,12 @@ Interested in getting involved? [Get in touch](mailto:tim.walsh@concordia.ca)!
 
 ## Development installation
 
-Requires [Docker CE](https://www.docker.com/community-edition), [Docker-Compose](https://docs.docker.com/compose/), and [Vue CLI 3](https://cli.vuejs.org/). A powerful machine with plenty of cores and RAM to spare is recommended, as bulk_extractor, Daphne (Django ASGI server), and the Webpack dev server collectively use a lot of resources.
+Requires [Docker CE](https://www.docker.com/community-edition), [Docker-Compose](https://docs.docker.com/compose/), and [Vue CLI 3](https://cli.vuejs.org/). 
+
+Minimum resources required to be allocated to Docker for development (higher specs are recommended; bulk_extractor performance will increase linearly with additional CPUs, spaCy NLP performance will increase with additional RAM):
+
+* 2 CPUs
+* 8 GB RAM
 
 ### Clone repository to local machine
 
