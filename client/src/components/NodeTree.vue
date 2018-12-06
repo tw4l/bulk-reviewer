@@ -16,7 +16,7 @@
       </span>
       <span class="icon is-small" v-else>
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
-        <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
+        <font-awesome-icon icon="trash-alt" v-tooltip="'Unallocated file'" v-else></font-awesome-icon>
       </span>
       <span :class="{ active: currentlySelectedUUID === uuid, nofeatures: featureCount === 0 }">
       {{ label }} <span v-if="featureCount === 0" v-tooltip="'No results found'"><font-awesome-icon icon="check"></font-awesome-icon></span> <span v-if="verified === true" v-tooltip="'This file is verified (all results reviewed)'" style="color: green;"><font-awesome-icon icon="check"></font-awesome-icon></span>
