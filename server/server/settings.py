@@ -131,7 +131,7 @@ if 'DATABASE_HOST' in os.environ:
             'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         }
     }
-else :
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

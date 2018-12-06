@@ -8,7 +8,7 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.File
         fields = ('uuid', 'filename', 'filepath', 'date_modified',
-                  'date_created', 'note', 'mime_type', 'allocated', 
+                  'date_created', 'note', 'mime_type', 'allocated',
                   'verified', 'feature_count')
 
 
