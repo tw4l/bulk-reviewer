@@ -19,8 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
-# Load secret key from environment variable
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# Default to insecure secret key for testing, value in br.env for production
+SECRET_KEY = os.environ.get('SECRET_KEY', 'mysecretkey123')
 
 # Default to DEBUG=True unless specified in br.env
 DEBUG = os.getenv('DEBUG', True)
