@@ -90,6 +90,10 @@ class File(models.Model):
     def __str__(self):
         return('{0}: {1}'.format(str(self.uuid), self.filename))
 
+    @property
+    def get_features_count(self):
+        return Feature.objects.filter(source_file__pk=self.pk).count()
+
 
 class Feature(models.Model):
     uuid = models.UUIDField(

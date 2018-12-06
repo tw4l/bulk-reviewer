@@ -3,9 +3,13 @@ from . import models
 
 
 class FileSerializer(serializers.ModelSerializer):
+    feature_count = serializers.IntegerField(source='get_features_count')
+
     class Meta:
         model = models.File
-        fields = '__all__'
+        fields = ('uuid', 'filename', 'filepath', 'date_modified',
+                  'date_created', 'note', 'mime_type', 'allocated', 
+                  'verified', 'feature_count')
 
 
 class FeatureSerializer(serializers.ModelSerializer):
