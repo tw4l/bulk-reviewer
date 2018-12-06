@@ -24,6 +24,14 @@ git clone https://github.com/timothyryanwalsh/bulk-reviewer.git
 cd bulk-reviewer
 ```
 
+### Set environment variables
+
+```
+bash init-default.sh
+```
+
+This script copies `server/br_sample.env` to `br.env`, which is used to set environment variables for Django and Postgres. To modify the values for the Postgres database name, username, and password, change the appropriate values in the resulting `br.env` file prior to starting the Docker containers.
+
 ### Configure docker-compose volumes
 
 The current configuration for sharing data between the host development machine and the `server` and `worker` Docker containers assumes a macOS development environment. Development in Linux or Windows may require changing the volume configuration to be appropriate for the local machine:

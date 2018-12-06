@@ -5,6 +5,8 @@ services:
   db:
     image: postgres
     restart: always
+    env_file:
+      - ./br.env
   
   redis:
     image: redis:latest
@@ -36,6 +38,8 @@ services:
       context: ./server
       dockerfile: Dockerfile
     hostname: server
+    env_file:
+      - ./br.env
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
@@ -57,6 +61,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    env_file:
+      - ./br.env
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
