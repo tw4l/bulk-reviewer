@@ -3,7 +3,7 @@
   <!-- Header -->
   <div class="columns" style="margin-bottom: -20px;">
     <div class="column padded">
-      <h4 class="title is-4">Session: {{ sessionInfo.name }}</h4>
+      <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
       <p class="subtitle is-6" style="margin-bottom: 0px;">
         {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
@@ -198,6 +198,19 @@ export default {
         } catch (error) {
           console.log(error)
         }
+      }
+    }
+  },
+  computed: {
+    filesWithFeatures () {
+      return this.files.filter(f => f.feature_count > 0)
+    },
+    allVerified () {
+      let notVerifiedArray = this.filesWithFeatures.filter(f => f.verified === false)
+      if (notVerifiedArray.length === 0) {
+        return true
+      } else {
+        return false
       }
     }
   }
