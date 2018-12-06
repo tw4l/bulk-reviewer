@@ -303,6 +303,7 @@ export default {
   },
   watch: {
     currentlySelectedUUID: function (newUUID, oldUUID) {
+      // update this.fileInfo and this.features when context changes to new file
       if (newUUID !== '') {
         // mark redaction pane as viewing single file
         this.viewingFile = true
