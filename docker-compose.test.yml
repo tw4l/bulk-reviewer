@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+
+  rabbitmq:
+    image: rabbitmq:3.7.5
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - server
+    command: nginx -g 'daemon off';
+  
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    hostname: server
+    env_file:
+      - ./test.env
+    volumes:
+      - ./server:/src
+      - ./server/bulk_extractor:/usr/share/bulk_extractor
+      - ./data:/data
+      - /Users:/Users
+      - /Volumes:/Volumes
+    ports:
+      - '8000:8000'
+    command: >
+      bash -c '
+      python3 manage.py migrate &&
+      daphne -b 0.0.0.0 -p 8000 server.asgi:application'
+    depends_on:
+      - rabbitmq
+      - redis
+      - db
+  
+  worker:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - ./test.env
+    volumes:
+      - ./server:/src
+      - ./server/bulk_extractor:/usr/share/bulk_extractor
+      - ./data:/data
+      - /Users:/Users
+      - /Volumes:/Volumes
+    command: celery -A server worker -l info
+    depends_on:
+      - rabbitmq
+      - redis
+      - db
