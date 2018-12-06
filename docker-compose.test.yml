@@ -49,7 +49,6 @@ services:
     depends_on:
       - rabbitmq
       - redis
-      - db
   
   worker:
     build:
@@ -67,4 +66,3 @@ services:
     depends_on:
       - rabbitmq
       - redis
-      - db
