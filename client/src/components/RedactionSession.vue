@@ -3,7 +3,7 @@
   <!-- Header -->
   <div class="columns" style="margin-bottom: -20px;">
     <div class="column padded">
-      <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
+      <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
       <p class="subtitle is-6" style="margin-bottom: 0px;">
         {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
@@ -42,6 +42,8 @@
           :uuid="fileTree.uuid"
           :nodeIndex="0"
           :allocated="fileTree.allocated"
+          :verified="fileTree.verified"
+          :featureCount="fileTree.featureCount"
           :fileTreeReady="fileTreeReady"
           :class="{ active: currentlySelectedUUID === fileTree.uuid }">
         </node-tree>
@@ -106,6 +108,27 @@ export default {
         alert(`Export ${redactedSetName} failed.`)
       }
     }
+
+    // Update file verified status on ws notification of file update
+    let filews = new ReconnectingWebsocket('ws://localhost:8000/ws/files/')
+    let self = this
+    filews.onmessage = function (message) {
+      let data = JSON.parse(message.data)
+      // get data from websocket message
+      let updateFileUUID = data.message.uuid
+      let verifiedStatus = data.message.verified
+      // update object in this.files
+      let fileIndex = self.files.findIndex(x => x.uuid === updateFileUUID)
+      if (fileIndex !== -1) {
+        try {
+          self.files[fileIndex].verified = verifiedStatus
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      // rebuild nodetree
+      self.fileTree = self.convertPathsToTree(self.files)
+    }
   },
   methods: {
     clearCurrentlySelectedUUID () {
@@ -142,13 +165,15 @@ export default {
         let path = file['filepath']
         let uuid = file['uuid']
         let allocated = file['allocated']
+        let verified = file['verified']
+        let featureCount = file['feature_count']
 
-        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated)
+        this.buildNodeRecursive(rootNode, path.split('/'), 0, uuid, allocated, verified, featureCount)
       }
       this.fileTreeReady = true
       return rootNode
     },
-    buildNodeRecursive: function (node, path, index, uuid, allocated) {
+    buildNodeRecursive: function (node, path, index, uuid, allocated, verified, featureCount) {
       if (index < path.length) {
         let item = path[index]
         let dir = node.nodes.find(node => node.label === item)
@@ -162,10 +187,12 @@ export default {
             dir['uuid'] = uuid
             dir['isDir'] = false
             dir['allocated'] = allocated
+            dir['verified'] = verified
+            dir['featureCount'] = featureCount
           }
           node.nodes.push(dir)
         }
-        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated)
+        this.buildNodeRecursive(dir, path, index + 1, uuid, allocated, verified, featureCount)
       }
     },
     toggleShowFileBrowser: function () {

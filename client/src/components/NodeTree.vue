@@ -18,8 +18,8 @@
         <font-awesome-icon icon="file" v-if="allocated"></font-awesome-icon>
         <font-awesome-icon icon="trash-alt" v-else></font-awesome-icon>
       </span>
-      <span :class="{ active: currentlySelectedUUID === uuid }">
-      {{ label }}
+      <span :class="{ active: currentlySelectedUUID === uuid, nofeatures: featureCount === 0 }">
+      {{ label }} <span v-if="featureCount === 0" v-tooltip="'No results found'"><font-awesome-icon icon="check"></font-awesome-icon></span> <span v-if="verified === true" v-tooltip="'This file is verified (all results reviewed)'" style="color: green;"><font-awesome-icon icon="check"></font-awesome-icon></span>
       </span>
     </span>
     <node-tree
@@ -33,6 +33,8 @@
       :uuid="node.uuid"
       :isDir="node.isDir"
       :allocated="node.allocated"
+      :verified="node.verified"
+      :featureCount="node.featureCount"
       :fileTreeReady="fileTreeReady">
     </node-tree>
   </div>
@@ -42,7 +44,7 @@
 import bus from '../bus'
 
 export default {
-  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'fileTreeReady' ],
+  props: [ 'label', 'nodes', 'depth', 'currentlySelectedUUID', 'uuid', 'isDir', 'allocated', 'verified', 'featureCount', 'fileTreeReady' ],
   data () {
     return {
       showChildren: false,
@@ -82,5 +84,8 @@ export default {
 <style>
 .active {
   background-color: #d3d3d3;
+}
+.nofeatures {
+  color: #808080;
 }
 </style>
