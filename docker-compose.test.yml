@@ -32,8 +32,6 @@ services:
       context: ./server
       dockerfile: Dockerfile
     hostname: server
-    env_file:
-      - ./test.env
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
@@ -54,8 +52,6 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    env_file:
-      - ./test.env
     volumes:
       - ./server:/src
       - ./server/bulk_extractor:/usr/share/bulk_extractor
