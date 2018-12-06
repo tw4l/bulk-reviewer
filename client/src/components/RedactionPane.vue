@@ -270,6 +270,8 @@ export default {
       // get data from websocket message
       let updateFileUUID = data.message.uuid
       let verifiedStatus = data.message.verified
+      // send signal to RedactionSection to update file
+      self.$emit('updateFileVerifiedStatus', updateFileUUID, verifiedStatus)
       // update Features linked to this file
       for (let i = 0; i < self.features.length; i++) {
         // check if file uuid matches

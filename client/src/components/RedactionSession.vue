@@ -51,7 +51,8 @@
         :sessionInfo="sessionInfo"
         :currentlySelectedUUID="currentlySelectedUUID"
         @clearSelected="clearCurrentlySelectedUUID"
-        :showFileBrowser="showFileBrowser"></redaction-pane>
+        :showFileBrowser="showFileBrowser"
+        @updateFileVerifiedStatus="updateFileVerifiedStatus"></redaction-pane>
       </div>
     </div>
   </div>
@@ -187,6 +188,17 @@ export default {
     },
     returnToSessionFeatures: function () {
       bus.$emit('returnToSessionFeatures')
+    },
+    updateFileVerifiedStatus: function (updateFileUUID, verifiedStatus) {
+      // update verified status of file in this.files
+      let fileIndex = this.files.findIndex(x => x.uuid === updateFileUUID)
+      if (fileIndex !== -1) {
+        try {
+          this.files[fileIndex].verified = verifiedStatus
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   }
 }
