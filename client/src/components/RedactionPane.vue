@@ -17,7 +17,7 @@
       </div>
       <div v-else>
         <p><strong>Currently viewing:</strong> All Session results</p>
-       <button class="is-small"
+        <button class="is-small"
           @click="toggleContextMenu"
           v-tooltip="'Hide context menu'"
           style="float: right;">
