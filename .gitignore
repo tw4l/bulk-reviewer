@@ -26,6 +26,9 @@ data/
 # postgres data
 postgres-data/
 
+# env variables
+br.env*
+
 # vuejs
 client/node_modules/
 client/dist/
