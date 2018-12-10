@@ -57,7 +57,7 @@
       <!-- Counts -->
       <p><strong>Total results:</strong> {{ featureCount }}</p>
       <p><strong>Confirmed sensitive:</strong> {{ featuresNotClearedCount }}</p>
-      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed" v-tooltip="'Review results dismissed as false positives'">View</button></span></p>
+      <p><strong>Dismissed:</strong> {{ featuresClearedCount }} <span v-if="featuresClearedCount !== 0"><button class="button is-small" @click="toggleShowDismissed" v-tooltip="'Review unconfirmed and dismissed results'">View</button></span></p>
     </div>
     <!-- Action buttons -->
     <div class="buttons">
