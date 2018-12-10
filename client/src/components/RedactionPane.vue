@@ -201,7 +201,7 @@
 </template>
 
 <script>
-import { HTTP } from '../api'
+import { HTTP, WebSocketURLBase } from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import FeatureTypeMessage from '@/components/FeatureTypeMessage'
@@ -231,7 +231,8 @@ export default {
   mounted () {
     // Update features using websocket messages
     // sent after Feature model post_save signal
-    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/features/')
+    let wsFeaturesURL = WebSocketURLBase + 'features/'
+    let ws = new ReconnectingWebsocket(wsFeaturesURL)
 
     let self = this
     ws.onmessage = function (message) {
@@ -263,7 +264,8 @@ export default {
     }
 
     // Update source_file_verified of features when a file is modified
-    let filews = new ReconnectingWebsocket('ws://localhost:8000/ws/files/')
+    let wsFilesURL = WebSocketURLBase + 'files/'
+    let filews = new ReconnectingWebsocket(wsFilesURL)
     filews.onmessage = function (message) {
       let data = JSON.parse(message.data)
       // get data from websocket message

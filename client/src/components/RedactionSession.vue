@@ -65,7 +65,7 @@
 import ExportFilesModal from '@/components/ExportFilesModal'
 import NodeTree from '@/components/NodeTree'
 import RedactionPane from '@/components/RedactionPane'
-import { HTTP } from '../api'
+import { HTTP, WebSocketURLBase } from '../api'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import bus from '../bus'
 
@@ -96,7 +96,8 @@ export default {
     bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
 
     // Pop up warning when redacted set is complete or failed
-    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/redacted-sets/')
+    let wsRedactedSetsURL = WebSocketURLBase + 'redacted-sets/'
+    let ws = new ReconnectingWebsocket(wsRedactedSetsURL)
     ws.onmessage = function (message) {
       let data = JSON.parse(message.data)
       let complete = data.message.complete
@@ -110,7 +111,8 @@ export default {
     }
 
     // Update file verified status on ws notification of file update
-    let filews = new ReconnectingWebsocket('ws://localhost:8000/ws/files/')
+    let wsFilesURL = WebSocketURLBase + 'files/'
+    let filews = new ReconnectingWebsocket(wsFilesURL)
     let self = this
     filews.onmessage = function (message) {
       let data = JSON.parse(message.data)

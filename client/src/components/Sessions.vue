@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { HTTP } from '../api'
+import { HTTP, WebSocketURLBase } from '../api'
 import bus from '../bus'
 import ReconnectingWebsocket from 'reconnectingwebsocket'
 import NewSessionModal from '@/components/NewSessionModal'
@@ -78,7 +78,8 @@ export default {
   },
   mounted () {
     // Update sessions whenever Session model post_save signal sends ws
-    let ws = new ReconnectingWebsocket('ws://localhost:8000/ws/sessions/')
+    let wsSessionsURL = WebSocketURLBase + 'sessions/'
+    let ws = new ReconnectingWebsocket(wsSessionsURL)
     let self = this
     ws.onmessage = function (message) {
       self.getSessions()
