@@ -61,8 +61,7 @@
     </div>
     <!-- Action buttons -->
     <div class="buttons">
-      <button class="button" @click="unclearAll" v-if="(featuresClearedCount > 0) && (viewingFile === false)" v-tooltip="'Reset session to original state'">Reset</button>
-      <button class="button is-info" @click="unclearAll" v-else-if="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
+      <button class="button is-info" @click="unclearAll" v-show="(featuresClearedCount > 0)" v-tooltip="'Confirm all results as sensitive'">Confirm all</button>
       <button class="button" @click="clearAll" v-show="!allIgnored && (viewingFile === true)" v-tooltip="'Dismiss all results as false positive'">Dismiss all</button>
     </div>
     <hr>
