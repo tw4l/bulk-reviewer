@@ -3,7 +3,7 @@
     <div class="modal-background" @click="close"></div>
     <div class="modal-card" style="width: 90% !important;">
       <header class="modal-card-head">
-        <p class="modal-card-title">Dismissed results</p>
+        <p class="modal-card-title">Unconfirmed and dismissed results</p>
         <button class="delete" aria-label="close" @click="close">X</button>
       </header>
       <section class="modal-card-body">

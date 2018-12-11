@@ -4,7 +4,7 @@
     <td>{{ featureTypeLabel }}</td>
     <td>{{ unescapedFeature }}</td>
     <td>{{ unescapedContext }}</td>
-    <td><button class="button" @click="markNotCleared"><font-awesome-icon icon="times"></font-awesome-icon></button></td>
+    <td><button class="button" @click="markNotCleared" v-tooltip="'Confirm sensitive'"><font-awesome-icon icon="times"></font-awesome-icon></button></td>
   </tr>
 </template>
 
