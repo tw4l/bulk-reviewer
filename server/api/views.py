@@ -133,6 +133,11 @@ class ListRedactedSetBySession(generics.ListAPIView):
         return models.RedactedSet.objects.filter(be_session=be_session)
 
 
+class CreateUser(generics.CreateAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+
 class DetailUser(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
