@@ -133,6 +133,16 @@ class ListRedactedSetBySession(generics.ListAPIView):
         return models.RedactedSet.objects.filter(be_session=be_session)
 
 
+class DetailUser(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+
+class ListUser(generics.ListAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+
 def download_csv_reports(request, pk):
     # Get session
     be_session = get_object_or_404(models.BESession, pk=pk)
