@@ -6,7 +6,7 @@
     <!-- Sticky context box (sticky to bottom) -->
     <div class="box sticky" v-if="viewingContext === true">
       <div v-if="fileInfo.filename">
-        <p><strong>Currently viewing:</strong> {{ fileInfo.filename }}</p>
+        <p><strong>Viewing:</strong> {{ fileInfo.filename }}</p>
         <button class="button is-success" @click="returnToSessionFeatures" v-tooltip="'Return context to all files in Session'">Show all Session results</button>
         <button class="is-small"
           @click="toggleContextMenu"
@@ -16,7 +16,7 @@
         </button>
       </div>
       <div v-else>
-        <p><strong>Currently viewing:</strong> All Session results</p>
+        <p><strong>Viewing:</strong> All Session results</p>
         <button class="is-small"
           @click="toggleContextMenu"
           v-tooltip="'Hide context menu'"
