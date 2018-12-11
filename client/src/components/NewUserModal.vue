@@ -120,6 +120,7 @@ export default {
     },
     clearForm: function () {
       this.formSubmit = false
+      this.username = ''
       this.email = ''
       this.password = ''
       this.passwordVerification = ''
