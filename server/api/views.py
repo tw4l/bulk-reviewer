@@ -133,9 +133,16 @@ class ListRedactedSetBySession(generics.ListAPIView):
         return models.RedactedSet.objects.filter(be_session=be_session)
 
 
-class CreateUser(generics.CreateAPIView):
-    queryset = models.User.objects.all()
-    serializer_class = serializers.UserSerializer
+class CreateUser(generics.GenericAPIView):
+    serializer_class = serializers.CreateUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": serializers.UserSerializer(user, context=self.get_serializer_context()).data,
+        })
 
 
 class DetailUser(generics.RetrieveUpdateDestroyAPIView):
