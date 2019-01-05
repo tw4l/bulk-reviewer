@@ -80,7 +80,7 @@ To run Tox/flake8 locally, create a `/usr/share/bulk_extractor` (Linux) or `/usr
 
 ## License
 
-Bulk Reviewer is distributed under the [Affero GNU Public License 3.0](https://github.com/timothyryanwalsh/bulk-reviewer/blob/master/LICENSE). See the LICENSE file for additional details.
+Bulk Reviewer is distributed under the [GNU Affero General Public License v3.0](https://github.com/timothyryanwalsh/bulk-reviewer/blob/master/LICENSE). See the LICENSE file for additional details.
 
 Bulk Extractor packages open source software developed by third parties. Licenses and attributions are retained here where applicable. Notable open source software included or packaged with Bulk Reviewer for convenience and to maintain stable download URLs for builds include:
 
