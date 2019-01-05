@@ -32,7 +32,8 @@
     "chai": "^4.1.2",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "webpack-bundle-tracker": "^0.4.2-beta"
   },
   "eslintConfig": {
     "root": true,
