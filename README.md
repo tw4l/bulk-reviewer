@@ -84,8 +84,8 @@ Bulk Reviewer is distributed under the [GNU Affero General Public License v3.0](
 
 Bulk Reviewer packages open source software developed by third parties. Licenses and attributions are retained here where applicable. Notable open source software included or packaged with Bulk Reviewer for convenience and to maintain stable download URLs for builds include:
 
+* [bulk_extractor](https://github.com/simsong/bulk_extractor), as well as scripts and stoplists from the [DFXML](https://github.com/simsong/dfxml) and [bulk_extractor](https://github.com/simsong/bulk_extractor) Github repositories. Public domain, developed by Simon Garfinkel as a United States government employee.
 * [Apache Tika](https://tika.apache.org/) 1.20 jar. Copyright 2011 The Apache Software Foundation. The executable file is used here in accordance with the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) and the Apache Tika Github repository's [notice](https://github.com/apache/tika/blob/master/NOTICE.txt).
-* Scripts and stoplists from the [DFXML](https://github.com/simsong/dfxml) and [bulk_extractor](https://github.com/simsong/bulk_extractor) Github repositories, as well as the bulk_extractor software. Public domain, developed by Simon Garfinkel as a United States government employee.
 * [spaCy](https://github.com/explosion/spaCy). Copyright (C) 2016 ExplosionAI UG (haftungsbeschränkt), 2016 spaCy GmbH, 2015 Matthew Honnibal. Released under the [MIT License](https://github.com/explosion/spaCy/blob/master/LICENSE).
 
 ## Logo design
