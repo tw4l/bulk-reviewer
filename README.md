@@ -78,5 +78,15 @@ Open [127.0.0.1:8080](http://127.0.0.1:8080) in your browser.
 
 To run Tox/flake8 locally, create a `/usr/share/bulk_extractor` (Linux) or `/usr/local/share/bulk_extractor` (macOS) directory and move the helper scripts in the `server/bulk_extractor` directory into it. This will place required Python DFXML libraries into their expected paths; otherwise you may encounter module import errors.
 
+## License
+
+Bulk Reviewer is distributed under the [Affero GNU Public License 3.0](https://github.com/timothyryanwalsh/bulk-reviewer/blob/master/LICENSE). See the LICENSE file for additional details.
+
+Bulk Extractor packages open source software developed by third parties. Licenses and attributions are retained here where applicable. Notable open source software included or packaged with Bulk Reviewer for convenience and to maintain stable download URLs for builds include:
+
+* [Apache Tika](https://tika.apache.org/) 1.20 jar. Apache Tika is copyright 2011 The Apache Software Foundation. The executable file is used here in accordance with the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) and the Apache Tika Github repository's [notice](https://github.com/apache/tika/blob/master/NOTICE.txt).
+* Scripts and stoplists from the [DFXML](https://github.com/simsong/dfxml) and [bulk_extractor](https://github.com/simsong/bulk_extractor) Github repositories, as well as the bulk_extractor software. Public domain, developed by Simon Garfinkel as a United States government employee.
+* [spaCy](https://github.com/explosion/spaCy). Copyright (C) 2016 ExplosionAI UG (haftungsbeschränkt), 2016 spaCy GmbH, 2015 Matthew Honnibal. Released under the [MIT License](https://github.com/explosion/spaCy/blob/master/LICENSE).
+
 ## Logo design
 [Bailey McGinn](https://baileymcginn.com/)
