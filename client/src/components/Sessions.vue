@@ -12,6 +12,7 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>Details</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -20,7 +21,21 @@
             <tr v-for="session in paginatedSessions" :key="session.uuid">
               <td>
                 <strong>{{ session.name }}</strong>
-                <p style="color: gray;">{{ session.uuid }}</p>
+              </td>
+              <td>
+                <p>
+                  <em>Source:</em> {{ session.source_path }}
+                  <span v-if="session.disk_image">
+                     <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'"></font-awesome-icon>
+                  </span>
+                  <span v-else>
+                    <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'"></font-awesome-icon>
+                  </span>
+                </p>
+                <p><em>Profile:</em> {{ session.be_config }}</p>
+                <p v-if="session.named_entity_extraction"><em>NLP Enabled:</em> True</p>
+                <p v-else><em>NLP Enabled:</em> False</p>
+                <p><em>UUID:</em> {{ session.uuid }}</p>
               </td>
               <td>
                 <span v-if="session.processing_complete">Complete</span>
