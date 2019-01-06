@@ -12,29 +12,50 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>UUID</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="session in paginatedSessions" :key="session.uuid">
-              <td><strong>{{ session.name }}</strong></td>
-              <td>{{ session.uuid }}</td>
               <td>
-                <router-link
-                  :to="{ name: 'RedactionSession', params: { uuid: session.uuid }}"
-                  v-if="session.processing_complete">
-                  <button class="button is-info">Go to session</button>
-                </router-link>
-                <button class="button is-danger" disabled v-else-if="session.processing_failure">Error!</button>
-                <button class="button is-info" disabled v-else>
-                  <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
-                </button>
+                <strong>{{ session.name }}</strong>
+                <p style="color: gray;">{{ session.uuid }}</p>
+              </td>
+              <td>
+                <span v-if="session.processing_complete">Complete</span>
+                <span v-else-if="session.processing_failure">Failed. See logs for details.</span>
+                <span v-else>Currently processing. This may take some time.</span>
+              </td>
+              <td>
+                <span v-if="session.processing_complete">
+                  <router-link
+                    :to="{ name: 'RedactionSession', params: { uuid: session.uuid }}">
+                    <button
+                      class="button is-info"
+                      v-tooltip="'Go to session'">
+                      <font-awesome-icon icon="sign-in-alt" class="fa"></font-awesome-icon>
+                    </button>
+                  </router-link>
+                </span>
+                <span v-else-if="session.processing_failure">
+                  <button class="button is-danger"
+                          v-tooltip="'Error'"
+                          disabled>
+                    <font-awesome-icon icon="times"></font-awesome-icon>
+                  </button>
+                </span>
+                <span v-else>
+                  <button class="button is-info"
+                          disabled>
+                    <font-awesome-icon icon="spinner" class="fa-spin"></font-awesome-icon>
+                  </button>
+                </span>
                 <delete-modal-button
-                  :sessionUUID="session.uuid"
-                  :sessionName="session.name"
-                  v-tooltip="'Delete'">
-                </delete-modal-button>
+                    :sessionUUID="session.uuid"
+                    :sessionName="session.name"
+                    v-tooltip="'Delete'">
+                  </delete-modal-button>
               </td>
             </tr>
           </tbody>
