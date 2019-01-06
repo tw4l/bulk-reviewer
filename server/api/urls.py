@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
@@ -23,6 +23,7 @@ urlpatterns = [
     path('redacted_set/<uuid:pk>/', views.DetailRedactedSet.as_view()),
     path('redacted_set/', views.ListRedactedSet.as_view()),
     path('batch_feature_update/', views.UpdateFeatureList.as_view()),
+    path('rest-auth/', include('rest_auth.urls')),
 ]
 
 if settings.DEBUG:

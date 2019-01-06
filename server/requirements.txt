@@ -3,6 +3,7 @@ django-cleanup==2.1.0
 django-cors-headers==2.2.0
 djangorestframework==3.8.2
 django-webpack-loader==0.6.0
+django-rest-auth==0.9.3
 channels==2.1.2
 channels_redis==2.2.1
 celery==4.2.0

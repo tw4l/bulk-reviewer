@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     'channels',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'corsheaders',
     'django_cleanup',  # deletes FileFields
     'webpack_loader',
