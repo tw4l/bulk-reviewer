@@ -20,6 +20,9 @@ server/bulk_extractor/stoplists/
 # media
 server/media/
 
+# webpack
+server/frontend/
+
 # user data
 data/
 

@@ -182,7 +182,7 @@ def get_named_entities(be_session_uuid):
         try:
             # Extract text with Tika
             tmp_file = "/usr/share/tika/extracted.txt"
-            tika_cmd = 'cd /usr/share/tika && java -jar tika-app-1.19.1.jar -t "{0}" > extracted.txt'.format(fpath)
+            tika_cmd = 'cd /usr/share/tika && java -jar tika-app-1.20.jar -t "{0}" > extracted.txt'.format(fpath)
             subprocess.call(tika_cmd, shell=True)
             # Extract text from output file
             file = open(tmp_file, 'r')

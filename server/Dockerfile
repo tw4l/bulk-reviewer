@@ -77,6 +77,6 @@ RUN python3 -m spacy download en
 # Install Apache Tika
 RUN mkdir /usr/share/tika && \
     cd /usr/share/tika && \
-    wget http://apache.mirror.iweb.ca/tika/tika-app-1.19.1.jar
+    wget https://github.com/timothyryanwalsh/bulk-reviewer/raw/master/server/lib/tika-app-1.20.jar
 
 EXPOSE 8000
