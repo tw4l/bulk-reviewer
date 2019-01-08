@@ -8,7 +8,7 @@ Bulk Reviewer is a software program that aids in identification, review, and rem
 
 Bulk Reviewer consists of two separate applications that communicate via websockets and a REST API:
 
-* A backend application and API built using [Django](https://www.djangoproject.com/), [Django Rest Framework](http://www.django-rest-framework.org/), [Celery](http://www.celeryproject.org/), [Django Channels](https://channels.readthedocs.io/en/latest/), Postgres](https://www.postgresql.org/), [Redis](https://redis.io/) and [RabbitMQ](https://en.wikipedia.org/wiki/RabbitMQ).
+* A backend application and API built using [Django](https://www.djangoproject.com/), [Django Rest Framework](http://www.django-rest-framework.org/), [Celery](http://www.celeryproject.org/), [Django Channels](https://channels.readthedocs.io/en/latest/), [Postgres](https://www.postgresql.org/), [Redis](https://redis.io/) and [RabbitMQ](https://en.wikipedia.org/wiki/RabbitMQ).
 * A frontend single page application (SPA) built using [Vue.js](ttps://vuejs.org/).
 
 Currently, Bulk Reviewer can scan directories and disk images for:
