@@ -12,9 +12,9 @@ Welcome to Bulk Reviewer's documentation!
 
 More here shortly :)
 
+------------------
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

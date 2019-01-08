@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Bulk Reviewer'
-copyright = '2019, Tim Walsh'
+copyright = '2018 Tim Walsh'
 author = 'Tim Walsh'
 
 # The short X.Y version
@@ -80,7 +80,11 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'logo': 'full-logo.png',
+    'github_user': 'timothyryanwalsh',
+    'github_repo': 'bulk-reviewer'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
