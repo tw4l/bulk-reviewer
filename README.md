@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/timothyryanwalsh/bulk-reviewer.svg?branch=master)](https://travis-ci.org/timothyryanwalsh/bulk-reviewer)
 
-Bulk Reviewer is a software program that aids in identification, review, and removal of sensitive files in directories and disk images. Bulk Reviewer scans directories and disk images for personally identifiable information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and can optionally extract named entities (personal names as well as nationalities, religions, and political affiliations) using [spaCy](https://spacy.io/) and [Apache Tika](https://tika.apache.org/). A browswer application enables users to configure, start, and review scans of directories and disk images, generate reports, and export files, separating problematic files (e.g., those requiring redaction or further review) from those that are free of sensitive information.
+Bulk Reviewer is a software program that aids in identification, review, and removal of sensitive files in directories and disk images. Bulk Reviewer scans directories and disk images for personally identifiable information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and can optionally extract named entities (personal names as well as nationalities, religions, and political affiliations) using [spaCy](https://spacy.io/) and [Apache Tika](https://tika.apache.org/). A browser application enables users to configure, start, and review scans of directories and disk images, generate reports, and export files, separating problematic files (e.g., those requiring redaction or further review) from those that are free of sensitive information.
 
 Bulk Reviewer consists of two separate applications that communicate via websockets and a REST API:
 
@@ -100,7 +100,7 @@ npm run serve
 
 ### Open application in browser
 
-Open [127.0.0.1:8080](http://127.0.0.1:8080) in your browser.
+Open [127.0.0.1:8080](http://127.0.0.1:8080) in your browser (any recent version of Firefox or Chrome).
 
 ### Tox
 
