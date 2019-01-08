@@ -4,14 +4,37 @@
 
 [![Build Status](https://travis-ci.org/timothyryanwalsh/bulk-reviewer.svg?branch=master)](https://travis-ci.org/timothyryanwalsh/bulk-reviewer)
 
-Bulk Reviewer is intended to help librarians, archivists, and others to identify, review, and remove sensitive files in directories and disk images. Bulk Reviewer scans directories and disk images for personally identifying information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and can optionally extract named entities (personal names as well as nationalities, religions, and political affiliations) using [spaCy](https://spacy.io/) and [Apache Tika](https://tika.apache.org/). A browswer application enables users to configure, start, and review scans of directories and disk images, generate reports, and export files, separating problematic files (e.g., those requiring redaction or further review) from those that are free of sensitive information.
+Bulk Reviewer is a software program that aids in identification, review, and removal of sensitive files in directories and disk images. Bulk Reviewer scans directories and disk images for personally identifiable information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and can optionally extract named entities (personal names as well as nationalities, religions, and political affiliations) using [spaCy](https://spacy.io/) and [Apache Tika](https://tika.apache.org/). A browswer application enables users to configure, start, and review scans of directories and disk images, generate reports, and export files, separating problematic files (e.g., those requiring redaction or further review) from those that are free of sensitive information.
 
 Bulk Reviewer consists of two separate applications that communicate via websockets and a REST API:
 
 * A backend application and API built using [Django](https://www.djangoproject.com/), [Django Rest Framework](http://www.django-rest-framework.org/), [Celery](http://www.celeryproject.org/), [Django Channels](https://channels.readthedocs.io/en/latest/), Postgres](https://www.postgresql.org/), [Redis](https://redis.io/) and [RabbitMQ](https://en.wikipedia.org/wiki/RabbitMQ).
 * A frontend single page application (SPA) built using [Vue.js](ttps://vuejs.org/).
 
-Initial development occurred while the author, Tim Walsh, was a 2018 Summer Fellow at the [Library Innovation Lab](https://lil.law.harvard.edu) at Harvard University. The application is currently under active development, and is still in the exploratory/prototype phase.
+Currently, Bulk Reviewer can scan directories and disk images for:
+
+* Social Security Numbers (SSNs)
+* Credit card numbers
+* Email addresses
+* Phone numbers
+* URLs, web domains, and RFC822 headers, and HTTP logs
+* GPS data
+* EXIF metadata
+* Personal names
+* Names of nationalities, religions, and political affiliations
+* User-supplied regular expressions
+
+Scanners planned but not yet implemented include:
+
+* Canadian Social Insurance Number (SIN) and other national identifiers
+* Banking information
+* Personal health information
+* Facebook and Outlook data
+* Customizable NLP lexicons (like those found in [ePADD](https://github.com/ePADD/epadd))
+
+Contributions are welcome!
+
+Initial development of Bulk Reviewer occurred while the author, Tim Walsh, was a 2018 Summer Fellow at the [Library Innovation Lab](https://lil.law.harvard.edu) at Harvard University. The application is designed to aid archivists and librarians in processing and providing access to digital collections but may be useful in other domains as well. The application is currently under active development, and is still in the exploratory/prototype phase.
 
 Interested in getting involved? [Get in touch](mailto:tim.walsh@concordia.ca)!
 
