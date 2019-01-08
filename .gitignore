@@ -40,3 +40,6 @@ client/yarn-debug.log*
 client/yarn-error.log*
 client/test/unit/coverage/
 server/webpack-stats.json
+
+# documentation builds
+docs/_build/
