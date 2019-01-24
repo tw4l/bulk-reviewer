@@ -30,7 +30,7 @@ Scanners planned but not yet implemented include:
 * Banking information
 * Personal health information
 * Facebook and Outlook data
-* Customizable NLP lexicons (like those found in [ePADD](https://github.com/ePADD/epadd))
+* Additional lexicons (like [those developed by the ePADD project team](https://library.stanford.edu/projects/epadd/community/lexicon-working-group))
 
 Contributions are welcome!
 
