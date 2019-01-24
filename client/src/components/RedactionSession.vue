@@ -5,10 +5,11 @@
     <div class="column padded">
       <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
       <p class="subtitle is-6" style="margin-bottom: 0px;">
-        {{ sessionInfo.source_path }}
+        Source: {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'" v-else></font-awesome-icon>
       </p>
+      <p>Profile: {{ config.name }} <span style="color: #808080;">({{ config.uuid }})</span></p>
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser">Hide file browser</button>
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
     </div>
@@ -75,6 +76,7 @@ export default {
   data () {
     return {
       sessionInfo: {},
+      config: {},
       files: [],
       fileTree: {},
       fileTreeReady: false,
@@ -86,12 +88,9 @@ export default {
   },
   created () {
     this.getData()
-
-    // setInterval(function () {
-    //   this.getData()
-    // }.bind(this), 10000)
   },
   mounted () {
+    // listen for signals from bus
     bus.$on('viewFileFromBulkTable', this.updateCurrentlySelectedUUID)
     bus.$on('updateSelected', this.updateCurrentlySelectedUUID)
 
@@ -145,6 +144,7 @@ export default {
       HTTP.get(`session/${uuid}/`)
         .then(response => {
           this.sessionInfo = response.data
+          this.getConfigInfo()
         })
         .catch(e => {
           this.errors.push(e)
@@ -153,6 +153,16 @@ export default {
         .then(response => {
           this.files = response.data
           this.fileTree = this.convertPathsToTree(this.files)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getConfigInfo () {
+      let uuid = this.sessionInfo.be_config
+      HTTP.get(`config/${uuid}/`)
+        .then(response => {
+          this.config = response.data
         })
         .catch(e => {
           this.errors.push(e)
