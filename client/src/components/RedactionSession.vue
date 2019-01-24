@@ -3,13 +3,20 @@
   <!-- Header -->
   <div class="columns" style="margin-bottom: -20px;">
     <div class="column padded">
+      <!-- Session name -->
       <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
+      <!-- Source -->
       <p class="subtitle is-6" style="margin-bottom: 0px;">
         Source: {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'" v-else></font-awesome-icon>
       </p>
+      <!-- Configuration -->
       <p>Profile: {{ config.name }} <span style="color: #808080;">({{ config.uuid }})</span></p>
+      <!-- NLP -->
+      <p v-if="sessionInfo.named_entity_extraction">NLP Enabled: True</p>
+      <p v-else>NLP Enabled: False</p>
+      <!-- Hide/show file browser button -->
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-if="showFileBrowser">Hide file browser</button>
       <button class="button is-primary is-outlined" @click="toggleShowFileBrowser" style="margin-top: 10px;" v-else>Show file browser</button>
     </div>
