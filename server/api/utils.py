@@ -184,13 +184,8 @@ def get_named_entities(be_session_uuid):
             tmp_file = "/usr/share/tika/extracted.txt"
             tika_cmd = 'cd /usr/share/tika && java -jar tika-app-1.20.jar -t "{0}" > extracted.txt'.format(fpath)
             subprocess.call(tika_cmd, shell=True)
-            # Extract text from output file
-            file = open(tmp_file, 'r')
-            extracted_text = file.read().strip()
-            file.close()
-            os.remove(tmp_file)
             # Parse text for named entities
-            doc = nlp(extracted_text)
+            doc = nlp(open(tmp_file).read())
             # Loop through entities and write to db
             for ent in doc.ents:
                 # Print to terminal for debugging
@@ -210,6 +205,8 @@ def get_named_entities(be_session_uuid):
                         cleared=True,
                         source_file=matching_file
                     )
+            # Delete Tika temp file
+            os.remove(tmp_file)
         except Exception:
             print("No entities found for {}.".format(fpath))
 
