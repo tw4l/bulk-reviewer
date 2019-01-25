@@ -4,9 +4,9 @@
   <div class="columns" style="margin-bottom: -20px;">
     <div class="column padded">
       <!-- Session name -->
-      <h4 class="title is-4">{{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
+      <h4 class="title is-4" style="margin-bottom: 5px;">{{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
       <!-- Source -->
-      <p class="subtitle is-6" style="margin-bottom: 0px;">
+      <p>
         <strong>Source:</strong> {{ sessionInfo.source_path }}
         <font-awesome-icon icon="hdd" v-tooltip="'Source type: Disk image'" v-if="sessionInfo.disk_image === true"></font-awesome-icon>
         <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'" v-else></font-awesome-icon>
