@@ -15,9 +15,12 @@ import Objects
 
 
 def time_to_int(str_time):
+    """
+    Convert datetime in format YYYY-MM-DDTHH:MM:SS
+    to integer representing Unix time.
+    """
     dt = time.mktime(datetime.datetime.strptime(
-        str_time,
-        "%Y-%m-%dT%H:%M:%S").timetuple())
+        str_time, "%Y-%m-%dT%H:%M:%S").timetuple())
     return dt
 
 
