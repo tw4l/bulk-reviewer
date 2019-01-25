@@ -4,7 +4,7 @@
   <div class="columns" style="margin-bottom: -20px;">
     <div class="column padded">
       <!-- Session name -->
-      <h4 class="title is-4">Session: {{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
+      <h4 class="title is-4">{{ sessionInfo.name }} <span v-if="files.length > 0 && allVerified === true" style="color: green; border: 1px solid; margin: 5px; padding: 5px;">All FILES REVIEWED</span></h4>
       <!-- Source -->
       <p class="subtitle is-6" style="margin-bottom: 0px;">
         <strong>Source:</strong> {{ sessionInfo.source_path }}
