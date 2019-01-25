@@ -33,8 +33,8 @@
                   </span>
                 </p>
                 <p><em>Profile:</em> {{ session.be_config }}</p>
-                <p v-if="session.named_entity_extraction"><em>NLP Enabled:</em> True</p>
-                <p v-else><em>NLP Enabled:</em> False</p>
+                <p v-if="session.named_entity_extraction"><em>Named entity recognition:</em> True</p>
+                <p v-else><em>Named entity recognition:</em> False</p>
                 <p><em>UUID:</em> {{ session.uuid }}</p>
               </td>
               <td>
