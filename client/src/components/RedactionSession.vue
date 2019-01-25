@@ -12,7 +12,7 @@
         <font-awesome-icon icon="folder" v-tooltip="'Source type: Directory'" v-else></font-awesome-icon>
       </p>
       <!-- Configuration -->
-      <p>Profile: {{ config.name }} <span style="color: #808080;">({{ config.uuid }})</span></p>
+      <p>Profile: {{ config.name }}</p>
       <!-- NLP -->
       <p v-if="sessionInfo.named_entity_extraction">NLP Enabled: True</p>
       <p v-else>NLP Enabled: False</p>
