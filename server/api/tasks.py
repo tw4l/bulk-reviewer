@@ -17,6 +17,16 @@ logger = get_task_logger(__name__)
 
 @shared_task
 def run_bulk_extractor(be_session_uuid):
+    """
+    Process source directory or disk image:
+    1. Run bulk_extractor
+    2. Create DFXML of source and read into db
+    3. Annotate feature files (disk images only)
+    4. Read feature files into db
+    5. Identify MIME types (directories only)
+    6. Extract named entities (optional, directories only)
+    7. Mark processing as complete in db
+    """
 
     # Make sure stoplists are extracted
     stoplist_zip = '/usr/share/bulk_extractor/stoplists.zip'
@@ -258,6 +268,9 @@ def run_bulk_extractor(be_session_uuid):
 
 @shared_task
 def update_features(features, cleared):
+    """
+    Update cleared status in db for each feature in list
+    """
     for f in Feature.objects.filter(pk__in=features):
         f.cleared = cleared
         f.save()  # call save to trigger post_save signal
@@ -265,6 +278,11 @@ def update_features(features, cleared):
 
 @shared_task
 def create_csv_reports(be_session_uuid):
+    """
+    Create two CSV reports, sorted by file then feature type:
+    1. Features confirmed as sensitive
+    2. Dismissed/unconfirmed features
+    """
 
     # Set variables
     be_session = BESession.objects.get(pk=be_session_uuid)
@@ -309,6 +327,12 @@ def create_csv_reports(be_session_uuid):
 
 @shared_task
 def export_files(redacted_set_uuid):
+    """
+    Create export containing:
+    1. 'clean' directory: files with no sensitive features
+    2. 'to_redact' directory: files with sensitive features
+    3. CSV exports
+    """
 
     # Set variables
     redacted_set = RedactedSet.objects.get(pk=redacted_set_uuid)
