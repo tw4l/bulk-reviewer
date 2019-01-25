@@ -257,9 +257,10 @@ def run_bulk_extractor(be_session_uuid):
             # Parse file and write features into db
             utils.parse_feature_file(ff_abspath, be_session_uuid)
 
-    # Get named entities
-    if be_session.named_entity_extraction is True:
-        utils.get_named_entities(be_session_uuid)
+    # Get named entities (directories only)
+    if not disk_image:
+        if be_session.named_entity_extraction is True:
+            utils.get_named_entities(be_session_uuid)
 
     # Mark processing as complete in db
     be_session.processing_complete = True
