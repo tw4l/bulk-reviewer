@@ -133,7 +133,7 @@ def restore_dates_from_dfxml(file_dir, dfxml):
 def parse_dfxml_to_db(be_session_uuid):
     """
     Write database entry for each regular file
-    recorded in input DFXML file.
+    recorded in DFXML file.
     """
     be_session = BESession.objects.get(pk=be_session_uuid)
     dfxml_file = be_session.dfxml_path
