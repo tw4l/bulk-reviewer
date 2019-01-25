@@ -128,6 +128,10 @@ def restore_dates_from_dfxml(file_dir, dfxml):
 
 
 def parse_dfxml_to_db(be_session_uuid):
+    """
+    Write database entry for each regular file
+    recorded in input DFXML file.
+    """
     be_session = BESession.objects.get(pk=be_session_uuid)
     dfxml_file = be_session.dfxml_path
 
@@ -170,6 +174,10 @@ def parse_dfxml_to_db(be_session_uuid):
 
 
 def get_named_entities(be_session_uuid):
+    """
+    Extract named entities from each file with spaCy
+    and write PERSON and NORP entities to database.
+    """
     files = File.objects.filter(be_session=be_session_uuid)
     be_session = BESession.objects.get(pk=be_session_uuid)
     source_path = be_session.source_path
@@ -212,6 +220,10 @@ def get_named_entities(be_session_uuid):
 
 
 def parse_feature_file(feature_file, be_session_uuid):
+    """
+    Parse features in bulk_extractor feature file
+    and write each feature to database.
+    """
     with open(feature_file, 'r', encoding='utf-8') as f:
         for line in f:
             # Ignore commented lines
@@ -267,6 +279,10 @@ def parse_feature_file(feature_file, be_session_uuid):
 
 
 def parse_annotated_feature_file(feature_file, be_session_uuid):
+    """
+    Parse features in annotated bulk_extractor feature file
+    and write each feature to database.
+    """
     with open(feature_file, 'r', encoding='utf-8') as f:
         for line in f:
             # Ignore commented lines
