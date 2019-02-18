@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/timothyryanwalsh/bulk-reviewer.svg?branch=master)](https://travis-ci.org/timothyryanwalsh/bulk-reviewer)
 
+**Note: This software is still in development and is not production ready.**
+
 Bulk Reviewer is a software program that aids in identification, review, and removal of sensitive files in directories and disk images. Bulk Reviewer scans directories and disk images for personally identifiable information (PII) and other sensitive information using [bulk_extractor](https://github.com/simsong/bulk_extractor), a best-in-class digital forensics tool, and can optionally extract named entities (personal names as well as nationalities, religions, and political affiliations) using [spaCy](https://spacy.io/) and [Apache Tika](https://tika.apache.org/). A browser application enables users to configure, start, and review scans, generate reports, and export files, separating problematic files (e.g., those requiring redaction or further review) from those that are free of sensitive information.
 
 Bulk Reviewer consists of two separate applications that communicate via websockets and a REST API:
